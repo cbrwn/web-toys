@@ -11,7 +11,7 @@
 </template>
 
 <script>
-export default defineComponent({
+export default {
 	props: ['index', 'item', 'items', 'clickedIndex'],
 	computed: {
 		isChecked: {
@@ -20,5 +20,5 @@ export default defineComponent({
 			}
 		}
 	}
-})
+}
 </script>

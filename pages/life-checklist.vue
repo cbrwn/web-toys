@@ -1,23 +1,17 @@
 <template>
   <div class="container mx-auto flex justify-center">
     <div class="flex flex-col w-full justify-center py-8 gap-y-3">
-      <Header>
+      <LifeChecklistHeader>
         Life Checklist
-      </Header>
+      </LifeChecklistHeader>
       <div class="grid grid-cols-3 gap-2">
-        <CheckItem v-for="(item, index) in lifeItems" :key="index" :item="item" :index="index" :clickedIndex="itemClicked"
+        <LifeChecklistCheckItem v-for="(item, index) in lifeItems" :key="index" :item="item" :index="index" :clickedIndex="itemClicked"
           :items="checkedItems" />
       </div>
-      <ProgressFooter :completed="checkedCount" :total="itemCount" />
+      <LifeChecklistProgressFooter :completed="checkedCount" :total="itemCount" />
     </div>
   </div>
 </template>
-
-<style>
-body {
-  background-color: rgb(218, 221, 230);
-}
-</style>
 
 <script>
 export default {
