@@ -30,6 +30,7 @@ export default {
       checkedItems: initItems
     }
   },
+  created() { document.title = 'life checklist'; },
   methods: {
     itemClicked: function (idx) {
       const lastIndex = this.lifeItems.length - 1;
