@@ -4,7 +4,7 @@
 -->
 
 <template>
-	<div class="flex font-semibold items-center gap-4 w-full h-24 p-10 rounded-md cursor-pointer transition-colors duration-200" :class="{['text-white hover:bg-green-600 bg-green-500']: isChecked, ['bg-slate-100 hover:bg-slate-50']: !isChecked}" v-on:click="clickedIndex(index)">
+	<div class="flex font-semibold items-center gap-4 h-24 p-10 rounded-md cursor-pointer transition-colors duration-200 min-w-fit" :class="{['text-white hover:bg-green-600 bg-green-500']: isChecked, ['bg-slate-100 hover:bg-slate-50']: !isChecked}" v-on:click="clickedIndex(index)">
 		<CheckBox :checked="isChecked" />
 		{{ item }}
 	</div>
