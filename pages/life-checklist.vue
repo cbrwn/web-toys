@@ -1,12 +1,14 @@
 <template>
   <div class="container mx-auto flex justify-center">
     <div class="flex flex-col w-full justify-center py-8 gap-y-3">
-      <LifeChecklistHeader>
-        Life Checklist
+      <LifeChecklistHeader title="life checklist">
+        <p> a shameless clone of <a href='https://twitter.com/nealagarwal' target="_blank">Neal Agarwal</a>'s <a
+            href='https://neal.fun/life-checklist/' target="_blank">life checklist</a> </p>
+        <p> made to learn my way around nuxt/vue :) </p>
       </LifeChecklistHeader>
-      <div class="grid grid-cols-3 gap-2">
-        <LifeChecklistCheckItem v-for="(item, index) in lifeItems" :key="index" :item="item" :index="index" :clickedIndex="itemClicked"
-          :items="checkedItems" />
+      <div class="gap-2 grid grid-cols-2 md:grid-cols-3">
+        <LifeChecklistCheckItem v-for="(item, index) in lifeItems" :key="index" :item="item" :index="index"
+          :clickedIndex="itemClicked" :items="checkedItems" />
       </div>
       <LifeChecklistProgressFooter :completed="checkedCount" :total="itemCount" />
     </div>
@@ -24,7 +26,7 @@ export default {
     }
 
     return {
-      lifeItems: ["Do thing 1", "Do another thing", "Do some more things", "absabbasb", "aslkdas", "poop ur pants", "fart haha", "big poopys", "complete checklist!"],
+      lifeItems: ["do something cool", "make something cool", "do more things", "eat food", "wear a hat", "take a nap", "dance", "do a backflip", "complete checklist!"],
       checkedItems: initItems
     }
   },
@@ -66,3 +68,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+a {
+  text-decoration: underline;
+}
+</style>
