@@ -1,12 +1,30 @@
 <template>
-	<ul class="list-disc">
-		<li>
-			<NuxtLink to="/life-checklist">Life Checklist</NuxtLink>
-		</li>
-	</ul>
+	<div class="flex flex-col gap-12 w-screen h-screen justify-center items-center">
+		<h1 class="text-2xl">camerons internet toys</h1>
+		<div class="flex justify-center items-center gap-8">
+			<HomeLink v-for="(item, index) in pages" :key="index" :item="item" />
+		</div>
+	</div>
 </template>
 
 <script>
+export default {
+	data() {
+		return {
+			pages: [
+				{
+					name: 'life checklist',
+					url: '/life-checklist'
+				},
+				{
+					name: 'something else',
+					url: '/'
+				},
+			]
+		};
+	}
+}
+
 definePageMeta({
 	layout: 'empty'
 });
