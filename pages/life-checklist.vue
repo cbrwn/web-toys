@@ -1,11 +1,11 @@
 <template>
   <div class="container mx-auto flex justify-center">
     <div class="flex flex-col w-full justify-center py-8 gap-y-3">
-      <LifeChecklistHeader title="life checklist">
+      <Header title="life checklist">
         <p> a shameless clone of <a href='https://twitter.com/nealagarwal' target="_blank">Neal Agarwal</a>'s <a
             href='https://neal.fun/life-checklist/' target="_blank">life checklist</a> </p>
         <p> made to learn my way around nuxt/vue :) </p>
-      </LifeChecklistHeader>
+      </Header>
       <div class="gap-2 grid grid-cols-2 md:grid-cols-3">
         <LifeChecklistCheckItem v-for="(item, index) in lifeItems" :key="index" :item="item" :index="index"
           :clickedIndex="itemClicked" :items="checkedItems" />
