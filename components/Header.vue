@@ -4,14 +4,14 @@
 -->
 
 <template>
-	<div class="flex-1 w-full text-center bg-slate-100 p-8 rounded-lg">
+	<ContentContainer>
 		<h1 class="text-4xl font-bold">
 			{{ title }}
 		</h1>
 		<div class="text-gray-400">
 			<slot />
 		</div>
-	</div>
+	</ContentContainer>
 </template>
 
 <script>
