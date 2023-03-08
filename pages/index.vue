@@ -17,8 +17,8 @@ export default {
 					url: '/life-checklist'
 				},
 				{
-					name: 'something else',
-					url: '/'
+					name: 'the wheel',
+					url: '/the-wheel'
 				},
 			]
 		};
