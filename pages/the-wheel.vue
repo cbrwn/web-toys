@@ -19,7 +19,7 @@
             </div>
             <WheelSpinner :items="items" @spin-start="onSpinStart" @spin-end="onSpinFinish" style="margin-bottom: 40px" />
           </div>
-          <WheelItemEditor :items="items" :bench="benchItems" @items-changed="onItemsChanged" />
+          <WheelItemEditor :items="items" :bench="benchItems" @items-changed="onItemsChanged" :enabled="allowEditing" />
         </div>
       </ContentContainer>
     </div>

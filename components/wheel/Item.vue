@@ -15,7 +15,7 @@
 
 <script>
 export default {
-	props: ['onMove', 'itemName', 'moveIcon', 'showDelete'],
+	props: ['onMove', 'itemName', 'moveIcon', 'showDelete', 'enabled'],
 	data() {
 		return {
 			editMode: false
@@ -30,12 +30,16 @@ export default {
 	},
 	methods: {
 		moveClicked() {
-			this.$emit("onMove");
+			if (this.enabled)
+				this.$emit("onMove");
 		},
 		deleteClicked() {
-			this.$emit("onDelete");
+			if (this.enabled)
+				this.$emit("onDelete");
 		},
 		editClicked() {
+			if (!this.enabled) return;
+
 			if (this.editMode) {
 				this.$emit("itemEdited", this.$refs.editBox.value);
 			}
