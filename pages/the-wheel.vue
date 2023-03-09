@@ -11,7 +11,7 @@
               :style="`transform: scale(${this.resultState >= 1 ? '1.0' : '0.0'})`">
               the wheel has chosen...
               <p class="text-4xl transition-all duration-500"
-                :style="`transform: scale(${this.resultState >= 2 ? '1.0' : '0.0'})`" @click="hideResult">
+                :style="`transform: scale(${this.resultState >= 2 ? '1.0' : '0.01'})`" @click="hideResult">
                 <span class="animate-spin inline-block">🌟</span>
                 {{ resultToShow }}!!
                 <span class="animate-spin inline-block">🌟</span>
