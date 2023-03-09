@@ -90,7 +90,8 @@ export default {
                 for (let i = 0; i < this.items.length; ++i) {
                     let startAngle = sliceAngle * i - (Math.PI / 2);
 
-                    ctx.fillStyle = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
+                    let colours = this.getColourForString(this.items[i]);
+                    ctx.fillStyle = colours.bg;
                     ctx.beginPath();
                     ctx.beginPath()
                     const borderWidth = 0;
@@ -99,7 +100,7 @@ export default {
                     ctx.fill()
 
                     ctx.save();
-                    ctx.fillStyle = "#000000";
+                    ctx.fillStyle = colours.fg;
                     const textOffset = radius - 20;
                     ctx.translate(radius + Math.cos(startAngle + sliceAngle / 2) * textOffset, radius + Math.sin(startAngle + sliceAngle / 2) * textOffset);
                     ctx.rotate(startAngle + sliceAngle / 2 + Math.PI)
@@ -113,6 +114,22 @@ export default {
         getAngleForItem: function (itemIndex) {
             const angleBetweenItems = 360 / this.items.length;
             return 360 - ((angleBetweenItems * itemIndex) + (Math.random() * angleBetweenItems));
+        },
+        getColourForString(text) {
+            let val = 1;
+            // some random-ish stuff based on string
+            for(let i = 0; i < text.length; ++i) {
+                val ^= Math.imul(val ^ (text.charCodeAt(i) * i), 597399067);
+            }
+            let r = (val & 0xff0000) >> 16;
+            let g = (val & 0xff00) >> 8;
+            let b = (val & 0xff);
+
+            const brightness = Math.round(((parseInt(r) * 299) +
+                      (parseInt(g) * 587) +
+                      (parseInt(b) * 114)) / 1000);
+
+            return {bg: `rgb(${r}, ${g}, ${b})`, fg: ((brightness > 125) ? '#1d1d1d' : '#d9d8f1')};
         }
     }
 }
