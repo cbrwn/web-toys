@@ -23,9 +23,7 @@ export default {
 	},
 	watch: {
 		itemName: function () {
-			console.log(this.itemName);
 			if (this.itemName == 'new item' && !this.editMode) {
-				console.log('clicky');
 				this.editClicked();
 			}
 		}
