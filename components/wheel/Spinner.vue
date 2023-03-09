@@ -1,14 +1,14 @@
 <template>
-    <canvas 
-        class="w-min transition-transform" 
-        :class="{['cursor-pointer']: !spinning}"
-        @transitionend="onSpinEnd"
-        @webkitTransitionend="onSpinEnd"
-        v-on:click="newRotate" 
-        :style="rotateStyle" 
-        ref="wheel" 
-        width="400" height="400" 
-    />
+    <div class="relative">
+        <div class="flex justify-center items-center absolute z-50" v-if="canvasRendering" :style="`width:${canvasSize}px; height:${canvasSize}px;`" :class="{ ['cursor-pointer']: !spinning }" v-on:click="newRotate" >
+            <div class="flex justify-center items-center text-4xl select-none rounded-full bg-gray-300 w-28 h-28">
+                <div class="absolute w-0 h-0 border-b-gray-300" style="margin-top: -120px; border-left: 30px solid transparent; border-right: 30px solid transparent; border-bottom: 50px solid rgb(209 213 219);"></div>
+            </div>
+        </div>
+        <canvas class="w-min transition-transform pointer-events-none" @transitionend="onSpinEnd"
+            @webkitTransitionend="onSpinEnd" :style="rotateStyle" ref="wheel" :width="canvasSize"
+            :height="canvasSize" />
+    </div>
 </template>
 
 <script>
@@ -24,11 +24,18 @@ export default {
         document.fonts.ready.then(() => this.drawCanvas());
     },
     data() {
-        let newRotateDeg = Math.random()*360;
+        let newRotateDeg = Math.random() * 360;
         return {
+            canvasRendering: false,
             rotateEndDeg: newRotateDeg,
             spinning: false,
-            selectedItem: 0
+            selectedItem: 0,
+            canvasSize: 400
+        }
+    },
+    watch: {
+        items: function(){
+            this.drawCanvas();
         }
     },
     computed: {
@@ -43,32 +50,32 @@ export default {
                 'transition-timing-function': timingFunc
             }
         },
-        rotateDuration: function() {
+        rotateDuration: function () {
             return this.spinning ? 8 : 0;
         },
-        canSpin: function() {
+        canSpin: function () {
             return !this.spinning;
         }
     },
     methods: {
-        newRotate: function(event) {
-            if(!this.canSpin) return;
+        newRotate: function (event) {
+            if (!this.canSpin) return;
 
-            let itemIndex = Math.floor(Math.random()*this.items.length);
+            let itemIndex = Math.floor(Math.random() * this.items.length);
             this.selectedItem = itemIndex;
             let itemAngle = this.getAngleForItem(itemIndex);
 
-            this.rotateEndDeg = (360*this.spinCount) + itemAngle;
+            this.rotateEndDeg = (360 * this.spinCount) + itemAngle;
             this.spinning = true;
 
             this.$emit('spinStart');
         },
-        onSpinEnd: function() {
+        onSpinEnd: function () {
             this.spinning = false;
             // get rid of the extra spins, ready for next spin
             this.rotateEndDeg %= 360;
 
-            this.$emit('spinEnd', {item: this.items[this.selectedItem], itemIndex: this.selectedItem});
+            this.$emit('spinEnd', { item: this.items[this.selectedItem], itemIndex: this.selectedItem });
         },
         drawCanvas: function () {
             const canvas = this.$refs.wheel;
@@ -81,7 +88,7 @@ export default {
                 ctx.font = `24px Itim`
 
                 for (let i = 0; i < this.items.length; ++i) {
-                    let startAngle = sliceAngle * i - (Math.PI/2);
+                    let startAngle = sliceAngle * i - (Math.PI / 2);
 
                     ctx.fillStyle = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
                     ctx.beginPath();
@@ -100,11 +107,12 @@ export default {
 
                     ctx.restore()
                 }
+                this.canvasRendering = true;
             }
         },
-        getAngleForItem: function(itemIndex) {
-            const angleBetweenItems = 360/this.items.length;
-            return 360 - ((angleBetweenItems*itemIndex) + (Math.random() * angleBetweenItems));
+        getAngleForItem: function (itemIndex) {
+            const angleBetweenItems = 360 / this.items.length;
+            return 360 - ((angleBetweenItems * itemIndex) + (Math.random() * angleBetweenItems));
         }
     }
 }
