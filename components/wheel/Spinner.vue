@@ -135,11 +135,12 @@ export default {
             let g = (val & 0xff00) >> 8;
             let b = (val & 0xff);
 
+            // W3C recommended brightness things
             const brightness = Math.round(((parseInt(r) * 299) +
                       (parseInt(g) * 587) +
                       (parseInt(b) * 114)) / 1000);
 
-            return {bg: `rgb(${r}, ${g}, ${b})`, fg: ((brightness > 125) ? '#1d1d1d' : '#d9d8f1')};
+            return {bg: `rgb(${r}, ${g}, ${b})`, fg: ((brightness > 125) ? '#2d241d' : '#f9f8f1')};
         }
     }
 }
