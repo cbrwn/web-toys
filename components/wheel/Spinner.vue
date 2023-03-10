@@ -24,10 +24,9 @@ export default {
         document.fonts.ready.then(() => this.drawCanvas());
     },
     data() {
-        let newRotateDeg = Math.random() * 360;
         return {
             canvasRendering: false,
-            rotateEndDeg: newRotateDeg,
+            rotateEndDeg: 0,
             spinning: false,
             selectedItem: 0,
             canvasSize: 400
