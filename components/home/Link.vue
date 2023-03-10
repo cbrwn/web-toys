@@ -1,5 +1,5 @@
 <template>
-    <NuxtLink :to="item.url" class="bg-slate-300 w-60 rounded-2xl border-2 border-slate-400 aspect-video flex justify-center items-center font-semibold text-xl hover:shadow-2xl shadow-black transition-all duration-300 hover:scale-102 hover:bg-slate-200 min-w-fit p-10">
+    <NuxtLink :to="item.url" class="bg-slate-300 dark:bg-slate-700 w-60 rounded-2xl border-2 border-slate-400 dark:border-slate-500 aspect-video flex justify-center items-center font-semibold text-xl hover:shadow-2xl shadow-black transition-all duration-300 hover:scale-102 hover:bg-slate-200 dark:hover:bg-slate-600 min-w-fit p-10">
             {{ item.name }}
     </NuxtLink>
 </template>

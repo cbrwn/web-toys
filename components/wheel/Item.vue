@@ -1,8 +1,8 @@
 <template>
-	<div class="flex flex-row min-w-full bg-slate-200 hover:bg-slate-300 p-2 rounded-lg">
+	<div class="flex flex-row min-w-full transition-colors bg-slate-200 dark:bg-slate-600 hover:bg-slate-300 dark:hover:bg-slate-500 p-2 rounded-lg">
 		<div class="flex items-center justify-center flex-grow">
 			<span v-if="!editMode" v-on:dblclick="editClicked">{{ itemName }}</span>
-			<input v-if="editMode" ref="editBox" :value="itemName" v-on:keypress="onEditPress" size="10">
+			<input v-if="editMode" ref="editBox" class="dark:bg-slate-300 dark:text-black" :value="itemName" v-on:keypress="onEditPress" size="10">
 		</div>
 		<div class="select-none text-2xl flex gap-2">
 			<span @click="deleteClicked" class="cursor-pointer" v-if="showDelete">❌</span>
