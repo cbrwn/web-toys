@@ -31,19 +31,7 @@ export default {
   layout: 'default',
   created() { document.title = 'the wheel.'; },
   data() {
-    let initItems = ['cam', 'matt', 'darcy 1', 'darcy 2',
-      'jeff',
-      'bob',
-      'jason',
-      'aaron',
-      'ben',
-      'greg',
-      'henry',
-      'jake',
-      'larry',
-      'tom',
-      'fred',
-    ];
+    let initItems = ['item 1', 'item 2', 'item 3', 'item 4'];
     let initBench = [];
     if (process.client) {
       if (localStorage.wheelItems)
@@ -52,10 +40,10 @@ export default {
         initBench = JSON.parse(localStorage.benchItems);
     }
 
-    if(this.$route.query.items) {
+    if (this.$route.query.items) {
       let itemsString = this.$route.query.items;
 
-      if(itemsString.includes(',')) {
+      if (itemsString.includes(',')) {
         let decodedItems = this.$b64ToItems(itemsString);
         initItems = decodedItems.items;
         initBench = decodedItems.bench;
