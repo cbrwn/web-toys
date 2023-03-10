@@ -83,9 +83,7 @@ export default {
                 const ctx = canvas.getContext("2d");
                 const radius = canvas.width / 2;
                 const sliceAngle = (Math.PI * 2) / (this.items.length);
-
-
-                ctx.font = `24px Itim`
+                const defaultFontSize = 28;
 
                 for (let i = 0; i < this.items.length; ++i) {
                     let startAngle = sliceAngle * i - (Math.PI / 2);
@@ -100,6 +98,19 @@ export default {
                     ctx.fill()
 
                     ctx.save();
+                    ctx.font = `${defaultFontSize}px Itim`;
+
+                    // size font to fit :)
+                    let thisFontSize = defaultFontSize;
+                    let iterations = 0;
+                    while(ctx.measureText(this.items[i]).width > 120)
+                    {
+                        thisFontSize -= 1;
+                        ctx.font = `${thisFontSize}px Itim`;
+
+                        if(iterations > 100) break;
+                    }
+
                     ctx.fillStyle = colours.fg;
                     const textOffset = radius - 20;
                     ctx.translate(radius + Math.cos(startAngle + sliceAngle / 2) * textOffset, radius + Math.sin(startAngle + sliceAngle / 2) * textOffset);
