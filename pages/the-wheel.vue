@@ -59,6 +59,8 @@ export default {
         let decodedItems = this.$b64ToItems(itemsString);
         initItems = decodedItems.items;
         initBench = decodedItems.bench;
+
+        this.saveItems(initItems, initBench);
       }
     }
 
@@ -94,9 +96,12 @@ export default {
       this.items = itemObj.items;
       this.benchItems = itemObj.bench;
 
-      localStorage.wheelItems = JSON.stringify(this.items);
-      localStorage.benchItems = JSON.stringify(this.benchItems);
+      this.saveItems(this.items, this.benchItems);
     },
+    saveItems(w, b) {
+      localStorage.wheelItems = JSON.stringify(w);
+      localStorage.benchItems = JSON.stringify(b);
+    }
   }
 }
 </script>
