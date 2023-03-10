@@ -114,7 +114,7 @@ export default {
                     const textOffset = radius - 20;
                     ctx.translate(radius + Math.cos(startAngle + sliceAngle / 2) * textOffset, radius + Math.sin(startAngle + sliceAngle / 2) * textOffset);
                     ctx.rotate(startAngle + sliceAngle / 2 + Math.PI)
-                    ctx.fillText(this.items[i], 0, 5);
+                    ctx.fillText(this.items[i], 0, thisFontSize/4);
 
                     ctx.restore()
                 }
