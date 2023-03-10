@@ -52,6 +52,16 @@ export default {
         initBench = JSON.parse(localStorage.benchItems);
     }
 
+    if(this.$route.query.items) {
+      let itemsString = this.$route.query.items;
+
+      if(itemsString.includes(',')) {
+        let decodedItems = this.$b64ToItems(itemsString);
+        initItems = decodedItems.items;
+        initBench = decodedItems.bench;
+      }
+    }
+
     return {
       items: initItems,
       benchItems: initBench,
@@ -86,7 +96,7 @@ export default {
 
       localStorage.wheelItems = JSON.stringify(this.items);
       localStorage.benchItems = JSON.stringify(this.benchItems);
-    }
+    },
   }
 }
 </script>

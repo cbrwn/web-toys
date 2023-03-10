@@ -1,6 +1,17 @@
 <template>
 	<div class="w-96">
-		<h1 class="text-4xl">items</h1>
+		<div class="flex justify-center items-center">
+		<h1 class="text-4xl flex-grow">items</h1>
+		<span class="flex-shrink text-2xl select-none">
+			<span v-if="showCopySuccess">
+				✅
+			</span>
+			<span class="cursor-pointer" v-on:click="copyItemsClicked" v-else>📋</span>
+			<span class="text-lg absolute transition-transform" :style="`transform: translate(-75%, ${this.showCopySuccess ? '-100%' : '0%'}) scale(${this.showCopySuccess ? '1.0' : '0.0'});`">
+				copied url!
+			</span>
+		</span>
+		</div>
 		<div class="flex flex-row gap-2 h-96 overflow-auto">
 			<div class="flex flex-col flex-grow items-center justify-start w-1/2 gap-2">
 				<h2 class="text-2xl">active <span class="cursor-pointer" v-on:click="addClicked">➕</span></h2>
@@ -21,6 +32,11 @@
 <script>
 export default {
 	props: ['items', 'bench', 'enabled'],
+	data() {
+		return {
+			showCopySuccess: false
+		};
+	},
 	methods: {
 		moveToBench(item) {
 			if(!this.enabled) return;
@@ -58,6 +74,15 @@ export default {
 			let newBench = [...this.bench];
 			newBench.splice(index, 1);
 			this.$emit("itemsChanged", { items: this.items, bench: newBench });
+		},
+
+		copyItemsClicked() {
+			let currentLocation = location.protocol + '//' + location.host + location.pathname;
+			let params = `?items=${this.$itemsToB64(this.items, this.bench)}`;
+			navigator.clipboard.writeText(currentLocation + params);
+
+			this.showCopySuccess = true;
+			setTimeout(() => this.showCopySuccess=false, 3000);
 		}
 	}
 }
