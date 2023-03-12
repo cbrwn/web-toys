@@ -1,42 +1,18 @@
-# Nuxt 3 Minimal Starter
+# camerons internet toys
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+im stealing ideas from neal.fun and other places to learn frontend web stuff (nuxt/vue)
 
-## Setup
+## life checklist
 
-Make sure to install the dependencies:
+stolen from neal.fun, seemed like a simple little thing to clone to learn the basics :)
 
-```bash
-# yarn
-yarn install
+## the wheel.
 
-# npm
-npm install
+picks a random item from a list but shows it as a wheel of fortune
 
-# pnpm
-pnpm install
-```
+cool features:
 
-## Development Server
+* a "bench" where you can temporarily put items that you don't want it to choose without having to delete them :D
+* can copy a link to your configuration to easily share your wheels
 
-Start the development server on http://localhost:3000
-
-```bash
-npm run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-npm run build
-```
-
-Locally preview production build:
-
-```bash
-npm run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+made this to try a little more advanced stuff, uses a canvas for the wheel and 
