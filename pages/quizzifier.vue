@@ -4,18 +4,27 @@
 			<Header title="quizzifier">
 			</Header>
 			<ContentContainer>
-				<div class="flex items-center flex-col gap-5 w-full" v-if="quizData != null">
-					<div class="w-fit">
-						<img :src="currentAnswer.imagePath" class="h-96" />
+				<div class="flex items-center flex-col gap-5 w-full overflow-clip" v-if="quizData != null">
+					<div class="flex items-center flex-col w-full">
+						<div :style="currentImageStyle">
+							<img :src="currentAnswer.imagePath" class="h-96" />
+						</div>
+						<div :style="lastImageStyle">
+							<img :src="lastImage" class="h-96" :style="guessAnimationStyle" />
+						</div>
 					</div>
-					<div class="text-4xl p-1" v-if="guessState != 'idle'"
+					<div class="text-4xl mt-2 mb-3" v-if="guessState != 'idle'"
 						:class="{ ['text-green-500']: guessState == 'correct', ['text-red-600']: guessState == 'incorrect' }">
-						<span class="inline-block" :class="{['animate-spin']: guessState=='correct', ['animate-ping']: guessState=='incorrect'}">{{ answerEmoji }}</span>
+						<span class="inline-block"
+							:class="{ ['animate-spin']: guessState == 'correct', ['animate-ping']: guessState == 'incorrect' }">{{
+								answerEmoji }}</span>
 						{{ currentAnswer.correctAnswers[0] }}
-						<span class="inline-block" :class="{['animate-spin']: guessState=='correct', ['animate-ping']: guessState=='incorrect'}">{{ answerEmoji }}</span>
+						<span class="inline-block"
+							:class="{ ['animate-spin']: guessState == 'correct', ['animate-ping']: guessState == 'incorrect' }">{{
+								answerEmoji }}</span>
 					</div>
-					<input v-if="guessState == 'idle'" class="text-4xl dark:bg-slate-800 text-center w-1/2" placeholder="type your guess"
-						v-on:keypress="guessPress" type="text" ref="guessInput" />
+					<input v-if="guessState == 'idle'" class="text-4xl dark:bg-slate-800 text-center w-1/2 m-2"
+						placeholder="type your guess" v-on:keypress="guessPress" type="text" ref="guessInput" />
 				</div>
 				<div v-else>
 					loading quiz...
@@ -36,6 +45,7 @@ export default {
 				imagePath: null,
 				correctAnswers: []
 			},
+			lastImage: '',
 			guessState: 'idle'
 		};
 	},
@@ -45,6 +55,47 @@ export default {
 	computed: {
 		answerEmoji() {
 			return this.guessState == 'correct' ? '✨' : '❌';
+		},
+		lastImageTranslate() {
+			return this.guessState == 'idle' ? '-100%' : '0%';
+		},
+		currentImageTranslate() {
+			return this.guessState == 'idle' ? '0%' : '100%';
+		},
+		imageTransition() {
+			let transitionDuration = '0s';
+
+			if (this.guessState == 'idle')
+				transitionDuration = '0.5s';
+
+			return `transition-duration: ${transitionDuration};`;
+		},
+
+		currentImageStyle() {
+			return {
+				transform: `translate(${this.guessState == 'idle' ? '0%' : '500%'}, 0%)`,
+
+				'transition-duration': `${this.guessState == 'idle' ? 1 : 0}s`,
+			};
+		},
+
+		lastImageStyle() {
+			return {
+				position: 'absolute',
+				transform: `translate(${this.guessState == 'idle' ? '-500%' : '0%'}, 0%)`,
+
+				'transition-duration': `${this.guessState == 'idle' ? 1 : 0}s`,
+			};
+		},
+
+		guessAnimationStyle() {
+			let animation = 'none';
+			if (this.guessState == 'correct')
+				animation = 'squish 0.4s ease-in-out both';
+			if (this.guessState == 'incorrect')
+				animation = 'shake 0.3s ease-in-out both';
+
+			return { animation: animation }
 		}
 	},
 	methods: {
@@ -66,7 +117,7 @@ export default {
 
 			this.currentAnswer.imagePath = newAnswer.images[Math.floor(Math.random() * newAnswer.images.length)];
 			this.currentAnswer.correctAnswers = newAnswer.answers;
-		
+
 			setTimeout(() => {
 				this.$refs.guessInput.focus();
 			}, 10);
@@ -89,6 +140,8 @@ export default {
 				let isCorrect = this.isCorrectAnswer(guess);
 				this.guessState = isCorrect ? 'correct' : 'incorrect';
 				event.target.value = '';
+
+				this.lastImage = this.currentAnswer.imagePath;
 
 				setTimeout(() => {
 					this.guessState = 'idle';
@@ -121,3 +174,73 @@ export default {
 	}
 }
 </script>
+
+<style>
+@keyframes squish {
+	0% {
+		transform: scale(1);
+	}
+
+	10% {
+		transform: scale(0.9, 1.1);
+	}
+
+	30% {
+		transform: scale(1.075, 0.925);
+	}
+
+	60% {
+		transform: scale(0.975, 1.025);
+	}
+
+	100% {
+		transform: scale(1);
+	}
+}
+
+
+@keyframes shake {
+	0% {
+		transform: translate(1px, 1px) rotate(0deg);
+	}
+
+	10% {
+		transform: translate(-1px, -2px) rotate(-1deg);
+	}
+
+	20% {
+		transform: translate(-3px, 0px) rotate(1deg);
+	}
+
+	30% {
+		transform: translate(3px, 2px) rotate(0deg);
+	}
+
+	40% {
+		transform: translate(1px, -1px) rotate(1deg);
+	}
+
+	50% {
+		transform: translate(-1px, 2px) rotate(-1deg);
+	}
+
+	60% {
+		transform: translate(-3px, 1px) rotate(0deg);
+	}
+
+	70% {
+		transform: translate(3px, 1px) rotate(-1deg);
+	}
+
+	80% {
+		transform: translate(-1px, -1px) rotate(1deg);
+	}
+
+	90% {
+		transform: translate(1px, 2px) rotate(0deg);
+	}
+
+	100% {
+		transform: translate(0px, 0px) rotate(0deg);
+	}
+}</style>
