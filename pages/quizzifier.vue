@@ -23,8 +23,8 @@
 							:class="{ ['animate-spin']: guessState == 'correct', ['animate-ping']: guessState == 'incorrect' }">{{
 								answerEmoji }}</span>
 					</div>
-					<input v-if="guessState == 'idle'" class="text-2xl sm:text-4xl dark:bg-slate-800 text-center w-1/2 m-2"
-						placeholder="type your guess" v-on:keypress="guessPress" type="text" ref="guessInput" />
+					<input :style="`${guessState != 'idle' ? 'display:none' : ''}`" class="text-2xl sm:text-4xl dark:bg-slate-800 text-center w-1/2 m-2"
+						placeholder="type your guess" v-on:keypress="guessPress" type="text" ref="guessInput" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" />
 				</div>
 				<div v-else>
 					loading quiz...
