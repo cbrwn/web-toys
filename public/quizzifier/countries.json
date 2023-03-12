@@ -701,7 +701,7 @@
   },
   "TR": {
     "images": [ "flags/tr.png" ],
-    "answers": [ "Turkey" ]
+    "answers": [ "Türkiye", "Turkiye", "Turkey" ]
   },
   "TT": {
     "images": [ "flags/tt.png" ],
