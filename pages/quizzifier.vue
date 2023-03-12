@@ -7,10 +7,10 @@
 				<div class="flex items-center flex-col gap-5 w-full overflow-clip" v-if="quizData != null">
 					<div class="flex items-center flex-col w-full">
 						<div :style="currentImageStyle">
-							<img :src="currentAnswer.imagePath" class="h-96" />
+							<img :src="currentAnswer.imagePath" class="h-48 sm:h-96" />
 						</div>
 						<div :style="lastImageStyle">
-							<img :src="lastImage" class="h-96" :style="guessAnimationStyle" />
+							<img :src="lastImage" class="h-48 sm:h-96" :style="guessAnimationStyle" />
 						</div>
 					</div>
 					<div class="text-4xl mt-2 mb-3" v-if="guessState != 'idle'"
@@ -23,7 +23,7 @@
 							:class="{ ['animate-spin']: guessState == 'correct', ['animate-ping']: guessState == 'incorrect' }">{{
 								answerEmoji }}</span>
 					</div>
-					<input v-if="guessState == 'idle'" class="text-4xl dark:bg-slate-800 text-center w-1/2 m-2"
+					<input v-if="guessState == 'idle'" class="text-2xl sm:text-4xl dark:bg-slate-800 text-center w-1/2 m-2"
 						placeholder="type your guess" v-on:keypress="guessPress" type="text" ref="guessInput" />
 				</div>
 				<div v-else>
