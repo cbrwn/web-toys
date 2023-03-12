@@ -50,6 +50,9 @@ export default {
 
         this.saveItems(initItems, initBench);
       }
+
+      // clear ugly item query
+      window.history.replaceState(null, document.title, location.pathname);
     }
 
     return {
