@@ -21,7 +21,7 @@ export default {
 					url: '/the-wheel'
 				},
 				{
-					name: 'quizzifier',
+					name: 'flag quiz',
 					url: '/quizzifier'
 				},
 			]

@@ -1,7 +1,13 @@
 <template>
 	<div class="container mx-auto flex justify-center">
 		<div class="flex flex-col w-full justify-center py-8 gap-y-3">
-			<Header title="quizzifier">
+			<Header title="flag quiz">
+				<p>
+					test ur (country) flag knowledge
+				</p>
+				<p>
+					like 90% written by <a href="https://codeium.com/" target="_blank" class="underline">codeium</a> 🤯
+				</p>
 			</Header>
 			<ContentContainer>
 				<div class="flex items-center flex-col gap-5 w-full overflow-clip" v-if="quizData != null">
@@ -23,8 +29,10 @@
 							:class="{ ['animate-spin']: guessState == 'correct', ['animate-ping']: guessState == 'incorrect' }">{{
 								answerEmoji }}</span>
 					</div>
-					<input :style="`${guessState != 'idle' ? 'display:none' : ''}`" class="text-2xl sm:text-4xl dark:bg-slate-800 text-center w-1/2 m-2"
-						placeholder="type your guess" v-on:keypress="guessPress" type="text" ref="guessInput" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" />
+					<input :style="`${guessState != 'idle' ? 'display:none' : ''}`"
+						class="text-2xl sm:text-4xl dark:bg-slate-800 text-center w-1/2 m-2" placeholder="type your guess"
+						v-on:keypress="guessPress" type="text" ref="guessInput" spellcheck="false" autocapitalize="off"
+						autocomplete="off" autocorrect="off" />
 				</div>
 				<div v-else>
 					loading quiz...
