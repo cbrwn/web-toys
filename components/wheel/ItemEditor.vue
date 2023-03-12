@@ -24,7 +24,7 @@
 			</div>
 			<div class="flex flex-col flex-grow items-center justify-start w-1/2 gap-2" v-if="bench.length > 0">
 				<h2 class="text-2xl">bench</h2>
-				<div class="overflow-auto w-full flex flex-gol gap-2">
+				<div class="overflow-auto w-full flex flex-col gap-2">
 					<WheelItem v-for="(item, index) in bench" @on-move="moveToActive(item)"
 						@item-edited="(i) => onBenchEdited(index, i)" @on-delete="deleteFromBench(index)" :itemName="item"
 						moveIcon="⬅️" showDelete="true" :enabled="enabled" />
