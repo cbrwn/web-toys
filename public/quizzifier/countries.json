@@ -1,786 +1,786 @@
 {
   "AD": {
-    "images": [ "flags/ad.png" ],
+    "images": [ "/quizzifier/flags/ad.png" ],
     "answers": [ "Andorra" ]
   },
   "AE": {
-    "images": [ "flags/ae.png" ],
+    "images": [ "/quizzifier/flags/ae.png" ],
     "answers": [ "United Arab Emirates", "UAE" ]
   },
   "AF": {
-    "images": [ "flags/af.png" ],
+    "images": [ "/quizzifier/flags/af.png" ],
     "answers": [ "Afghanistan" ]
   },
   "AG": {
-    "images": [ "flags/ag.png" ],
+    "images": [ "/quizzifier/flags/ag.png" ],
     "answers": [ "Antigua and Barbuda" ]
   },
   "AL": {
-    "images": [ "flags/al.png" ],
+    "images": [ "/quizzifier/flags/al.png" ],
     "answers": [ "Albania" ]
   },
   "AM": {
-    "images": [ "flags/am.png" ],
+    "images": [ "/quizzifier/flags/am.png" ],
     "answers": [ "Armenia" ]
   },
   "AO": {
-    "images": [ "flags/ao.png" ],
+    "images": [ "/quizzifier/flags/ao.png" ],
     "answers": [ "Angola" ]
   },
   "AR": {
-    "images": [ "flags/ar.png" ],
+    "images": [ "/quizzifier/flags/ar.png" ],
     "answers": [ "Argentina" ]
   },
   "AT": {
-    "images": [ "flags/at.png" ],
+    "images": [ "/quizzifier/flags/at.png" ],
     "answers": [ "Austria" ]
   },
   "AU": {
-    "images": [ "flags/au.png" ],
+    "images": [ "/quizzifier/flags/au.png" ],
     "answers": [ "Australia" ]
   },
   "AZ": {
-    "images": [ "flags/az.png" ],
+    "images": [ "/quizzifier/flags/az.png" ],
     "answers": [ "Azerbaijan" ]
   },
   "BA": {
-    "images": [ "flags/ba.png" ],
+    "images": [ "/quizzifier/flags/ba.png" ],
     "answers": [ "Bosnia and Herzegovina" ]
   },
   "BB": {
-    "images": [ "flags/bb.png" ],
+    "images": [ "/quizzifier/flags/bb.png" ],
     "answers": [ "Barbados" ]
   },
   "BD": {
-    "images": [ "flags/bd.png" ],
+    "images": [ "/quizzifier/flags/bd.png" ],
     "answers": [ "Bangladesh" ]
   },
   "BE": {
-    "images": [ "flags/be.png" ],
+    "images": [ "/quizzifier/flags/be.png" ],
     "answers": [ "Belgium" ]
   },
   "BF": {
-    "images": [ "flags/bf.png" ],
+    "images": [ "/quizzifier/flags/bf.png" ],
     "answers": [ "Burkina Faso" ]
   },
   "BG": {
-    "images": [ "flags/bg.png" ],
+    "images": [ "/quizzifier/flags/bg.png" ],
     "answers": [ "Bulgaria" ]
   },
   "BH": {
-    "images": [ "flags/bh.png" ],
+    "images": [ "/quizzifier/flags/bh.png" ],
     "answers": [ "Bahrain" ]
   },
   "BI": {
-    "images": [ "flags/bi.png" ],
+    "images": [ "/quizzifier/flags/bi.png" ],
     "answers": [ "Burundi" ]
   },
   "BJ": {
-    "images": [ "flags/bj.png" ],
+    "images": [ "/quizzifier/flags/bj.png" ],
     "answers": [ "Benin" ]
   },
   "BN": {
-    "images": [ "flags/bn.png" ],
+    "images": [ "/quizzifier/flags/bn.png" ],
     "answers": [ "Brunei" ]
   },
   "BO": {
-    "images": [ "flags/bo.png" ],
+    "images": [ "/quizzifier/flags/bo.png" ],
     "answers": [ "Bolivia" ]
   },
   "BR": {
-    "images": [ "flags/br.png" ],
+    "images": [ "/quizzifier/flags/br.png" ],
     "answers": [ "Brazil" ]
   },
   "BS": {
-    "images": [ "flags/bs.png" ],
+    "images": [ "/quizzifier/flags/bs.png" ],
     "answers": [ "Bahamas" ]
   },
   "BT": {
-    "images": [ "flags/bt.png" ],
+    "images": [ "/quizzifier/flags/bt.png" ],
     "answers": [ "Bhutan" ]
   },
   "BW": {
-    "images": [ "flags/bw.png" ],
+    "images": [ "/quizzifier/flags/bw.png" ],
     "answers": [ "Botswana" ]
   },
   "BY": {
-    "images": [ "flags/by.png" ],
+    "images": [ "/quizzifier/flags/by.png" ],
     "answers": [ "Belarus" ]
   },
   "BZ": {
-    "images": [ "flags/bz.png" ],
+    "images": [ "/quizzifier/flags/bz.png" ],
     "answers": [ "Belize" ]
   },
   "CA": {
-    "images": [ "flags/ca.png" ],
+    "images": [ "/quizzifier/flags/ca.png" ],
     "answers": [ "Canada" ]
   },
   "CD": {
-    "images": [ "flags/cd.png" ],
+    "images": [ "/quizzifier/flags/cd.png" ],
     "answers": [ "The Democratic Republic of the Congo", "DRC", "Democratic Republic of Congo", "Democratic Republic of the Congo" ]
   },
   "CF": {
-    "images": [ "flags/cf.png" ],
+    "images": [ "/quizzifier/flags/cf.png" ],
     "answers": [ "Central African Republic", "CAR" ]
   },
   "CG": {
-    "images": [ "flags/cg.png" ],
+    "images": [ "/quizzifier/flags/cg.png" ],
     "answers": [ "Republic of the Congo", "Congo", "The Congo" ]
   },
   "CH": {
-    "images": [ "flags/ch.png" ],
+    "images": [ "/quizzifier/flags/ch.png" ],
     "answers": [ "Switzerland" ]
   },
   "CI": {
-    "images": [ "flags/ci.png" ],
+    "images": [ "/quizzifier/flags/ci.png" ],
     "answers": [ "C\u00f4te d'Ivoire", "Cote d'Ivoire", "Cote dIvoire", "Ivory Coast" ]
   },
   "CL": {
-    "images": [ "flags/cl.png" ],
+    "images": [ "/quizzifier/flags/cl.png" ],
     "answers": [ "Chile" ]
   },
   "CM": {
-    "images": [ "flags/cm.png" ],
+    "images": [ "/quizzifier/flags/cm.png" ],
     "answers": [ "Cameroon" ]
   },
   "CN": {
-    "images": [ "flags/cn.png" ],
+    "images": [ "/quizzifier/flags/cn.png" ],
     "answers": [ "China" ]
   },
   "CO": {
-    "images": [ "flags/co.png" ],
+    "images": [ "/quizzifier/flags/co.png" ],
     "answers": [ "Colombia" ]
   },
   "CR": {
-    "images": [ "flags/cr.png" ],
+    "images": [ "/quizzifier/flags/cr.png" ],
     "answers": [ "Costa Rica" ]
   },
   "CU": {
-    "images": [ "flags/cu.png" ],
+    "images": [ "/quizzifier/flags/cu.png" ],
     "answers": [ "Cuba" ]
   },
   "CV": {
-    "images": [ "flags/cv.png" ],
+    "images": [ "/quizzifier/flags/cv.png" ],
     "answers": [ "Cape Verde", "Cabo Verde" ]
   },
   "CY": {
-    "images": [ "flags/cy.png" ],
+    "images": [ "/quizzifier/flags/cy.png" ],
     "answers": [ "Cyprus" ]
   },
   "CZ": {
-    "images": [ "flags/cz.png" ],
+    "images": [ "/quizzifier/flags/cz.png" ],
     "answers": [ "Czechia", "Czech Republic" ]
   },
   "DE": {
-    "images": [ "flags/de.png" ],
+    "images": [ "/quizzifier/flags/de.png" ],
     "answers": [ "Germany" ]
   },
   "DJ": {
-    "images": [ "flags/dj.png" ],
+    "images": [ "/quizzifier/flags/dj.png" ],
     "answers": [ "Djibouti" ]
   },
   "DK": {
-    "images": [ "flags/dk.png" ],
+    "images": [ "/quizzifier/flags/dk.png" ],
     "answers": [ "Denmark" ]
   },
   "DM": {
-    "images": [ "flags/dm.png" ],
+    "images": [ "/quizzifier/flags/dm.png" ],
     "answers": [ "Dominica" ]
   },
   "DO": {
-    "images": [ "flags/do.png" ],
+    "images": [ "/quizzifier/flags/do.png" ],
     "answers": [ "Dominican Republic" ]
   },
   "DZ": {
-    "images": [ "flags/dz.png" ],
+    "images": [ "/quizzifier/flags/dz.png" ],
     "answers": [ "Algeria" ]
   },
   "EC": {
-    "images": [ "flags/ec.png" ],
+    "images": [ "/quizzifier/flags/ec.png" ],
     "answers": [ "Ecuador" ]
   },
   "EE": {
-    "images": [ "flags/ee.png" ],
+    "images": [ "/quizzifier/flags/ee.png" ],
     "answers": [ "Estonia" ]
   },
   "EG": {
-    "images": [ "flags/eg.png" ],
+    "images": [ "/quizzifier/flags/eg.png" ],
     "answers": [ "Egypt" ]
   },
   "ER": {
-    "images": [ "flags/er.png" ],
+    "images": [ "/quizzifier/flags/er.png" ],
     "answers": [ "Eritrea" ]
   },
   "ES": {
-    "images": [ "flags/es.png" ],
+    "images": [ "/quizzifier/flags/es.png" ],
     "answers": [ "Spain" ]
   },
   "ET": {
-    "images": [ "flags/et.png" ],
+    "images": [ "/quizzifier/flags/et.png" ],
     "answers": [ "Ethiopia" ]
   },
   "FI": {
-    "images": [ "flags/fi.png" ],
+    "images": [ "/quizzifier/flags/fi.png" ],
     "answers": [ "Finland" ]
   },
   "FJ": {
-    "images": [ "flags/fj.png" ],
+    "images": [ "/quizzifier/flags/fj.png" ],
     "answers": [ "Fiji" ]
   },
   "FM": {
-    "images": [ "flags/fm.png" ],
+    "images": [ "/quizzifier/flags/fm.png" ],
     "answers": [ "Micronesia" ]
   },
   "FR": {
-    "images": [ "flags/fr.png" ],
+    "images": [ "/quizzifier/flags/fr.png" ],
     "answers": [ "France" ]
   },
   "GA": {
-    "images": [ "flags/ga.png" ],
+    "images": [ "/quizzifier/flags/ga.png" ],
     "answers": [ "Gabon" ]
   },
   "GB": {
-    "images": [ "flags/gb.png" ],
+    "images": [ "/quizzifier/flags/gb.png" ],
     "answers": [ "United Kingdom", "UK" ]
   },
   "GD": {
-    "images": [ "flags/gd.png" ],
+    "images": [ "/quizzifier/flags/gd.png" ],
     "answers": [ "Grenada" ]
   },
   "GE": {
-    "images": [ "flags/ge.png" ],
+    "images": [ "/quizzifier/flags/ge.png" ],
     "answers": [ "Georgia" ]
   },
   "GH": {
-    "images": [ "flags/gh.png" ],
+    "images": [ "/quizzifier/flags/gh.png" ],
     "answers": [ "Ghana" ]
   },
   "GM": {
-    "images": [ "flags/gm.png" ],
+    "images": [ "/quizzifier/flags/gm.png" ],
     "answers": [ "Gambia" ]
   },
   "GN": {
-    "images": [ "flags/gn.png" ],
+    "images": [ "/quizzifier/flags/gn.png" ],
     "answers": [ "Guinea" ]
   },
   "GQ": {
-    "images": [ "flags/gq.png" ],
+    "images": [ "/quizzifier/flags/gq.png" ],
     "answers": [ "Equatorial Guinea" ]
   },
   "GR": {
-    "images": [ "flags/gr.png" ],
+    "images": [ "/quizzifier/flags/gr.png" ],
     "answers": [ "Greece" ]
   },
   "GT": {
-    "images": [ "flags/gt.png" ],
+    "images": [ "/quizzifier/flags/gt.png" ],
     "answers": [ "Guatemala" ]
   },
   "GW": {
-    "images": [ "flags/gw.png" ],
+    "images": [ "/quizzifier/flags/gw.png" ],
     "answers": [ "Guinea-Bissau", "Guinea Bissau" ]
   },
   "GY": {
-    "images": [ "flags/gy.png" ],
+    "images": [ "/quizzifier/flags/gy.png" ],
     "answers": [ "Guyana" ]
   },
   "HK": {
-    "images": [ "flags/hk.png" ],
+    "images": [ "/quizzifier/flags/hk.png" ],
     "answers": [ "Hong Kong" ]
   },
   "HN": {
-    "images": [ "flags/hn.png" ],
+    "images": [ "/quizzifier/flags/hn.png" ],
     "answers": [ "Honduras" ]
   },
   "HR": {
-    "images": [ "flags/hr.png" ],
+    "images": [ "/quizzifier/flags/hr.png" ],
     "answers": [ "Croatia" ]
   },
   "HT": {
-    "images": [ "flags/ht.png" ],
+    "images": [ "/quizzifier/flags/ht.png" ],
     "answers": [ "Haiti" ]
   },
   "HU": {
-    "images": [ "flags/hu.png" ],
+    "images": [ "/quizzifier/flags/hu.png" ],
     "answers": [ "Hungary" ]
   },
   "ID": {
-    "images": [ "flags/id.png" ],
+    "images": [ "/quizzifier/flags/id.png" ],
     "answers": [ "Indonesia" ]
   },
   "IE": {
-    "images": [ "flags/ie.png" ],
+    "images": [ "/quizzifier/flags/ie.png" ],
     "answers": [ "Ireland" ]
   },
   "IL": {
-    "images": [ "flags/il.png" ],
+    "images": [ "/quizzifier/flags/il.png" ],
     "answers": [ "Israel" ]
   },
   "IN": {
-    "images": [ "flags/in.png" ],
+    "images": [ "/quizzifier/flags/in.png" ],
     "answers": [ "India" ]
   },
   "IQ": {
-    "images": [ "flags/iq.png" ],
+    "images": [ "/quizzifier/flags/iq.png" ],
     "answers": [ "Iraq" ]
   },
   "IR": {
-    "images": [ "flags/ir.png" ],
+    "images": [ "/quizzifier/flags/ir.png" ],
     "answers": [ "Iran" ]
   },
   "IS": {
-    "images": [ "flags/is.png" ],
+    "images": [ "/quizzifier/flags/is.png" ],
     "answers": [ "Iceland" ]
   },
   "IT": {
-    "images": [ "flags/it.png" ],
+    "images": [ "/quizzifier/flags/it.png" ],
     "answers": [ "Italy" ]
   },
   "JM": {
-    "images": [ "flags/jm.png" ],
+    "images": [ "/quizzifier/flags/jm.png" ],
     "answers": [ "Jamaica" ]
   },
   "JO": {
-    "images": [ "flags/jo.png" ],
+    "images": [ "/quizzifier/flags/jo.png" ],
     "answers": [ "Jordan" ]
   },
   "JP": {
-    "images": [ "flags/jp.png" ],
+    "images": [ "/quizzifier/flags/jp.png" ],
     "answers": [ "Japan" ]
   },
   "KE": {
-    "images": [ "flags/ke.png" ],
+    "images": [ "/quizzifier/flags/ke.png" ],
     "answers": [ "Kenya" ]
   },
   "KG": {
-    "images": [ "flags/kg.png" ],
+    "images": [ "/quizzifier/flags/kg.png" ],
     "answers": [ "Kyrgyzstan" ]
   },
   "KH": {
-    "images": [ "flags/kh.png" ],
+    "images": [ "/quizzifier/flags/kh.png" ],
     "answers": [ "Cambodia" ]
   },
   "KI": {
-    "images": [ "flags/ki.png" ],
+    "images": [ "/quizzifier/flags/ki.png" ],
     "answers": [ "Kiribati" ]
   },
   "KM": {
-    "images": [ "flags/km.png" ],
+    "images": [ "/quizzifier/flags/km.png" ],
     "answers": [ "Comoros" ]
   },
   "KN": {
-    "images": [ "flags/kn.png" ],
+    "images": [ "/quizzifier/flags/kn.png" ],
     "answers": [ "Saint Kitts and Nevis" ]
   },
   "KP": {
-    "images": [ "flags/kp.png" ],
+    "images": [ "/quizzifier/flags/kp.png" ],
     "answers": [ "North Korea", "DPRK" ]
   },
   "KR": {
-    "images": [ "flags/kr.png" ],
+    "images": [ "/quizzifier/flags/kr.png" ],
     "answers": [ "South Korea" ]
   },
   "KW": {
-    "images": [ "flags/kw.png" ],
+    "images": [ "/quizzifier/flags/kw.png" ],
     "answers": [ "Kuwait" ]
   },
   "KZ": {
-    "images": [ "flags/kz.png" ],
+    "images": [ "/quizzifier/flags/kz.png" ],
     "answers": [ "Kazakhstan" ]
   },
   "LA": {
-    "images": [ "flags/la.png" ],
+    "images": [ "/quizzifier/flags/la.png" ],
     "answers": [ "Laos" ]
   },
   "LB": {
-    "images": [ "flags/lb.png" ],
+    "images": [ "/quizzifier/flags/lb.png" ],
     "answers": [ "Lebanon" ]
   },
   "LC": {
-    "images": [ "flags/lc.png" ],
+    "images": [ "/quizzifier/flags/lc.png" ],
     "answers": [ "Saint Lucia" ]
   },
   "LI": {
-    "images": [ "flags/li.png" ],
+    "images": [ "/quizzifier/flags/li.png" ],
     "answers": [ "Liechtenstein" ]
   },
   "LK": {
-    "images": [ "flags/lk.png" ],
+    "images": [ "/quizzifier/flags/lk.png" ],
     "answers": [ "Sri Lanka" ]
   },
   "LR": {
-    "images": [ "flags/lr.png" ],
+    "images": [ "/quizzifier/flags/lr.png" ],
     "answers": [ "Liberia" ]
   },
   "LS": {
-    "images": [ "flags/ls.png" ],
+    "images": [ "/quizzifier/flags/ls.png" ],
     "answers": [ "Lesotho" ]
   },
   "LT": {
-    "images": [ "flags/lt.png" ],
+    "images": [ "/quizzifier/flags/lt.png" ],
     "answers": [ "Lithuania" ]
   },
   "LU": {
-    "images": [ "flags/lu.png" ],
+    "images": [ "/quizzifier/flags/lu.png" ],
     "answers": [ "Luxembourg" ]
   },
   "LV": {
-    "images": [ "flags/lv.png" ],
+    "images": [ "/quizzifier/flags/lv.png" ],
     "answers": [ "Latvia" ]
   },
   "LY": {
-    "images": [ "flags/ly.png" ],
+    "images": [ "/quizzifier/flags/ly.png" ],
     "answers": [ "Libya" ]
   },
   "MA": {
-    "images": [ "flags/ma.png" ],
+    "images": [ "/quizzifier/flags/ma.png" ],
     "answers": [ "Morocco" ]
   },
   "MC": {
-    "images": [ "flags/mc.png" ],
+    "images": [ "/quizzifier/flags/mc.png" ],
     "answers": [ "Monaco" ]
   },
   "MD": {
-    "images": [ "flags/md.png" ],
+    "images": [ "/quizzifier/flags/md.png" ],
     "answers": [ "Moldova" ]
   },
   "ME": {
-    "images": [ "flags/me.png" ],
+    "images": [ "/quizzifier/flags/me.png" ],
     "answers": [ "Montenegro" ]
   },
   "MG": {
-    "images": [ "flags/mg.png" ],
+    "images": [ "/quizzifier/flags/mg.png" ],
     "answers": [ "Madagascar" ]
   },
   "MH": {
-    "images": [ "flags/mh.png" ],
+    "images": [ "/quizzifier/flags/mh.png" ],
     "answers": [ "Marshall Islands" ]
   },
   "MK": {
-    "images": [ "flags/mk.png" ],
+    "images": [ "/quizzifier/flags/mk.png" ],
     "answers": [ "North Macedonia", "Macedonia" ]
   },
   "ML": {
-    "images": [ "flags/ml.png" ],
+    "images": [ "/quizzifier/flags/ml.png" ],
     "answers": [ "Mali" ]
   },
   "MM": {
-    "images": [ "flags/mm.png" ],
+    "images": [ "/quizzifier/flags/mm.png" ],
     "answers": [ "Myanmar" ]
   },
   "MN": {
-    "images": [ "flags/mn.png" ],
+    "images": [ "/quizzifier/flags/mn.png" ],
     "answers": [ "Mongolia" ]
   },
   "MR": {
-    "images": [ "flags/mr.png" ],
+    "images": [ "/quizzifier/flags/mr.png" ],
     "answers": [ "Mauritania" ]
   },
   "MT": {
-    "images": [ "flags/mt.png" ],
+    "images": [ "/quizzifier/flags/mt.png" ],
     "answers": [ "Malta" ]
   },
   "MU": {
-    "images": [ "flags/mu.png" ],
+    "images": [ "/quizzifier/flags/mu.png" ],
     "answers": [ "Mauritius" ]
   },
   "MV": {
-    "images": [ "flags/mv.png" ],
+    "images": [ "/quizzifier/flags/mv.png" ],
     "answers": [ "Maldives" ]
   },
   "MW": {
-    "images": [ "flags/mw.png" ],
+    "images": [ "/quizzifier/flags/mw.png" ],
     "answers": [ "Malawi" ]
   },
   "MX": {
-    "images": [ "flags/mx.png" ],
+    "images": [ "/quizzifier/flags/mx.png" ],
     "answers": [ "Mexico" ]
   },
   "MY": {
-    "images": [ "flags/my.png" ],
+    "images": [ "/quizzifier/flags/my.png" ],
     "answers": [ "Malaysia" ]
   },
   "MZ": {
-    "images": [ "flags/mz.png" ],
+    "images": [ "/quizzifier/flags/mz.png" ],
     "answers": [ "Mozambique" ]
   },
   "NA": {
-    "images": [ "flags/na.png" ],
+    "images": [ "/quizzifier/flags/na.png" ],
     "answers": [ "Namibia" ]
   },
   "NE": {
-    "images": [ "flags/ne.png" ],
+    "images": [ "/quizzifier/flags/ne.png" ],
     "answers": [ "Niger" ]
   },
   "NG": {
-    "images": [ "flags/ng.png" ],
+    "images": [ "/quizzifier/flags/ng.png" ],
     "answers": [ "Nigeria" ]
   },
   "NI": {
-    "images": [ "flags/ni.png" ],
+    "images": [ "/quizzifier/flags/ni.png" ],
     "answers": [ "Nicaragua" ]
   },
   "NL": {
-    "images": [ "flags/nl.png" ],
+    "images": [ "/quizzifier/flags/nl.png" ],
     "answers": [ "Netherlands", "The Netherlands" ]
   },
   "NO": {
-    "images": [ "flags/no.png" ],
+    "images": [ "/quizzifier/flags/no.png" ],
     "answers": [ "Norway" ]
   },
   "NP": {
-    "images": [ "flags/np.png" ],
+    "images": [ "/quizzifier/flags/np.png" ],
     "answers": [ "Nepal" ]
   },
   "NR": {
-    "images": [ "flags/nr.png" ],
+    "images": [ "/quizzifier/flags/nr.png" ],
     "answers": [ "Nauru" ]
   },
   "NZ": {
-    "images": [ "flags/nz.png" ],
+    "images": [ "/quizzifier/flags/nz.png" ],
     "answers": [ "New Zealand" ]
   },
   "OM": {
-    "images": [ "flags/om.png" ],
+    "images": [ "/quizzifier/flags/om.png" ],
     "answers": [ "Oman" ]
   },
   "PA": {
-    "images": [ "flags/pa.png" ],
+    "images": [ "/quizzifier/flags/pa.png" ],
     "answers": [ "Panama" ]
   },
   "PE": {
-    "images": [ "flags/pe.png" ],
+    "images": [ "/quizzifier/flags/pe.png" ],
     "answers": [ "Peru" ]
   },
   "PG": {
-    "images": [ "flags/pg.png" ],
+    "images": [ "/quizzifier/flags/pg.png" ],
     "answers": [ "Papua New Guinea", "PNG" ]
   },
   "PH": {
-    "images": [ "flags/ph.png" ],
+    "images": [ "/quizzifier/flags/ph.png" ],
     "answers": [ "Philippines" ]
   },
   "PK": {
-    "images": [ "flags/pk.png" ],
+    "images": [ "/quizzifier/flags/pk.png" ],
     "answers": [ "Pakistan" ]
   },
   "PL": {
-    "images": [ "flags/pl.png" ],
+    "images": [ "/quizzifier/flags/pl.png" ],
     "answers": [ "Poland" ]
   },
   "PS": {
-    "images": [ "flags/ps.png" ],
+    "images": [ "/quizzifier/flags/ps.png" ],
     "answers": [ "Palestine" ]
   },
   "PT": {
-    "images": [ "flags/pt.png" ],
+    "images": [ "/quizzifier/flags/pt.png" ],
     "answers": [ "Portugal" ]
   },
   "PW": {
-    "images": [ "flags/pw.png" ],
+    "images": [ "/quizzifier/flags/pw.png" ],
     "answers": [ "Palau" ]
   },
   "PY": {
-    "images": [ "flags/py.png" ],
+    "images": [ "/quizzifier/flags/py.png" ],
     "answers": [ "Paraguay" ]
   },
   "QA": {
-    "images": [ "flags/qa.png" ],
+    "images": [ "/quizzifier/flags/qa.png" ],
     "answers": [ "Qatar" ]
   },
   "RO": {
-    "images": [ "flags/ro.png" ],
+    "images": [ "/quizzifier/flags/ro.png" ],
     "answers": [ "Romania" ]
   },
   "RS": {
-    "images": [ "flags/rs.png" ],
+    "images": [ "/quizzifier/flags/rs.png" ],
     "answers": [ "Serbia" ]
   },
   "RU": {
-    "images": [ "flags/ru.png" ],
+    "images": [ "/quizzifier/flags/ru.png" ],
     "answers": [ "Russia" ]
   },
   "RW": {
-    "images": [ "flags/rw.png" ],
+    "images": [ "/quizzifier/flags/rw.png" ],
     "answers": [ "Rwanda" ]
   },
   "SA": {
-    "images": [ "flags/sa.png" ],
+    "images": [ "/quizzifier/flags/sa.png" ],
     "answers": [ "Saudi Arabia" ]
   },
   "SB": {
-    "images": [ "flags/sb.png" ],
+    "images": [ "/quizzifier/flags/sb.png" ],
     "answers": [ "Solomon Islands" ]
   },
   "SC": {
-    "images": [ "flags/sc.png" ],
+    "images": [ "/quizzifier/flags/sc.png" ],
     "answers": [ "Seychelles" ]
   },
   "SD": {
-    "images": [ "flags/sd.png" ],
+    "images": [ "/quizzifier/flags/sd.png" ],
     "answers": [ "Sudan" ]
   },
   "SE": {
-    "images": [ "flags/se.png" ],
+    "images": [ "/quizzifier/flags/se.png" ],
     "answers": [ "Sweden" ]
   },
   "SG": {
-    "images": [ "flags/sg.png" ],
+    "images": [ "/quizzifier/flags/sg.png" ],
     "answers": [ "Singapore" ]
   },
   "SI": {
-    "images": [ "flags/si.png" ],
+    "images": [ "/quizzifier/flags/si.png" ],
     "answers": [ "Slovenia" ]
   },
   "SK": {
-    "images": [ "flags/sk.png" ],
+    "images": [ "/quizzifier/flags/sk.png" ],
     "answers": [ "Slovakia" ]
   },
   "SL": {
-    "images": [ "flags/sl.png" ],
+    "images": [ "/quizzifier/flags/sl.png" ],
     "answers": [ "Sierra Leone" ]
   },
   "SM": {
-    "images": [ "flags/sm.png" ],
+    "images": [ "/quizzifier/flags/sm.png" ],
     "answers": [ "San Marino" ]
   },
   "SN": {
-    "images": [ "flags/sn.png" ],
+    "images": [ "/quizzifier/flags/sn.png" ],
     "answers": [ "Senegal" ]
   },
   "SO": {
-    "images": [ "flags/so.png" ],
+    "images": [ "/quizzifier/flags/so.png" ],
     "answers": [ "Somalia" ]
   },
   "SR": {
-    "images": [ "flags/sr.png" ],
+    "images": [ "/quizzifier/flags/sr.png" ],
     "answers": [ "Suriname" ]
   },
   "SS": {
-    "images": [ "flags/ss.png" ],
+    "images": [ "/quizzifier/flags/ss.png" ],
     "answers": [ "South Sudan" ]
   },
   "ST": {
-    "images": [ "flags/st.png" ],
+    "images": [ "/quizzifier/flags/st.png" ],
     "answers": [ "Sao Tome and Principe" ]
   },
   "SV": {
-    "images": [ "flags/sv.png" ],
+    "images": [ "/quizzifier/flags/sv.png" ],
     "answers": [ "El Salvador" ]
   },
   "TD": {
-    "images": [ "flags/td.png" ],
+    "images": [ "/quizzifier/flags/td.png" ],
     "answers": [ "Chad" ]
   },
   "TG": {
-    "images": [ "flags/tg.png" ],
+    "images": [ "/quizzifier/flags/tg.png" ],
     "answers": [ "Togo" ]
   },
   "TH": {
-    "images": [ "flags/th.png" ],
+    "images": [ "/quizzifier/flags/th.png" ],
     "answers": [ "Thailand" ]
   },
   "TJ": {
-    "images": [ "flags/tj.png" ],
+    "images": [ "/quizzifier/flags/tj.png" ],
     "answers": [ "Tajikistan" ]
   },
   "TL": {
-    "images": [ "flags/tl.png" ],
+    "images": [ "/quizzifier/flags/tl.png" ],
     "answers": [ "Timor-Leste", "Timor Leste", "East Timor" ]
   },
   "TM": {
-    "images": [ "flags/tm.png" ],
+    "images": [ "/quizzifier/flags/tm.png" ],
     "answers": [ "Turkmenistan" ]
   },
   "TN": {
-    "images": [ "flags/tn.png" ],
+    "images": [ "/quizzifier/flags/tn.png" ],
     "answers": [ "Tunisia" ]
   },
   "TO": {
-    "images": [ "flags/to.png" ],
+    "images": [ "/quizzifier/flags/to.png" ],
     "answers": [ "Tonga" ]
   },
   "TR": {
-    "images": [ "flags/tr.png" ],
+    "images": [ "/quizzifier/flags/tr.png" ],
     "answers": [ "Türkiye", "Turkiye", "Turkey" ]
   },
   "TT": {
-    "images": [ "flags/tt.png" ],
+    "images": [ "/quizzifier/flags/tt.png" ],
     "answers": [ "Trinidad and Tobago" ]
   },
   "TV": {
-    "images": [ "flags/tv.png" ],
+    "images": [ "/quizzifier/flags/tv.png" ],
     "answers": [ "Tuvalu" ]
   },
   "TW": {
-    "images": [ "flags/tw.png" ],
+    "images": [ "/quizzifier/flags/tw.png" ],
     "answers": [ "Taiwan" ]
   },
   "TZ": {
-    "images": [ "flags/tz.png" ],
+    "images": [ "/quizzifier/flags/tz.png" ],
     "answers": [ "Tanzania" ]
   },
   "UA": {
-    "images": [ "flags/ua.png" ],
+    "images": [ "/quizzifier/flags/ua.png" ],
     "answers": [ "Ukraine" ]
   },
   "UG": {
-    "images": [ "flags/ug.png" ],
+    "images": [ "/quizzifier/flags/ug.png" ],
     "answers": [ "Uganda" ]
   },
   "US": {
-    "images": [ "flags/us.png" ],
+    "images": [ "/quizzifier/flags/us.png" ],
     "answers": [ "United States", "USA", "US", "America", "United States of America" ]
   },
   "UY": {
-    "images": [ "flags/uy.png" ],
+    "images": [ "/quizzifier/flags/uy.png" ],
     "answers": [ "Uruguay" ]
   },
   "UZ": {
-    "images": [ "flags/uz.png" ],
+    "images": [ "/quizzifier/flags/uz.png" ],
     "answers": [ "Uzbekistan" ]
   },
   "VA": {
-    "images": [ "flags/va.png" ],
+    "images": [ "/quizzifier/flags/va.png" ],
     "answers": [ "Vatican City", "Vatican", "The Vatican" ]
   },
   "VC": {
-    "images": [ "flags/vc.png" ],
+    "images": [ "/quizzifier/flags/vc.png" ],
     "answers": [ "Saint Vincent and the Grenadines" ]
   },
   "VE": {
-    "images": [ "flags/ve.png" ],
+    "images": [ "/quizzifier/flags/ve.png" ],
     "answers": [ "Venezuela" ]
   },
   "VN": {
-    "images": [ "flags/vn.png" ],
+    "images": [ "/quizzifier/flags/vn.png" ],
     "answers": [ "Vietnam" ]
   },
   "VU": {
-    "images": [ "flags/vu.png" ],
+    "images": [ "/quizzifier/flags/vu.png" ],
     "answers": [ "Vanuatu" ]
   },
   "WS": {
-    "images": [ "flags/ws.png" ],
+    "images": [ "/quizzifier/flags/ws.png" ],
     "answers": [ "Samoa" ]
   },
   "XK": {
-    "images": [ "flags/xk.png" ],
+    "images": [ "/quizzifier/flags/xk.png" ],
     "answers": [ "Kosovo" ]
   },
   "YE": {
-    "images": [ "flags/ye.png" ],
+    "images": [ "/quizzifier/flags/ye.png" ],
     "answers": [ "Yemen" ]
   },
   "ZA": {
-    "images": [ "flags/za.png" ],
+    "images": [ "/quizzifier/flags/za.png" ],
     "answers": [ "South Africa" ]
   },
   "ZM": {
-    "images": [ "flags/zm.png" ],
+    "images": [ "/quizzifier/flags/zm.png" ],
     "answers": [ "Zambia" ]
   },
   "ZW": {
-    "images": [ "flags/zw.png" ],
+    "images": [ "/quizzifier/flags/zw.png" ],
     "answers": [ "Zimbabwe" ]
   }
 }
