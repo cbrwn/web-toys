@@ -16,3 +16,12 @@ cool features:
 * can copy a link to your configuration to easily share your wheels
 
 made this to try a little more advanced stuff, uses a canvas for the wheel and 
+
+## quizzifier
+
+image-based quiz
+
+cool features:
+
+* multiple modes - infinite (random questions forever), all (every question once in random order)
+* squishy
