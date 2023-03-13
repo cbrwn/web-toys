@@ -68,7 +68,7 @@
 							quit
 						</div>
 						<div class="flex justify-center items-center rounded-lg bg-violet-700 w-16 h-8 cursor-pointer"
-							v-on:click="cheat_almostFinished">
+							v-on:click="cheat_almostFinished" v-if="cheatingEnabled">
 							cheat
 						</div>
 						<div class="flex flex-grow flex-col items-center justify-center">
