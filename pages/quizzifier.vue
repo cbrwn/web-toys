@@ -1,41 +1,98 @@
 <template>
 	<div class="container mx-auto flex justify-center">
 		<div class="flex flex-col w-full justify-center py-8 gap-y-3">
-			<Header title="flag quiz">
-				<p>
-					test ur (country) flag knowledge
-				</p>
-				<p>
-					like 90% written by <a href="https://codeium.com/" target="_blank" class="underline">codeium</a> 🤯
-				</p>
+			<Header title="quizzifier">
+				<p>test ur knowledge</p>
 			</Header>
 			<ContentContainer>
-				<div class="flex items-center flex-col gap-5 w-full overflow-clip" v-if="quizData != null">
-					<div class="flex items-center flex-col w-full">
-						<div :style="currentImageStyle">
-							<img :src="currentAnswer.imagePath" class="h-48 sm:h-96" />
-						</div>
-						<div :style="lastImageStyle">
-							<img :src="lastImage" class="h-48 sm:h-96" :style="guessAnimationStyle" />
-						</div>
+				<div v-if="quizState == 'idle'" class="flex flex-col items-center">
+					<h1 class="text-5xl mb-6">quiz setup</h1>
+					<h2 class="text-4xl mb-4">questions</h2>
+					<div class="flex flex-row gap-4 justify-center">
+						<QuizSelector v-for="(source, key) in availableSources" :selected="quizSettings.source == key"
+							v-on:click="quizSettings.source = key">
+							{{ key }}
+						</QuizSelector>
 					</div>
-					<div class="text-4xl mt-2 mb-3" v-if="guessState != 'idle'"
-						:class="{ ['text-green-500']: guessState == 'correct', ['text-red-600']: guessState == 'incorrect' }">
-						<span class="inline-block"
-							:class="{ ['animate-spin']: guessState == 'correct', ['animate-ping']: guessState == 'incorrect' }">{{
-								answerEmoji }}</span>
-						{{ currentAnswer.correctAnswers[0] }}
-						<span class="inline-block"
-							:class="{ ['animate-spin']: guessState == 'correct', ['animate-ping']: guessState == 'incorrect' }">{{
-								answerEmoji }}</span>
+					<h1 class="text-4xl my-4">type</h1>
+					<div class="flex flex-row gap-4 justify-center">
+						<QuizSelector v-for="(type, key) in availableTypes" :selected="quizSettings.type == key"
+							v-on:click="quizSettings.type = key">
+							<p>
+								{{ key }}
+							</p>
+							<p class="text-sm text-gray-500 dark:text-gray-300">
+								{{ type.desc }}
+							</p>
+						</QuizSelector>
 					</div>
-					<input :style="`${guessState != 'idle' ? 'display:none' : ''}`"
-						class="text-2xl sm:text-4xl dark:bg-slate-800 text-center w-1/2 m-2" placeholder="type your guess"
-						v-on:keypress="guessPress" type="text" ref="guessInput" spellcheck="false" autocapitalize="off"
-						autocomplete="off" autocorrect="off" />
+
+					<div class="flex items-center justify-center text-3xl h-16 w-48 mt-12 bg-green-500 rounded-2xl cursor-pointer"
+						v-on:click="startQuiz">
+						let's quiz!
+					</div>
 				</div>
-				<div v-else>
-					loading quiz...
+				<div v-else-if="quizState == 'finished' || quizState == 'quit'" class="flex flex-col items-center">
+					<div class="text-4xl">
+						<h1 v-if="quizState == 'finished'">quiz finished!</h1>
+						<h1 v-else>quiz ended :(</h1>
+					</div>
+					<h2>category: {{ quizSettings.source }}</h2>
+					<QuizScore :correct="quizStats.correct" :incorrect="quizStats.incorrect"
+						:unanswered="quizType.questionsRemaining()" />
+
+					<h2 class="text-2xl mt-8">your grade:</h2>
+					<div class="flex flex-col">
+						<span class="text-6xl font-extrabold font-sans" v-html="gradeHtml" />
+						<span class="text-lg -mt-1">({{ correctPercentage }}%)</span>
+					</div>
+
+					<div class="flex items-center justify-center text-3xl h-16 w-48 mt-12 bg-green-500 rounded-2xl cursor-pointer"
+						v-on:click="restartQuiz()">
+						new quiz
+					</div>
+				</div>
+				<div class="w-full" v-else>
+					<div class="flex items-start mb-4">
+						<div class="flex justify-center items-center rounded-lg bg-red-700 w-16 h-8 cursor-pointer"
+							v-on:click="finishQuiz(true)">
+							quit
+						</div>
+						<div class="flex flex-grow flex-col items-center justify-center">
+							<QuizScore :correct="quizStats.correct" :incorrect="quizStats.incorrect" />
+							<div class="text-xl" v-if="quizType.progressText() != null">
+								{{ quizType.progressText() }}
+							</div>
+						</div>
+						<div class="w-16"> </div>
+					</div>
+					<div class="flex items-center flex-col gap-5 w-full overflow-clip" v-if="remainingAnswers != null">
+						<div class="flex items-center flex-col w-full">
+							<div :style="currentImageStyle">
+								<img :src="currentAnswer.imagePath" class="h-48 sm:h-96" />
+							</div>
+							<div :style="lastImageStyle">
+								<img :src="lastImage" class="h-48 sm:h-96" :style="guessAnimationStyle" />
+							</div>
+						</div>
+						<div class="text-4xl mt-2 mb-3" v-if="guessState != 'idle'"
+							:class="{ ['text-green-500']: guessState == 'correct', ['text-red-600']: guessState == 'incorrect' }">
+							<span class="inline-block"
+								:class="{ ['animate-spin']: guessState == 'correct', ['animate-ping']: guessState == 'incorrect' }">{{
+									answerEmoji }}</span>
+							{{ currentAnswer.correctAnswers[0] }}
+							<span class="inline-block"
+								:class="{ ['animate-spin']: guessState == 'correct', ['animate-ping']: guessState == 'incorrect' }">{{
+									answerEmoji }}</span>
+						</div>
+						<input :style="`${guessState != 'idle' ? 'display:none' : ''}`"
+							class="text-2xl sm:text-4xl dark:bg-slate-800 text-center w-1/2 m-2"
+							placeholder="type your guess" v-on:keypress="guessPress" type="text" ref="guessInput"
+							spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" />
+					</div>
+					<div v-else>
+						loading quiz...
+					</div>
 				</div>
 			</ContentContainer>
 		</div>
@@ -47,20 +104,118 @@ export default {
 	layout: 'default',
 	created() { document.title = 'quizzifier'; },
 	data() {
+		let availableSources = {
+			flags: '/quizzifier/countries.json'
+		};
+
+		let availableTypes = {
+			infinite: {
+				desc: 'random questions forever',
+				onAnswer: (answer) => { },
+				finished: () => false,
+				progressText: () => null,
+				questionsRemaining: () => 0
+			},
+			all: {
+				desc: 'all questions once',
+				onAnswer: (answer) => { delete this.remainingAnswers[answer]; },
+				finished: () => this.quizType.questionsRemaining() == 0,
+				progressText: () => `${this.answeredCount}/${this.totalAnswersCount}`,
+				questionsRemaining: () => Object.keys(this.remainingAnswers).length
+			}
+		};
+
 		return {
-			quizData: null,
+			quizState: 'idle',
+			quizSettings: {
+				source: '',
+				type: ''
+			},
+			quizStats: {
+				correct: 0,
+				incorrect: 0
+			},
+
+			availableSources: availableSources,
+			availableTypes: availableTypes,
+
+			remainingAnswers: null,
+
 			currentAnswer: {
 				imagePath: null,
-				correctAnswers: []
+				correctAnswers: [],
+				answerKey: ''
 			},
 			lastImage: '',
 			guessState: 'idle'
 		};
 	},
 	mounted() {
-		this.loadQuizDataFromUrl('/quizzifier/countries.json');
+		this.quizSettings.source = Object.keys(this.availableSources)[0];
+		this.quizSettings.type = Object.keys(this.availableTypes)[0];
 	},
 	computed: {
+		cheat_almostFinished() {
+			while (this.quizType.questionsRemaining() > 1) {
+				delete this.remainingAnswers[this.currentAnswer.answerKey];
+				this.selectNewAnswer();
+
+				if (Math.random() < 0.01)
+					this.quizStats.incorrect++;
+				else
+					this.quizStats.correct++;
+			}
+		},
+		quizSource() {
+			return this.availableSources[this.quizSettings.source];
+		},
+		quizType() {
+			return this.availableTypes[this.quizSettings.type];
+		},
+		answeredCount() {
+			return this.quizStats.correct + this.quizStats.incorrect;
+		},
+		totalAnswersCount() {
+			return this.quizType.questionsRemaining() + this.answeredCount;
+		},
+		correctPercentage() {
+			if (this.totalAnswersCount == 0)
+				return 0;
+			return Math.round((this.quizStats.correct / this.totalAnswersCount) * 100);
+		},
+		letterGrade() {
+			let p = this.correctPercentage;
+
+			if (p >= 100) return '✨S✨';
+			if (p >= 97) return 'A+';
+			if (p >= 93) return 'A';
+			if (p >= 90) return 'A-';
+			if (p >= 87) return 'B+';
+			if (p >= 83) return 'B';
+			if (p >= 80) return 'B-';
+			if (p >= 77) return 'C+';
+			if (p >= 73) return 'C';
+			if (p >= 70) return 'C-';
+			if (p >= 67) return 'D+';
+			if (p >= 63) return 'D';
+			if (p >= 60) return 'D-';
+			return 'F';
+		},
+		gradeHtml() {
+			let letter = this.letterGrade;
+			let p = this.correctPercentage;
+
+			let classes = 'text-red-500';
+
+			if (p >= 100) classes = 'text-yellow-500';
+			else if (p >= 90) classes = 'text-green-500';
+			else if (p >= 80) classes = 'text-blue-600';
+			else if (p >= 70) classes = 'text-yellow-400';
+			else if (p >= 60) classes = 'text-orange-600';
+			else classes = 'text-red-500';
+
+			return `<span class="${classes}">${letter}</span>`;
+		},
 		answerEmoji() {
 			return this.guessState == 'correct' ? '✨' : '❌';
 		},
@@ -107,24 +262,39 @@ export default {
 		}
 	},
 	methods: {
+		startQuiz() {
+			this.quizStats.correct = 0;
+			this.quizStats.incorrect = 0;
+
+			this.loadQuizDataFromUrl(this.quizSource);
+		},
+		restartQuiz() {
+			this.quizState = 'idle';
+		},
+		finishQuiz(quit) {
+			this.quizState = quit ? 'quit' : 'finished';
+		},
 		loadQuizDataFromUrl(url) {
 			fetch(url)
 				.then(response => response.json())
 				.then(data => {
-					this.quizData = data;
+					this.remainingAnswers = data;
 					this.selectNewAnswer();
+					this.quizState = 'running';
 				})
 				.catch(error => {
 					console.log(error);
 				});
 		},
 		selectNewAnswer() {
-			let quizKeys = Object.keys(this.quizData);
+			let quizKeys = Object.keys(this.remainingAnswers);
 			let randomIndex = Math.floor(Math.random() * quizKeys.length);
-			let newAnswer = this.quizData[quizKeys[randomIndex]];
+			let randomKey = quizKeys[randomIndex];
+			let newAnswer = this.remainingAnswers[randomKey];
 
 			this.currentAnswer.imagePath = newAnswer.images[Math.floor(Math.random() * newAnswer.images.length)];
 			this.currentAnswer.correctAnswers = newAnswer.answers;
+			this.currentAnswer.answerKey = randomKey;
 
 			setTimeout(() => {
 				this.$refs.guessInput.focus();
@@ -151,9 +321,21 @@ export default {
 
 				this.lastImage = this.currentAnswer.imagePath;
 
+				this.quizType.onAnswer(this.currentAnswer.answerKey);
+
+				if (isCorrect)
+					this.quizStats.correct++;
+				else
+					this.quizStats.incorrect++;
+
 				setTimeout(() => {
 					this.guessState = 'idle';
-					this.selectNewAnswer();
+
+					if (this.quizType.finished()) {
+						this.finishQuiz();
+					} else {
+						this.selectNewAnswer();
+					}
 				}, 2000);
 			}
 		},
@@ -251,4 +433,5 @@ export default {
 	100% {
 		transform: translate(0px, 0px) rotate(0deg);
 	}
-}</style>
+}
+</style>
