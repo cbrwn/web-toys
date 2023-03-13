@@ -38,16 +38,25 @@
 						<h1 v-else>quiz ended :(</h1>
 					</div>
 					<h2>category: {{ quizSettings.source }}</h2>
-					<QuizScore :correct="quizStats.correct" :incorrect="quizStats.incorrect"
-						:unanswered="quizType.questionsRemaining()" />
 
-					<h2 class="text-2xl mt-8">your grade:</h2>
+					<div class="flex flex-col mb-8">
+						<span class="text-9xl font-extrabold font-sans" v-html="gradeHtml" />
+					</div>
 					<div class="flex flex-col">
-						<span class="text-6xl font-extrabold font-sans" v-html="gradeHtml" />
-						<span class="text-lg -mt-1">({{ correctPercentage }}%)</span>
+						<div class="flex flex-row items-center mb-2">
+							<div class="flex-grow h-0.5 bg-black/30 dark:bg-white/30"></div>
+							<span class="text-sm mx-4">{{ correctPercentage }}%</span>
+							<div class="flex-grow h-0.5 bg-black/30 dark:bg-white/30"></div>
+						</div>
+						<div class="flex flex-row">
+							<QuizScoreElement :score="quizStats.correct" type="correct" color="bg-green-500" />
+							<QuizScoreElement :score="quizStats.incorrect" type="incorrect" color="bg-red-600" />
+							<QuizScoreElement v-if="quizType.questionsRemaining()" :score="quizType.questionsRemaining()"
+								type="unanswered" color="bg-gray-500" />
+						</div>
 					</div>
 
-					<div class="flex items-center justify-center text-3xl h-16 w-48 mt-12 bg-green-500 rounded-2xl cursor-pointer"
+					<div class="flex items-center justify-center text-3xl h-16 w-48 mt-8 bg-green-500 rounded-2xl cursor-pointer"
 						v-on:click="restartQuiz()">
 						new quiz
 					</div>
@@ -58,8 +67,15 @@
 							v-on:click="finishQuiz(true)">
 							quit
 						</div>
+						<div class="flex justify-center items-center rounded-lg bg-violet-700 w-16 h-8 cursor-pointer"
+							v-on:click="cheat_almostFinished">
+							cheat
+						</div>
 						<div class="flex flex-grow flex-col items-center justify-center">
-							<QuizScore :correct="quizStats.correct" :incorrect="quizStats.incorrect" />
+							<div class="text-4xl">
+								<span class="text-green-400">{{ quizStats.correct }}</span> : <span class="text-red-400">{{
+									quizStats.incorrect }}</span>
+							</div>
 							<div class="text-xl" v-if="quizType.progressText() != null">
 								{{ quizType.progressText() }}
 							</div>
@@ -155,6 +171,9 @@ export default {
 		this.quizSettings.type = Object.keys(this.availableTypes)[0];
 	},
 	computed: {
+		cheatingEnabled() {
+			return location.hostname == 'localhost';
+		},
 		cheat_almostFinished() {
 			while (this.quizType.questionsRemaining() > 1) {
 				delete this.remainingAnswers[this.currentAnswer.answerKey];
