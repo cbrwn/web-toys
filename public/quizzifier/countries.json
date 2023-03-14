@@ -13,7 +13,7 @@
   },
   "AG": {
     "images": [ "/quizzifier/flags/ag.png" ],
-    "answers": [ "Antigua and Barbuda" ]
+    "answers": [ "Antigua and Barbuda", "Wadadli" ]
   },
   "AL": {
     "images": [ "/quizzifier/flags/al.png" ],
@@ -29,7 +29,7 @@
   },
   "AR": {
     "images": [ "/quizzifier/flags/ar.png" ],
-    "answers": [ "Argentina" ]
+    "answers": [ "Argentina", "Argentine Republic", "Argentine Nation" ]
   },
   "AT": {
     "images": [ "/quizzifier/flags/at.png" ],
@@ -37,7 +37,7 @@
   },
   "AU": {
     "images": [ "/quizzifier/flags/au.png" ],
-    "answers": [ "Australia" ]
+    "answers": [ "Australia", "New Holland" ]
   },
   "AZ": {
     "images": [ "/quizzifier/flags/az.png" ],
@@ -57,11 +57,11 @@
   },
   "BE": {
     "images": [ "/quizzifier/flags/be.png" ],
-    "answers": [ "Belgium" ]
+    "answers": [ "Belgium", "Belgien" ]
   },
   "BF": {
     "images": [ "/quizzifier/flags/bf.png" ],
-    "answers": [ "Burkina Faso" ]
+    "answers": [ "Burkina Faso", "Upper Volta" ]
   },
   "BG": {
     "images": [ "/quizzifier/flags/bg.png" ],
@@ -77,7 +77,7 @@
   },
   "BJ": {
     "images": [ "/quizzifier/flags/bj.png" ],
-    "answers": [ "Benin" ]
+    "answers": [ "Benin", "Dahomey" ]
   },
   "BN": {
     "images": [ "/quizzifier/flags/bn.png" ],
@@ -89,7 +89,7 @@
   },
   "BR": {
     "images": [ "/quizzifier/flags/br.png" ],
-    "answers": [ "Brazil" ]
+    "answers": [ "Brazil", "Pindorama" ]
   },
   "BS": {
     "images": [ "/quizzifier/flags/bs.png" ],
@@ -105,11 +105,11 @@
   },
   "BY": {
     "images": [ "/quizzifier/flags/by.png" ],
-    "answers": [ "Belarus" ]
+    "answers": [ "Belarus", "Byelorussia" ]
   },
   "BZ": {
     "images": [ "/quizzifier/flags/bz.png" ],
-    "answers": [ "Belize" ]
+    "answers": [ "Belize", "British Honduras" ]
   },
   "CA": {
     "images": [ "/quizzifier/flags/ca.png" ],
@@ -117,11 +117,11 @@
   },
   "CD": {
     "images": [ "/quizzifier/flags/cd.png" ],
-    "answers": [ "The Democratic Republic of the Congo", "DRC", "Democratic Republic of Congo", "Democratic Republic of the Congo" ]
+    "answers": [ "The Democratic Republic of the Congo", "DRC", "Democratic Republic of Congo", "Democratic Republic of the Congo", "Congo-Kinshasa", "Zaire" ]
   },
   "CF": {
     "images": [ "/quizzifier/flags/cf.png" ],
-    "answers": [ "Central African Republic", "CAR" ]
+    "answers": [ "Central African Republic", "Congo-Brazzaville", "CAR" ]
   },
   "CG": {
     "images": [ "/quizzifier/flags/cg.png" ],
@@ -161,7 +161,7 @@
   },
   "CV": {
     "images": [ "/quizzifier/flags/cv.png" ],
-    "answers": [ "Cape Verde", "Cabo Verde" ]
+    "answers": [ "Cabo Verde", "Cape Verde" ]
   },
   "CY": {
     "images": [ "/quizzifier/flags/cy.png" ],
@@ -201,7 +201,7 @@
   },
   "EE": {
     "images": [ "/quizzifier/flags/ee.png" ],
-    "answers": [ "Estonia" ]
+    "answers": [ "Estonia", "Eesti" ]
   },
   "EG": {
     "images": [ "/quizzifier/flags/eg.png" ],
@@ -221,7 +221,7 @@
   },
   "FI": {
     "images": [ "/quizzifier/flags/fi.png" ],
-    "answers": [ "Finland" ]
+    "answers": [ "Finland", "Suomi" ]
   },
   "FJ": {
     "images": [ "/quizzifier/flags/fj.png" ],
@@ -269,7 +269,7 @@
   },
   "GR": {
     "images": [ "/quizzifier/flags/gr.png" ],
-    "answers": [ "Greece" ]
+    "answers": [ "Greece", "Hellas", "Hellenic Republic" ]
   },
   "GT": {
     "images": [ "/quizzifier/flags/gt.png" ],
@@ -281,11 +281,7 @@
   },
   "GY": {
     "images": [ "/quizzifier/flags/gy.png" ],
-    "answers": [ "Guyana" ]
-  },
-  "HK": {
-    "images": [ "/quizzifier/flags/hk.png" ],
-    "answers": [ "Hong Kong" ]
+    "answers": [ "Guyana", "British Guiana" ]
   },
   "HN": {
     "images": [ "/quizzifier/flags/hn.png" ],
@@ -345,7 +341,7 @@
   },
   "JP": {
     "images": [ "/quizzifier/flags/jp.png" ],
-    "answers": [ "Japan" ]
+    "answers": [ "Japan", "Nippon", "Nihon" ]
   },
   "KE": {
     "images": [ "/quizzifier/flags/ke.png" ],
@@ -357,7 +353,7 @@
   },
   "KH": {
     "images": [ "/quizzifier/flags/kh.png" ],
-    "answers": [ "Cambodia" ]
+    "answers": [ "Cambodia", "Khmer Republic" ]
   },
   "KI": {
     "images": [ "/quizzifier/flags/ki.png" ],
@@ -369,7 +365,7 @@
   },
   "KN": {
     "images": [ "/quizzifier/flags/kn.png" ],
-    "answers": [ "Saint Kitts and Nevis" ]
+    "answers": [ "Saint Kitts and Nevis", "Saint Christopher and Nevis" ]
   },
   "KP": {
     "images": [ "/quizzifier/flags/kp.png" ],
@@ -661,11 +657,15 @@
   },
   "ST": {
     "images": [ "/quizzifier/flags/st.png" ],
-    "answers": [ "Sao Tome and Principe" ]
+    "answers": [ "São Tomé and Príncipe", "Sao Tome and Principe", "São Tomé e Príncipe", "Sao Tome e Principe" ]
   },
   "SV": {
     "images": [ "/quizzifier/flags/sv.png" ],
     "answers": [ "El Salvador" ]
+  },
+  "SZ": {
+    "images": [ "/quizzifier/flags/sz.png" ],
+    "answers": [ "Eswatini", "Swaziland" ]
   },
   "TD": {
     "images": [ "/quizzifier/flags/td.png" ],
@@ -710,10 +710,6 @@
   "TV": {
     "images": [ "/quizzifier/flags/tv.png" ],
     "answers": [ "Tuvalu" ]
-  },
-  "TW": {
-    "images": [ "/quizzifier/flags/tw.png" ],
-    "answers": [ "Taiwan" ]
   },
   "TZ": {
     "images": [ "/quizzifier/flags/tz.png" ],
