@@ -98,10 +98,6 @@
 							v-on:click="finishQuiz(true)">
 							quit
 						</div>
-						<div class="flex justify-center items-center rounded-lg bg-violet-700 w-16 h-8 cursor-pointer"
-							v-on:click="cheat_almostFinished" v-if="cheatingEnabled">
-							cheat
-						</div>
 
 						<!-- score & progress -->
 						<div class="flex flex-grow flex-col items-center justify-center">
@@ -114,7 +110,11 @@
 							</div>
 						</div>
 						<!-- empty boi same width as quit button to balance out flex growiness -->
-						<div class="w-16"> </div>
+						<div class="flex justify-center items-center rounded-lg bg-violet-700 w-16 h-8 cursor-pointer"
+							v-on:click="cheat_almostFinished" v-if="cheatingEnabled">
+							cheat
+						</div>
+						<div class="w-16" v-else> </div>
 					</div>
 
 					<!--
