@@ -17,7 +17,12 @@
 					<div class="flex flex-row gap-4 justify-center">
 						<QuizSelector v-for="(source, key) in availableSources" :selected="quizSettings.source == key"
 							v-on:click="quizSettings.source = key">
-							{{ key }}
+							<p>
+								{{ key }}
+							</p>
+							<p class="text-sm text-gray-500 dark:text-gray-300">
+								{{ source.desc }}
+							</p>
 						</QuizSelector>
 					</div>
 
@@ -160,7 +165,10 @@ export default {
 	created() { document.title = 'quizzifier'; },
 	data() {
 		let availableSources = {
-			flags: '/quizzifier/countries.json'
+			flags: {
+				desc: 'of (UN-defined) countries!',
+				path: '/quizzifier/countries.json',
+			}		
 		};
 
 		let availableTypes = {
@@ -225,7 +233,7 @@ export default {
 			}
 		},
 		quizSource() {
-			return this.availableSources[this.quizSettings.source];
+			return this.availableSources[this.quizSettings.source].path;
 		},
 		quizType() {
 			return this.availableTypes[this.quizSettings.type];
