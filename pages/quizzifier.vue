@@ -5,8 +5,14 @@
 				<p>test ur knowledge</p>
 			</Header>
 			<ContentContainer>
+
+				<!--
+					Quiz Setup
+				-->
 				<div v-if="quizState == 'idle'" class="flex flex-col items-center">
 					<h1 class="text-5xl mb-6">quiz setup</h1>
+
+					<!-- questions selection -->
 					<h2 class="text-4xl mb-4">questions</h2>
 					<div class="flex flex-row gap-4 justify-center">
 						<QuizSelector v-for="(source, key) in availableSources" :selected="quizSettings.source == key"
@@ -14,6 +20,8 @@
 							{{ key }}
 						</QuizSelector>
 					</div>
+
+					<!-- quiz type selection -->
 					<h1 class="text-4xl my-4">type</h1>
 					<div class="flex flex-row gap-4 justify-center">
 						<QuizSelector v-for="(type, key) in availableTypes" :selected="quizSettings.type == key"
@@ -32,6 +40,10 @@
 						let's quiz!
 					</div>
 				</div>
+
+				<!--
+					Quiz Finished
+				-->
 				<div v-else-if="quizState == 'finished' || quizState == 'quit'" class="flex flex-col items-center">
 					<div class="text-4xl">
 						<h1 v-if="quizState == 'finished'">quiz finished!</h1>
@@ -39,15 +51,20 @@
 					</div>
 					<h2>category: {{ quizSettings.source }}</h2>
 
+					<!-- GRADE -->
 					<div class="flex flex-col mb-8">
 						<span class="text-9xl font-extrabold font-sans" v-html="gradeHtml" />
 					</div>
+
+					<!-- correct/incorrect breakdown -->
 					<div class="flex flex-col">
+						<!-- show percentage surrounded by lines -->
 						<div class="flex flex-row items-center mb-2">
 							<div class="flex-grow h-0.5 bg-black/30 dark:bg-white/30"></div>
 							<span class="text-sm mx-4">{{ correctPercentage }}%</span>
 							<div class="flex-grow h-0.5 bg-black/30 dark:bg-white/30"></div>
 						</div>
+						<!-- correct | incorrect | unanswered(optional) -->
 						<div class="flex flex-row">
 							<QuizScoreElement :score="quizStats.correct" type="correct" color="bg-green-500" />
 							<QuizScoreElement :score="quizStats.incorrect" type="incorrect" color="bg-red-600" />
@@ -61,8 +78,17 @@
 						new quiz
 					</div>
 				</div>
+
+				<!--
+					Quiz!
+				-->
 				<div class="w-full" v-else>
+
+					<!--
+						Buttons, progress, right/wrong, etc
+					-->
 					<div class="flex items-start mb-4">
+						<!-- quit/cheat buttons -->
 						<div class="flex justify-center items-center rounded-lg bg-red-700 w-16 h-8 cursor-pointer"
 							v-on:click="finishQuiz(true)">
 							quit
@@ -71,6 +97,8 @@
 							v-on:click="cheat_almostFinished" v-if="cheatingEnabled">
 							cheat
 						</div>
+
+						<!-- score & progress -->
 						<div class="flex flex-grow flex-col items-center justify-center">
 							<div class="text-4xl">
 								<span class="text-green-400">{{ quizStats.correct }}</span> : <span class="text-red-400">{{
@@ -80,9 +108,15 @@
 								{{ quizType.progressText() }}
 							</div>
 						</div>
+						<!-- empty boi same width as quit button to balance out flex growiness -->
 						<div class="w-16"> </div>
 					</div>
+
+					<!--
+						Quiz question!
+					-->
 					<div class="flex items-center flex-col gap-5 w-full overflow-clip" v-if="remainingAnswers != null">
+						<!-- Image(s) (including placeholder used for animation) -->
 						<div class="flex items-center flex-col w-full">
 							<div :style="currentImageStyle">
 								<img :src="currentAnswer.imagePath" class="h-48 sm:h-96" />
@@ -91,6 +125,8 @@
 								<img :src="lastImage" class="h-48 sm:h-96" :style="guessAnimationStyle" />
 							</div>
 						</div>
+
+						<!-- Correct answer display -->
 						<div class="text-4xl mt-2 mb-3" v-if="guessState != 'idle'"
 							:class="{ ['text-green-500']: guessState == 'correct', ['text-red-600']: guessState == 'incorrect' }">
 							<span class="inline-block"
@@ -101,11 +137,14 @@
 								:class="{ ['animate-spin']: guessState == 'correct', ['animate-ping']: guessState == 'incorrect' }">{{
 									answerEmoji }}</span>
 						</div>
+
+						<!-- Guess input -->
 						<input :style="`${guessState != 'idle' ? 'display:none' : ''}`"
 							class="text-2xl sm:text-4xl dark:bg-slate-800 text-center w-1/2 m-2"
 							placeholder="type your guess" v-on:keypress="guessPress" type="text" ref="guessInput"
 							spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" />
 					</div>
+
 					<div v-else>
 						loading quiz...
 					</div>
