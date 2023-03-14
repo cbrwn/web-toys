@@ -124,10 +124,10 @@
 						<!-- Image(s) (including placeholder used for animation) -->
 						<div class="flex items-center flex-col w-full">
 							<div :style="currentImageStyle">
-								<img :src="currentAnswer.imagePath" class="h-48 sm:h-96" />
+								<img :src="currentAnswer.imagePath" class="h-48 sm:h-96 pointer-events-none" />
 							</div>
 							<div :style="lastImageStyle">
-								<img :src="lastImage" class="h-48 sm:h-96" :style="guessAnimationStyle" />
+								<img :src="lastImage" class="h-48 sm:h-96 pointer-events-none" :style="guessAnimationStyle" />
 							</div>
 						</div>
 
