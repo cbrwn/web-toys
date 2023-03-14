@@ -141,7 +141,8 @@
 								<img :src="currentAnswer.imagePath" class="h-48 sm:h-96 pointer-events-none" />
 							</div>
 							<div :style="lastImageStyle">
-								<img :src="lastImage" class="h-48 sm:h-96 pointer-events-none" :style="guessAnimationStyle" />
+								<img :src="lastImage" class="h-48 sm:h-96 pointer-events-none"
+									:style="guessAnimationStyle" />
 							</div>
 						</div>
 
@@ -182,7 +183,7 @@ export default {
 			flags: {
 				desc: 'of (UN-defined) countries!',
 				path: '/quizzifier/countries.json',
-			}		
+			}
 		};
 
 		let availableTypes = {
@@ -515,5 +516,4 @@ export default {
 	100% {
 		transform: translate(0px, 0px) rotate(0deg);
 	}
-}
-</style>
+}</style>
