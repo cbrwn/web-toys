@@ -108,6 +108,19 @@
 							<div class="text-xl" v-if="quizType.progressText() != null">
 								{{ quizType.progressText() }}
 							</div>
+
+							<!-- progress bar -->
+							<div v-if="quizType.progressText() != null" class="w-1/2 h-8 mt-2">
+								<div class="w-full h-full bg-gray-300 dark:bg-slate-500 rounded-3xl overflow-clip">
+									<div class="flex justify-end items-center h-full bg-blue-400 transition-all duration-300"
+										:style="`width: ${quizType.progressValue()}%`">
+										<p class="mr-2 text-white transition-all"
+											:class="{ ['mr-2']: quizType.progressValue() > 5, ['-mr-6 text-black dark:text-white']: quizType.progressValue() <= 5 }">
+											{{ Math.round(quizType.progressValue()) }}%
+										</p>
+									</div>
+								</div>
+							</div>
 						</div>
 						<!-- empty boi same width as quit button to balance out flex growiness -->
 						<div class="flex justify-center items-center rounded-lg bg-violet-700 w-16 h-8 cursor-pointer"
@@ -177,6 +190,7 @@ export default {
 				onAnswer: (answer) => { },
 				finished: () => false,
 				progressText: () => null,
+				progressValue: () => null,
 				questionsRemaining: () => 0
 			},
 			all: {
@@ -184,6 +198,7 @@ export default {
 				onAnswer: (answer) => { delete this.remainingAnswers[answer]; },
 				finished: () => this.quizType.questionsRemaining() == 0,
 				progressText: () => `${this.answeredCount}/${this.totalAnswersCount}`,
+				progressValue: () => (this.answeredCount / this.totalAnswersCount) * 100,
 				questionsRemaining: () => Object.keys(this.remainingAnswers).length
 			}
 		};
