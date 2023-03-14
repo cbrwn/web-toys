@@ -94,7 +94,7 @@
 					-->
 					<div class="flex items-start mb-4">
 						<!-- quit/cheat buttons -->
-						<div class="flex justify-center items-center rounded-lg bg-red-700 w-16 h-8 cursor-pointer"
+						<div class="flex justify-center items-center rounded-lg bg-red-700 w-16 h-8 cursor-pointer text-white"
 							v-on:click="finishQuiz(true)">
 							quit
 						</div>
@@ -102,8 +102,9 @@
 						<!-- score & progress -->
 						<div class="flex flex-grow flex-col items-center justify-center">
 							<div class="text-4xl">
-								<span class="text-green-400">{{ quizStats.correct }}</span> : <span class="text-red-400">{{
-									quizStats.incorrect }}</span>
+								<span class="dark:text-green-400 text-green-500">{{ quizStats.correct }}</span> : <span
+									class="dark:text-red-400 text-red-500">{{
+										quizStats.incorrect }}</span>
 							</div>
 							<div class="text-xl" v-if="quizType.progressText() != null">
 								{{ quizType.progressText() }}
