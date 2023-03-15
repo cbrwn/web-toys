@@ -11,5 +11,8 @@
     "@nuxtjs/tailwindcss": "^6.4.1",
     "nuxt": "^3.2.3",
     "tailwindcss": "^3.2.7"
+  },
+  "dependencies": {
+    "ofetch": "^1.0.1"
   }
 }

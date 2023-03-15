@@ -4,7 +4,14 @@
 			<Header title="quizzifier">
 				<p>test ur knowledge</p>
 			</Header>
-			<ContentContainer>
+			<ContentContainer class="overflow-clip">
+				<!-- 
+					Transition animation div
+				-->
+				<div class="absolute h-full w-full top-0 bg-gray-200 dark:bg-slate-600 z-50 duration-300"
+					:class="{['-translate-x-full transition-none']: quizState==goalQuizState && transitionState==1, ['translate-x-0 ease-in transition-transform']: quizState!=goalQuizState, ['translate-x-full ease-out']: quizState==goalQuizState && transitionState==0 }"
+					v-on:transitionend="transitionAnimationEnd">
+				</div>
 
 				<!--
 					Quiz Setup
@@ -207,6 +214,7 @@ export default {
 
 		return {
 			quizState: 'idle',
+			goalQuizState: 'idle',
 			quizSettings: {
 				source: '',
 				type: ''
@@ -227,7 +235,9 @@ export default {
 				answerKey: ''
 			},
 			lastImage: '',
-			guessState: 'idle'
+			guessState: 'idle',
+
+			transitionState: 1
 		};
 	},
 	mounted() {
@@ -346,16 +356,18 @@ export default {
 	},
 	methods: {
 		startQuiz() {
+			this.restartQuiz();
 			this.quizStats.correct = 0;
 			this.quizStats.incorrect = 0;
 
 			this.loadQuizDataFromUrl(this.quizSource);
 		},
 		restartQuiz() {
-			this.quizState = 'idle';
+			this.goalQuizState = 'idle';
+			this.guessState = 'idle';
 		},
 		finishQuiz(quit) {
-			this.quizState = quit ? 'quit' : 'finished';
+			this.goalQuizState = quit ? 'quit' : 'finished';
 		},
 		loadQuizDataFromUrl(url) {
 			fetch(url)
@@ -363,7 +375,7 @@ export default {
 				.then(data => {
 					this.remainingAnswers = data;
 					this.selectNewAnswer();
-					this.quizState = 'running';
+					this.goalQuizState = 'running';
 				})
 				.catch(error => {
 					console.log(error);
@@ -412,11 +424,10 @@ export default {
 					this.quizStats.incorrect++;
 
 				setTimeout(() => {
-					this.guessState = 'idle';
-
 					if (this.quizType.finished()) {
 						this.finishQuiz();
 					} else {
+						this.guessState = 'idle';
 						this.selectNewAnswer();
 					}
 				}, 2000);
@@ -443,6 +454,18 @@ export default {
 				}
 			}
 			return track[str2.length][str1.length];
+		},
+
+		transitionAnimationEnd(event) {
+			console.log('from ', this.transitionState);
+			if(this.quizState != this.goalQuizState) {
+				this.transitionState = 0;
+			} else {
+				this.transitionState = 1;
+			}
+			console.log('to', this.transitionState);
+
+			this.quizState = this.goalQuizState;
 		}
 	}
 }
@@ -516,4 +539,5 @@ export default {
 	100% {
 		transform: translate(0px, 0px) rotate(0deg);
 	}
-}</style>
+}
+</style>
