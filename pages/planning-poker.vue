@@ -23,16 +23,34 @@
         <div v-else>
           <!-- room selection/creation -->
           <div v-if="roomState == null" class="flex flex-col gap-4">
-            <div class="bg-green-400" v-on:click="createClicked">create room</div>
-            <div>
-              <div class="bg-blue-400" v-on:click="joinClicked">join room</div> <input type="text" class="dark:text-black"
-                ref="roomId">
+            <button class="bg-green-400 p-4 rounded-lg cursor-pointer transition-all hover:scale-105"
+              v-on:click="createClicked">create room</button>
+            <div class="flex flex-row items-center gap-4">
+              <input type="text" size="10" class="dark:text-black text-4xl rounded-lg" ref="roomId"
+                placeholder="give me code" />
+              <button class="bg-blue-400 p-4 rounded-lg cursor-pointer transition-all hover:scale-105"
+                v-on:click="joinClicked">join room</button>
             </div>
           </div>
 
           <div v-else>
-            <div>
-              {{ roomId }}: {{ Object.keys(roomState.players).length }} players!
+            <div class="flex flex-col items-center mb-5">
+              <p class="-mt-5">room code</p>
+              <h2 class="flex flex-row items-center justify-center text-4xl cursor-pointer -mt-2 w-min"
+                v-on:click="roomCodeClicked">
+                {{ roomId }} <span class="text-2xl select-none">
+                  <span v-if="showCopySuccess">
+                    ✅
+                  </span>
+                  <span v-else>📋</span>
+                  <span class="text-lg absolute transition-transform select-none"
+                    :style="`transform: translate(${this.showCopySuccess ? '0%' : '-50%'}, 0%) scale(${this.showCopySuccess ? '1.0' : '0.0'});`">
+                    copied url!
+                  </span>
+                </span>
+              </h2>
+
+
             </div>
             <div class="flex flex-col">
               name
@@ -45,13 +63,13 @@
             <div v-if="isRoomHost">
               <button class="bg-yellow-500 px-3 py-1 rounded-lg ml-3 cursor-pointer"
                 v-on:click="revealClicked">reveal</button>
-              <button class="bg-red-500 px-3 py-1 rounded-lg ml-3 cursor-pointer"
-                v-on:click="resetClicked">reset</button>
+              <button class="bg-red-500 px-3 py-1 rounded-lg ml-3 cursor-pointer" v-on:click="resetClicked">reset</button>
             </div>
 
             <div class="mt-5">
               <div class="flex flex-row justify-center gap-3 mt-1">
-                <PokerChoice v-for="(choice, index) in roomState.choices" :key="index" :selected="playerChoice==index" v-on:click="choiceClicked(index)">
+                <PokerChoice v-for="(choice, index) in roomState.choices" :key="index" :selected="playerChoice == index"
+                  v-on:click="choiceClicked(index)">
                   {{ choice }}
                 </PokerChoice>
               </div>
@@ -83,7 +101,8 @@ export default {
       playerName: '???',
       playerChoice: -1,
       isRoomHost: false,
-      roomState: null
+      roomState: null,
+      showCopySuccess: false
     }
   },
   created() { document.title = 'planning poker'; },
@@ -101,6 +120,14 @@ export default {
     this.socket.on('connect', () => {
       console.log('connected');
       this.connectedState = 'connected';
+
+      if (this.$route.query.room) {
+        let roomString = this.$route.query.room;
+        this.joinRoom(roomString);
+
+        // clear ugly item query
+        window.history.replaceState(null, document.title, location.pathname);
+      }
     });
 
     this.socket.on('disconnect', (res) => {
@@ -127,7 +154,7 @@ export default {
     this.socket.on('newHost', (hostId) => {
       console.log('newHost');
       console.log(hostId);
-      if(hostId == this.playerId) {
+      if (hostId == this.playerId) {
         this.isRoomHost = true;
       }
     });
@@ -176,7 +203,7 @@ export default {
     },
 
     resetState() {
-      for(let player of Object.values(this.roomState.players)) {
+      for (let player of Object.values(this.roomState.players)) {
         player.choice = -1;
       }
       this.roomState.revealed = false;
@@ -189,6 +216,20 @@ export default {
           this.resetState();
         }
       });
+    },
+
+    roomCodeClicked() {
+      if (this.showCopySuccess) return;
+
+      let currentLocation = location.protocol + '//' + location.host + location.pathname;
+      let params = `?room=${this.roomId}`;
+      navigator.clipboard.writeText(currentLocation + params);
+
+      this.showCopySuccess = true;
+
+      setTimeout(() => {
+        this.showCopySuccess = false;
+      }, 3000);
     }
   },
   computed: {
