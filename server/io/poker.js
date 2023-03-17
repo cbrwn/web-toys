@@ -2,15 +2,6 @@ const fakelish = require('fakelish');
 
 let rooms = {};
 
-function makeRandomName() {
-	let name = "";
-	let possible = "abcdefghijklmnopqrstuvwxyz";
-	for (let i = 0; i < 5; i++) {
-		name += possible.charAt(Math.floor(Math.random() * possible.length));
-	}
-	return name;
-}
-
 function getPlayerInfo(plr) {
 	return {
 		name: plr.name || "???",
