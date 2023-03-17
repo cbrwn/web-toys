@@ -6,6 +6,7 @@ function getPlayerInfo(plr) {
 	return {
 		name: plr.name || "???",
 		choice: plr.choice,
+		originalChoice: plr.originalChoice,
 	}
 }
 
@@ -54,6 +55,7 @@ async function createRoom() {
 		resetState: function () {
 			for (let plr of this.players) {
 				plr.choice = -1;
+				plr.originalChoice = null;
 			}
 			this.revealed = false;
 		}
@@ -84,6 +86,7 @@ export default function Svc(socket, io) {
 			socket.join(roomId);
 			socket.client.room = roomId;
 			socket.client.choice = -1;
+			socket.client.originalChoice = null;
 			socket.client.name = await fakelish.generateFakeWord(4, 7);
 			rooms[roomId].players.push(socket.client);
 
@@ -131,11 +134,19 @@ export default function Svc(socket, io) {
 				return { status: false, message: "you are not in a room!" };
 			}
 
+			if(rooms[socket.client.room].revealed && socket.client.choice == -1) {
+				return { status: false, message: "you can't vote after revealing!" };
+			}
+
+			if(rooms[socket.client.room].revealed && socket.client.choice != -1 && socket.client.originalChoice == null) {
+				socket.client.originalChoice = socket.client.choice;
+			}
+
 			socket.client.choice = req.choice;
 			let roomState = rooms[socket.client.room].getRoomState();
 			socket.to(socket.client.room).emit('updateRoomState', roomState);
 
-			return { status: true, choice: socket.client.choice };
+			return { status: true, choice: socket.client.choice, originalChoice: socket.client.originalChoice };
 		},
 
 		reveal() {
