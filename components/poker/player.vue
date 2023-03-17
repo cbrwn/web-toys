@@ -1,12 +1,13 @@
 <template>
-	<div class="flex flex-col items-center" :class="{ ['opacity-30']: player.choice < 0 }">
-		<div class="flex items-center justify-center bg-slate-500 rounded-lg w-16 h-20 text-4xl font-bold">
+	<div class="flex flex-col items-center transition-opacity" :class="{ ['opacity-30']: player.choice < 0 }">
+		<div class="flex items-center justify-center rounded-lg w-16 h-20 text-4xl font-bold"
+				:class="{['bg-slate-500']: !revealed, ['bg-blue-500']: revealed}">
 			<span v-if="revealed && player.choice >= 0">
-				<p v-if="player.originalChoice != null" class="-mb-3">
+				<p class="transition-all duration-300" :class="{['translate-y-2']: player.originalChoice != null}">
 					{{ choices[player.choice] }}
 				</p>
-				<p :class="{['opacity-50 text-xl line-through']: player.originalChoice != null}">
-					{{ player.originalChoice != null ? choices[player.originalChoice] : choices[player.choice] }}
+				<p v-if="player.originalChoice != null" class="opacity-50 text-xl line-through">
+					{{ choices[player.originalChoice] }}
 				</p>
 			</span>
 			<span v-else-if="revealed">
