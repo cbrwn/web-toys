@@ -171,5 +171,12 @@ export default function Svc(socket, io) {
 
 			return { status: true };
 		},
+
+		changeName(newName) {
+			socket.client.name = newName;
+			socket.to(socket.client.room).emit('updateRoomState', rooms[socket.client.room].getRoomState());
+
+			return { status: true, newName: newName };
+		}
 	})
 }

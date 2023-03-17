@@ -34,7 +34,7 @@
           </div>
 
           <div v-else>
-            <div class="flex flex-col items-center mb-5">
+            <div class="flex flex-col items-center mb-3">
               <p class="-mt-5">room code</p>
               <h2 class="flex flex-row items-center justify-center text-4xl cursor-pointer -mt-2 w-min"
                 v-on:click="roomCodeClicked">
@@ -55,8 +55,12 @@
             <div class="flex flex-col">
               name
               <div>
-                <input type="text" class="text-black" v-model="playerName" placeholder="player name" size="10">
-                <button class="bg-green-600 px-3 py-1 rounded-lg ml-3 cursor-pointer">yes</button>
+                <input type="text" class="text-black" v-model="playerName" placeholder="player name" size="10"
+                  v-on:keypress="event => { if (event.key == 'Enter') setName(); }">
+                <button class="px-3 py-1 bg-green-500 rounded-lg ml-3 transition-all" v-on:click="setName"
+                  :class="{ ['cursor-pointer']: nameEdited, ['cursor-default opacity-50']: !nameEdited }">
+                  set
+                </button>
               </div>
             </div>
 
@@ -194,6 +198,15 @@ export default {
       })
     },
 
+    setName() {
+      this.socket.emit('changeName', this.playerName, (response) => {
+        if (response.status) {
+          this.playerName = response.newName;
+          this.roomState.players[this.playerId].name = this.playerName;
+        }
+      });
+    },
+
     revealClicked() {
       this.socket.emit('reveal', null, (response) => {
         if (response.status) {
@@ -233,6 +246,9 @@ export default {
     }
   },
   computed: {
+    nameEdited() {
+      return this.playerName != this.roomState.players[this.playerId].name;
+    }
   }
 }
 </script>
