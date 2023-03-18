@@ -27,7 +27,9 @@ export default {
 			]
 		};
 	},
-	created() { document.title='cams internet toys'; }
+	created() {
+		document.title = 'cams internet toys';
+	}
 }
 
 definePageMeta({
