@@ -14,7 +14,8 @@
   },
   "dependencies": {
     "fakelish": "^0.3.0",
-    "nuxt-socket-io": "^3.0.12",
-    "ofetch": "^1.0.1"
+    "ofetch": "^1.0.1",
+    "socket.io": "^4.6.1",
+    "socket.io-client": "^4.6.1"
   }
 }

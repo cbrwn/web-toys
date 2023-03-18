@@ -95,6 +95,8 @@
 </template>
 
 <script>
+import io from 'socket.io-client'
+
 export default {
   layout: 'default',
   data() {
@@ -115,12 +117,8 @@ export default {
       console.log(n, o);
     }
   },
-  mounted() {
-    this.socket = this.$nuxtSocket({
-      name: 'poker',
-      channel: '/poker'
-    });
-
+  beforeMount() {
+    this.socket = io('localhost:3000');
     this.socket.on('connect', () => {
       console.log('connected');
       this.connectedState = 'connected';
@@ -168,7 +166,6 @@ export default {
       this.socket.emit('createRoom', {}, (response) => {
         this.joinRoom(response.roomId);
       });
-      console.log(this.emitErrors);
     },
 
     joinClicked() {
