@@ -23,12 +23,12 @@
         <div v-else>
           <!-- room selection/creation -->
           <div v-if="roomState == null" class="flex flex-col gap-4">
-            <button class="bg-green-400 p-4 rounded-lg cursor-pointer transition-all hover:scale-105"
+            <button class="bg-green-400 text-black text-2xl py-3 rounded-lg cursor-pointer transition-all hover:scale-105"
               v-on:click="createClicked">create room</button>
-            <div class="flex flex-row items-center gap-4">
-              <input type="text" size="10" class="dark:text-black text-4xl rounded-lg" ref="roomId"
-                placeholder="give me code" />
-              <button class="bg-blue-400 p-4 rounded-lg cursor-pointer transition-all hover:scale-105"
+            <div class="flex flex-row items-center">
+              <input type="text" size="10" class="px-4 h-12 dark:text-black text-4xl rounded-l-lg" ref="roomId"
+                placeholder="room code" />
+              <button class="bg-blue-400 text-black h-12 px-4 rounded-r-lg cursor-pointer transition-all hover:scale-105"
                 v-on:click="joinClicked">join room</button>
             </div>
           </div>
