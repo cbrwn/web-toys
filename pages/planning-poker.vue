@@ -73,7 +73,7 @@
             <div class="mt-5">
               <div class="flex flex-row justify-center gap-3 mt-1 transition-opacity" :class="{['opacity-50']: roomState.revealed && playerChoice==-1}">
                 <PokerChoice v-for="(choice, index) in roomState.choices" :key="index" :selected="playerChoice == index"
-                  v-on:click="choiceClicked(index)">
+                  :cardClicked="() => choiceClicked(index)">
                   {{ choice }}
                 </PokerChoice>
               </div>
