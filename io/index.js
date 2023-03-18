@@ -134,9 +134,7 @@ export default function (a, nuxt) {
           return callback({ status: false, message: "you are not in a room!" });
         }
 
-        socket.emit('updateRoomState', rooms[socket.client.room].getRoomState());
-
-        return callback({ status: true });
+        return callback({ status: true, roomState: rooms[socket.client.room].getRoomState() });
       });
 
       socket.on('makeChoice', (req, callback) => {

@@ -118,7 +118,7 @@ export default {
     }
   },
   beforeMount() {
-    this.socket = io('localhost:3000');
+    this.socket = io(document.location.origin);
     this.socket.on('connect', () => {
       console.log('connected');
       this.connectedState = 'connected';
@@ -182,7 +182,11 @@ export default {
         this.playerName = response.name;
         this.playerId = response.playerId;
 
-        this.socket.emit('getRoomState');
+        this.socket.emit('getRoomState', {}, (response) => {
+          if (response.status) {
+            this.roomState = response.roomState;
+          }
+        });
       })
     },
 
