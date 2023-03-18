@@ -80,6 +80,7 @@
               </div>
             </div>
 
+            <!-- choices -->
             <div class="mt-5">
               <div class="flex flex-row justify-center gap-3 mt-1 transition-opacity"
                 :class="{ ['opacity-50']: roomState.revealed && playerChoice == -1 }">
@@ -90,11 +91,24 @@
               </div>
             </div>
 
+            <div class="mt-2 rounded-xl bg-black/5 px-3 pb-2">
+              <div class="opacity-50 mb-1">
+                vibes
+              </div>
+              <div class="flex flex-row gap-4">
+                <PokerVibe v-for="(vibe, index) in confidenceValues" :key="index"
+                  :selected="roomState.players[playerId].confidence == index" :desc="vibe.desc"
+                  v-on:click="vibeClicked(index)">
+                  {{ vibe.icon }}
+                </PokerVibe>
+              </div>
+            </div>
+
             <div class="mt-5">
               players:
               <div class="flex flex-row justify-center gap-5 mt-1">
                 <PokerPlayer v-for="(player, key) in roomState.players" :key="key" :player="player"
-                  :revealed="roomState.revealed" :choices="roomState.choices" />
+                  :revealed="roomState.revealed" :choices="roomState.choices" :vibes="confidenceValues" />
               </div>
             </div>
           </div>
@@ -119,7 +133,12 @@ export default {
       playerChoice: -1,
       isRoomHost: false,
       roomState: null,
-      showCopySuccess: false
+      showCopySuccess: false,
+      confidenceValues: [
+        { icon: '🤔', desc: 'not sure' },
+        { icon: '😎', desc: 'nailed it' },
+        { icon: '🤠', desc: 'haha yes' },
+      ]
     }
   },
   created() { document.title = 'planning poker'; },
@@ -231,6 +250,8 @@ export default {
     resetState() {
       for (let player of Object.values(this.roomState.players)) {
         player.choice = -1;
+        player.confidence = null;
+        player.originalChoice = null;
       }
       this.roomState.revealed = false;
       this.playerChoice = -1;
@@ -256,6 +277,14 @@ export default {
       setTimeout(() => {
         this.showCopySuccess = false;
       }, 3000);
+    },
+
+    vibeClicked(index) {
+      this.socket.emit('vibe', index, (response) => {
+        if (response.status) {
+          this.roomState.players[this.playerId].confidence = response.newVibe;
+        }
+      })
     }
   },
   computed: {

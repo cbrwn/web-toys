@@ -1,4 +1,3 @@
-import http from 'http'
 import socketIO from 'socket.io'
 
 const fakelish = require('fakelish');
@@ -6,67 +5,69 @@ const fakelish = require('fakelish');
 let rooms = {};
 
 function getPlayerInfo(plr) {
-	return {
-		name: plr.name || "???",
-		choice: plr.choice,
-		originalChoice: plr.originalChoice,
-	}
+  return {
+    name: plr.name || "???",
+    choice: plr.choice,
+    originalChoice: plr.originalChoice,
+    confidence: plr.confidence,
+  }
 }
 
 async function createRoom() {
-	let roomId = '';
-	do {
-		roomId = await fakelish.generateFakeWord(4, 8);
-	} while (rooms.hasOwnProperty(roomId));
-	rooms[roomId] = {
-		players: [],
-		choices: ['0', '1', '2', '3', '5', '8', '13', '21', '34'],
-		host: '',
-		revealed: false,
+  let roomId = '';
+  do {
+    roomId = await fakelish.generateFakeWord(4, 8);
+  } while (rooms.hasOwnProperty(roomId));
+  rooms[roomId] = {
+    players: [],
+    choices: ['0', '1', '2', '3', '5', '8', '13', '21', '34'],
+    host: '',
+    revealed: false,
 
-		getPlayerInfos: function () {
-			let plrs = {};
-			this.players.forEach((player) => {
-				plrs[player.id] = getPlayerInfo(player);
-			});
-			return plrs;
-		},
+    getPlayerInfos: function () {
+      let plrs = {};
+      this.players.forEach((player) => {
+        plrs[player.id] = getPlayerInfo(player);
+      });
+      return plrs;
+    },
 
-		getRoomState: function () {
-			let infos = this.getPlayerInfos();
-			return {
-				roomId: roomId,
-				choices: this.choices,
-				players: infos,
-				revealed: this.revealed,
-			};
-		},
+    getRoomState: function () {
+      let infos = this.getPlayerInfos();
+      return {
+        roomId: roomId,
+        choices: this.choices,
+        players: infos,
+        revealed: this.revealed,
+      };
+    },
 
-		removePlayer: function (plr, socket) {
-			plr.room = null;
+    removePlayer: function (plr, socket) {
+      plr.room = null;
 
-			this.players = this.players.filter((player) => {
-				return player.id !== plr.id;
-			});
+      this.players = this.players.filter((player) => {
+        return player.id !== plr.id;
+      });
 
-			if (plr.id == this.host && this.players.length > 0) {
-				this.host = this.players[0].id;
-				socket.to(roomId).emit('newHost', this.host);
-			}
-		},
+      if (plr.id == this.host && this.players.length > 0) {
+        this.host = this.players[0].id;
+        socket.to(roomId).emit('newHost', this.host);
+      }
+    },
 
-		resetState: function () {
-			for (let plr of this.players) {
-				plr.choice = -1;
-				plr.originalChoice = null;
-			}
-			this.revealed = false;
-		}
-	};
+    resetState: function () {
+      for (let plr of this.players) {
+        plr.choice = -1;
+        plr.originalChoice = null;
+        plr.confidence = null;
+      }
+      this.revealed = false;
+    }
+  };
 
-	console.log(`Created room ${roomId}`);
+  console.log(`Created room ${roomId}`);
 
-	return roomId;
+  return roomId;
 }
 
 export default function (a, nuxt) {
@@ -97,6 +98,7 @@ export default function (a, nuxt) {
         socket.client.room = roomId;
         socket.client.choice = -1;
         socket.client.originalChoice = null;
+        socket.client.confidence = null;
         socket.client.name = await fakelish.generateFakeWord(4, 7);
         rooms[roomId].players.push(socket.client);
 
@@ -196,6 +198,26 @@ export default function (a, nuxt) {
         socket.to(socket.client.room).emit('updateRoomState', rooms[socket.client.room].getRoomState());
 
         return callback({ status: true, newName: newName });
+      });
+
+      socket.on('vibe', (vibeIndex, callback) => {
+        if (socket.client.room == null) {
+          return callback({ status: false, message: "you are not in a room!" });
+        }
+
+        if (socket.client.choice == -1) {
+          return callback({ status: false, message: "you have not made a choice yet!" });
+        }
+
+        if (socket.client.confidence === vibeIndex) {
+          socket.client.confidence = null;
+        } else {
+          socket.client.confidence = vibeIndex;
+        }
+
+        socket.to(socket.client.room).emit('updateRoomState', rooms[socket.client.room].getRoomState());
+
+        return callback({ status: true, newVibe: socket.client.confidence });
       });
     }); // io.on(connect)
   });
