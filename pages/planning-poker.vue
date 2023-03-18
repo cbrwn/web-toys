@@ -33,10 +33,10 @@
             </div>
           </div>
 
-          <div v-else>
-            <div class="flex flex-col items-center mb-3">
-              <p class="-mt-5">room code</p>
-              <h2 class="flex flex-row items-center justify-center text-4xl cursor-pointer -mt-2 w-min"
+          <div v-else class="flex flex-col items-center">
+            <!-- room code -->
+            <div class="flex flex-col items-center -mt-5 mb-3">
+              <h2 class="flex flex-row items-center justify-center text-3xl cursor-pointer -mt-2 w-min"
                 v-on:click="roomCodeClicked">
                 {{ roomId }} <span class="text-2xl select-none">
                   <span v-if="showCopySuccess">
@@ -49,29 +49,40 @@
                   </span>
                 </span>
               </h2>
-
-
+              <p class="-mt-2 opacity-50">room code</p>
             </div>
-            <div class="flex flex-col">
+
+            <!-- name -->
+            <div class="flex flex-col mb-3">
               name
               <div>
-                <input type="text" class="text-black" v-model="playerName" placeholder="player name" size="10"
+                <input type="text" class="text-black text-lg h-full px-2 py-1 rounded-l-lg outline-none"
+                  v-model="playerName" placeholder="player name" size="10"
                   v-on:keypress="event => { if (event.key == 'Enter') setName(); }">
-                <button class="px-3 py-1 bg-green-500 rounded-lg ml-3 transition-all" v-on:click="setName"
+                <button class="px-3 h-full rounded-r-lg bg-green-500 transition-all" v-on:click="setName"
                   :class="{ ['cursor-pointer']: nameEdited, ['cursor-default opacity-50']: !nameEdited }">
                   set
                 </button>
               </div>
             </div>
 
-            <div v-if="isRoomHost">
-              <button class="bg-yellow-500 px-3 py-1 rounded-lg ml-3 cursor-pointer"
-                v-on:click="revealClicked">reveal</button>
-              <button class="bg-red-500 px-3 py-1 rounded-lg ml-3 cursor-pointer" v-on:click="resetClicked">reset</button>
+            <!-- host controls -->
+            <div v-if="isRoomHost" class="w-min">
+              <div class="flex flex-row items-center mb-2">
+                <div class="flex-grow h-0.5 bg-black/30 dark:bg-white/30"></div>
+                <span class="text-sm mx-2">host</span>
+                <div class="flex-grow h-0.5 bg-black/30 dark:bg-white/30"></div>
+              </div>
+              <div class="flex flex-row -mt-2">
+                <PokerHostButton class="bg-yellow-500 rounded-l-lg 105">choices</PokerHostButton>
+                <PokerHostButton class="bg-blue-400" v-on:click="revealClicked">reveal</PokerHostButton>
+                <PokerHostButton class="bg-red-500 rounded-r-lg" v-on:click="resetClicked">reset</PokerHostButton>
+              </div>
             </div>
 
             <div class="mt-5">
-              <div class="flex flex-row justify-center gap-3 mt-1 transition-opacity" :class="{['opacity-50']: roomState.revealed && playerChoice==-1}">
+              <div class="flex flex-row justify-center gap-3 mt-1 transition-opacity"
+                :class="{ ['opacity-50']: roomState.revealed && playerChoice == -1 }">
                 <PokerChoice v-for="(choice, index) in roomState.choices" :key="index" :selected="playerChoice == index"
                   :cardClicked="() => choiceClicked(index)">
                   {{ choice }}
