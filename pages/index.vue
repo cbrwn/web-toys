@@ -24,6 +24,10 @@ export default {
 					name: 'quizzifier',
 					url: '/quizzifier'
 				},
+				{
+					name: 'planning poker',
+					url: '/planning-poker'
+				},
 			]
 		};
 	},
