@@ -219,6 +219,27 @@ export default function (a, nuxt) {
 
         return callback({ status: true, newVibe: socket.client.confidence });
       });
+
+      socket.on('newChoices', (choices, callback) => {
+        if (socket.client.room == null) {
+          return callback({ status: false, message: "you are not in a room!" });
+        }
+
+        if(rooms[socket.client.room].host !== socket.client.id) {
+          return callback({ status: false, message: "you are not the host of this room!" });
+        }
+
+        if(rooms[socket.client.room].revealed) {
+          return callback({ status: false, message: "room already revealed!" });
+        }
+
+        let room = rooms[socket.client.room];
+
+        room.choices = choices;
+        socket.to(socket.client.room).emit('updateRoomState', room.getRoomState());
+        return callback({ status: true, choices: room.choices });
+      });
+
     }); // io.on(connect)
   });
   /*

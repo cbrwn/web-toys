@@ -74,20 +74,28 @@
                 <div class="flex-grow h-0.5 bg-black/30 dark:bg-white/30"></div>
               </div>
               <div class="flex flex-row -mt-2">
-                <PokerHostButton class="bg-yellow-500 rounded-l-lg 105">choices</PokerHostButton>
-                <PokerHostButton class="bg-blue-400" v-on:click="revealClicked">reveal</PokerHostButton>
+                <PokerHostButton class="rounded-l-lg 105"
+                  :class="{ ['bg-yellow-500']: !editChoicesMode, ['bg-green-500']: editChoicesMode }"
+                  v-on:click="toggleChoiceEditing" :disable="roomState.revealed">
+                  {{ editChoicesMode ? "apply" : "choices" }}
+                </PokerHostButton>
+                <PokerHostButton class="bg-blue-400" v-on:click="revealClicked" :disable="editChoicesMode || roomState.revealed">reveal
+                </PokerHostButton>
                 <PokerHostButton class="bg-red-500 rounded-r-lg" v-on:click="resetClicked">reset</PokerHostButton>
               </div>
             </div>
 
             <!-- choices -->
             <div class="mt-5">
-              <div class="flex flex-row justify-center gap-3 mt-1 transition-opacity"
+              <div class="flex flex-wrap justify-center items-center gap-3 mt-1 transition-opacity"
                 :class="{ ['opacity-50']: roomState.revealed && playerChoice == -1 }">
-                <PokerChoice v-for="(choice, index) in roomState.choices" :key="index" :selected="playerChoice == index"
-                  :cardClicked="() => choiceClicked(index)">
-                  {{ choice }}
-                </PokerChoice>
+                <PokerChoice v-for="(choice, index) in roomState.choices" :item="choice" :key="index"
+                  :selected="playerChoice == index" :cardClicked="() => choiceClicked(index)"
+                  :onRemove="() => removeChoice(index)" :onEdited="(val) => editChoice(index, val)"
+                  :onMove="(d) => moveChoice(index, d)"
+                  :editMode="editChoicesMode && isRoomHost" />
+
+                <PokerChoice v-if="editChoicesMode" :cardClicked="addChoice" item="+" />
               </div>
             </div>
 
@@ -134,6 +142,7 @@ export default {
       isRoomHost: false,
       roomState: null,
       showCopySuccess: false,
+      editChoicesMode: false,
       confidenceValues: [
         { icon: '🤔', desc: 'not sure' },
         { icon: '😎', desc: 'nailed it' },
@@ -221,6 +230,8 @@ export default {
     },
 
     choiceClicked(idx) {
+      if (this.editChoicesMode) return;
+
       this.socket.emit('makeChoice', { choice: idx }, (response) => {
         if (response.status)
           this.playerChoice = response.choice;
@@ -240,6 +251,8 @@ export default {
     },
 
     revealClicked() {
+      if (this.editChoicesMode) return;
+
       this.socket.emit('reveal', null, (response) => {
         if (response.status) {
           this.roomState.revealed = true;
@@ -265,6 +278,20 @@ export default {
       });
     },
 
+    toggleChoiceEditing() {
+      if (this.roomState.revealed) return;
+
+      this.editChoicesMode = !this.editChoicesMode;
+
+      if (!this.editChoicesMode) {
+        this.socket.emit('newChoices', this.roomState.choices, (response) => {
+          if (response.status) {
+            this.roomState.choices = response.choices;
+          }
+        });
+      }
+    },
+
     roomCodeClicked() {
       if (this.showCopySuccess) return;
 
@@ -285,6 +312,25 @@ export default {
           this.roomState.players[this.playerId].confidence = response.newVibe;
         }
       })
+    },
+
+    addChoice() {
+      this.roomState.choices.push('?');
+    },
+
+    removeChoice(index) {
+      this.roomState.choices.splice(index, 1);
+    },
+
+    editChoice(index, val) {
+      this.roomState.choices[index] = val;
+    },
+
+    moveChoice(index, direction) {
+      if(index + direction < 0 || index + direction >= this.roomState.choices.length) return;
+      let temp = this.roomState.choices[index];
+      this.roomState.choices[index] = this.roomState.choices[index + direction];
+      this.roomState.choices[index + direction] = temp;
     }
   },
   computed: {
