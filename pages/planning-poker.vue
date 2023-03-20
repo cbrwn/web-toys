@@ -157,7 +157,7 @@ export default {
     }
   },
   beforeMount() {
-    this.socket = io(document.location.origin);
+    this.socket = io(document.location.origin + '/poker');
     this.socket.on('connect', () => {
       console.log('connected');
       this.connectedState = 'connected';
