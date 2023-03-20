@@ -1,7 +1,7 @@
 <template>
 	<div class="flex flex-col items-center transition-opacity" :class="{ ['opacity-30']: player.choice < 0 }">
 		<div class="flex items-center justify-center rounded-lg w-16 h-20 text-4xl font-bold relative"
-				:class="{['bg-slate-500']: !revealed, ['bg-blue-500']: revealed}">
+				:class="{['bg-gray-300 dark:bg-slate-500']: !revealed, ['bg-blue-400 dark:bg-blue-500']: revealed}">
 			<span v-if="revealed && player.choice >= 0">
 				<p class="transition-all duration-300" :class="{['translate-y-2']: player.originalChoice != null}">
 					{{ choices[player.choice] }}

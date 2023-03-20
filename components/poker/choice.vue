@@ -11,7 +11,7 @@
 			</div>
 		</div>
 		<div class="flex items-center justify-center w-16 h-20 text-4xl font-bold transition-all cursor-pointer select-none"
-			:class="{ ['bg-green-500 scale-110']: selected && !editMode, ['bg-slate-500 hover:scale-105']: !selected || editMode, ['rounded-lg']: !editMode }"
+			:class="{ ['bg-green-400 dark:bg-green-500 scale-110']: selected && !editMode, ['bg-gray-300 dark:bg-slate-500 hover:scale-105']: !selected || editMode, ['rounded-lg']: !editMode }"
 			v-on:click="cardClicked">
 			<span v-if="editText">
 				<input type="text" class="text-black text-center" v-model="editValue" size="1" ref="editBox"
