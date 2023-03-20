@@ -1,5 +1,6 @@
 import socketIO from 'socket.io';
-import poker from './poker'
+import poker from './poker';
+import standup from './standup';
 
 export default function (a, nuxt) {
   console.log('io module begin');
@@ -9,5 +10,6 @@ export default function (a, nuxt) {
     const io = socketIO(httpServer);
 
     poker.setup(io);
+    standup.setup(io);
   });
 }

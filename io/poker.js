@@ -92,8 +92,8 @@ setInterval(() => {
 let poker = {
     setup: function (io) {
         console.log('setting up poker :D');
-        const nsPoker = io.of('/poker');
-        nsPoker.on('connection', (socket) => {
+        const ns = io.of('/poker');
+        ns.on('connection', (socket) => {
             console.log('poker connection!');
 
             socket.on('createRoom', async (s, callback) => {
@@ -257,11 +257,7 @@ let poker = {
                 return callback({ status: true, choices: room.choices });
             });
 
-        }); // poker.on(connect)
-    },
-
-    changeThing: function (thing) {
-        doChange(thing);
+        }); // ns.on(connect)
     }
 };
 
