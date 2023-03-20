@@ -99,11 +99,11 @@
               </div>
             </div>
 
-            <div class="mt-2 rounded-xl bg-black/5 px-3 pb-2">
+            <div class="mt-2 rounded-xl px-3 text-gray-400 dark:text-gray-500">
               <div class="opacity-50 mb-1">
                 vibes
               </div>
-              <div class="flex flex-row gap-4">
+              <div class="flex flex-row gap-4 transition-opacity" :class="{['opacity-30']: playerChoice==-1}">
                 <PokerVibe v-for="(vibe, index) in confidenceValues" :key="index"
                   :selected="roomState.players[playerId].confidence == index" :desc="vibe.desc"
                   v-on:click="vibeClicked(index)">
