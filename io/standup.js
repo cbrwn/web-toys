@@ -312,6 +312,16 @@ let standup = {
 
                 return callback({ status: true });
             });
+
+            socket.on('react', (data, callback) => {
+                if (socket.client.room == null) {
+                    return callback({ status: false, message: "you are not in a room!" });
+                }
+
+                socket.to(rocket.client.room).emit('react', data.emoji);
+
+                return callback({ status: true, emoji: data.emoji });
+            });
         });
     }
 };
