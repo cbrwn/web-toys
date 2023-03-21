@@ -17,10 +17,15 @@
                 <div v-else class="w-full h-full">
                     <!-- join/create -->
                     <div v-if="roomState == null" class="flex justify-center items-center">
-                        <div class="flex flex-col w-min">
-                            <input type="text" class="text-black" v-model="joinId" />
-                            <button v-on:click="joinClicked">join room</button>
-                            <button v-on:click="createClicked">create room</button>
+                        <div class="flex flex-row w-full justify-center">
+                            <div class="flex flex-col items-center">
+                                <div class="w-min flex flex-col">
+                                    <h2 class="text-4xl -mt-5">welcome!</h2>
+                                    <p class="w-max opacity-50">enter your team's room name here to get started!</p>
+                                    <input type="text" class="text-black text-2xl p-2 text-center rounded-t-lg outline-none" placeholder="room name" v-model="joinId" />
+                                    <button class="bg-blue-500 text-lg rounded-b-lg py-2" v-on:click="joinClicked">join room</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -33,12 +38,12 @@
 
                                 <input type="text" class="outline-none text-black px-2 rounded-l-lg ml-2" size="8"
                                     v-model="tempName" v-on:keypress="event => { if (event.key == 'Enter') setName(); }" />
-                                <button class="bg-green-500 px-1 rounded-r-lg" v-on:click="setName">set name</button>
+                                <button class="bg-green-500 px-1 rounded-r-lg" :class="{['opacity-50 cursor-default']: tempName == myPlayer.name}" v-on:click="setName">set name</button>
                             </div>
                         </div>
 
                         <div class="flex-grow">
-                            <div class="flex flex-col pt-4" v-if="roomState.state == 'waiting'">
+                            <div class="flex flex-col flex-grow pt-4" v-if="roomState.state == 'waiting'">
                                 <h1 class="text-4xl">good morning!</h1>
                                 <p class="opacity-40">waiting for host to start...</p>
 
@@ -50,6 +55,8 @@
                                             standup!</button>
                                     </div>
                                 </div>
+
+                                <p class="mt-5 opacity-50">pro tip: bookmark this url to come back to this room every morning!</p>
                             </div>
                             <div class="flex flex-col h-full" v-else-if="roomState.state == 'running'">
                                 <div class="flex-grow flex flex-col justify-center items-center">
@@ -95,7 +102,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="flex flex-col h-full items-center justify-center" v-else-if="roomState.state == 'finished'">
+                            <div class="flex flex-col h-full items-center justify-center"
+                                v-else-if="roomState.state == 'finished'">
                                 <h1 class="text-4xl">that's everyone!</h1>
                                 <p>thanks for using the standup-o-matic 5000</p>
                                 <p>have a good day everyone!!</p>
@@ -140,6 +148,11 @@ export default {
         this.socket.on('connect', () => {
             console.log('connected');
             this.connectedState = 'connected';
+
+            if (this.$route.query.room) {
+                let roomString = this.$route.query.room;
+                this.joinOrCreateRoom(roomString);
+            }
         });
 
         this.socket.on('disconnect', () => {
@@ -150,7 +163,7 @@ export default {
         this.socket.on('updateRoomState', (roomState) => {
             this.roomState = roomState;
 
-            if(roomState.state != 'running') {
+            if (roomState.state != 'running') {
                 this.hasHadTurn = false;
             }
         });
@@ -164,7 +177,7 @@ export default {
             console.log('setRunningStatus', state);
             this.roomState.state = state;
 
-            if(state != 'running') {
+            if (state != 'running') {
                 this.hasHadTurn = false;
             }
         });
@@ -189,7 +202,12 @@ export default {
         }
     },
     methods: {
-        joinRoom(roomId) {
+        joinOrCreateRoom(roomId) {
+            this.joinRoom(roomId, (failId) => {
+                this.createRoom(failId);
+            });
+        },
+        joinRoom(roomId, onFail) {
             let playerName = 'standupper';
             if (localStorage.getItem('name') != null) {
                 playerName = localStorage.getItem('name');
@@ -197,6 +215,10 @@ export default {
             this.socket.emit('join', { roomId: roomId, name: playerName }, (res) => {
                 if (!res.status) {
                     console.log(res.message);
+                    if (onFail) {
+                        onFail(roomId);
+                    }
+                    return;
                 }
 
                 this.playerId = res.id;
@@ -204,6 +226,8 @@ export default {
 
                 localStorage.setItem('lastRoomId', roomId);
                 localStorage.setItem('name', res.name);
+
+                window.history.replaceState(null, document.title, location.pathname + '?room=' + roomId);
             });
         },
         createRoom(roomId) {
@@ -214,8 +238,7 @@ export default {
             });
         },
 
-        joinClicked() { this.joinRoom(this.joinId); },
-        createClicked() { this.createRoom(this.joinId); },
+        joinClicked() { this.joinOrCreateRoom(this.joinId); },
 
         setName() {
             this.socket.emit('setName', { name: this.tempName }, (res) => {
@@ -233,6 +256,7 @@ export default {
             this.socket.emit('leave', {}, (res) => {
                 if (res.status) {
                     this.roomState = null;
+                    window.history.replaceState(null, document.title, location.pathname);
                 }
             });
         },
