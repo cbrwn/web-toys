@@ -182,7 +182,10 @@ let standup = {
                 socket.once('disconnect', () => {
                     let roomId = socket.client.room;
                     rooms[roomId].leave(socket);
-                    rooms[roomId].sendRoomState(socket.to(roomId));
+                    rooms[roomId].sendRoomState(ns.to(roomId));
+                    if (rooms[roomId].state == 'running') {
+                        rooms[roomId].broadcastOrder(ns.to(roomId));
+                    }
                 });
 
                 return callback({ status: true, roomId: data.roomId, name: socket.client.name, id: socket.client.id });
@@ -206,6 +209,9 @@ let standup = {
                 let room = rooms[socket.client.room];
                 room.leave(socket);
                 room.sendRoomState(socket.to(room.id));
+                if (room.state == 'running') {
+                    room.broadcastOrder(ns.to(room.id));
+                }
 
                 // disconnect just removes them from the room, don't need that if they leave
                 socket.removeAllListeners('disconnect');
