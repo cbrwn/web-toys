@@ -22,8 +22,10 @@
                                 <div class="w-min flex flex-col">
                                     <h2 class="text-4xl -mt-5">welcome!</h2>
                                     <p class="w-max opacity-50">enter your team's room name here to get started!</p>
-                                    <input type="text" class="text-black text-2xl p-2 text-center rounded-t-lg outline-none" placeholder="room name" v-model="joinId" />
-                                    <button class="bg-blue-500 text-lg rounded-b-lg py-2" v-on:click="joinClicked">join room</button>
+                                    <input type="text" class="text-black text-2xl p-2 text-center rounded-t-lg outline-none"
+                                        placeholder="room name" v-model="joinId" />
+                                    <button class="bg-blue-500 text-lg rounded-b-lg py-2" v-on:click="joinClicked">join
+                                        room</button>
                                 </div>
                             </div>
                         </div>
@@ -38,11 +40,14 @@
 
                                 <input type="text" class="outline-none text-black px-2 rounded-l-lg ml-2" size="8"
                                     v-model="tempName" v-on:keypress="event => { if (event.key == 'Enter') setName(); }" />
-                                <button class="bg-green-500 px-1 rounded-r-lg" :class="{['opacity-50 cursor-default']: tempName == myPlayer.name}" v-on:click="setName">set name</button>
+                                <button class="bg-green-500 px-1 rounded-r-lg"
+                                    :class="{ ['opacity-50 cursor-default']: tempName == myPlayer.name }"
+                                    v-on:click="setName">set name</button>
                             </div>
                         </div>
 
                         <div class="flex-grow">
+                            <!-- waiting for host -->
                             <div class="flex flex-col flex-grow pt-4" v-if="roomState.state == 'waiting'">
                                 <h1 class="text-4xl">good morning!</h1>
                                 <p class="opacity-40">waiting for host to start...</p>
@@ -56,8 +61,11 @@
                                     </div>
                                 </div>
 
-                                <p class="mt-5 opacity-50">pro tip: bookmark this url to come back to this room every morning!</p>
+                                <p class="mt-5 opacity-50">pro tip: bookmark this url to come back to this room every
+                                    morning!</p>
                             </div>
+
+                            <!-- standup running! -->
                             <div class="flex flex-col h-full" v-else-if="roomState.state == 'running'">
                                 <div class="flex-grow flex flex-col justify-center items-center">
                                     <p class="-mb-1">
@@ -67,6 +75,15 @@
                                         {{ getCurrentPlayer.name }}
                                     </h1>
 
+                                    <div v-if="isUpNext" class="flex flex-row mt-3">
+                                        <StandupJingle i="1" />
+                                        <div>
+                                        <p class="text-xl">get ready {{ myPlayer.name }}!!</p>
+                                        <p class="-mt-2">you're up next!</p>
+                                        </div>
+                                        <StandupJingle i="0" />
+                                    </div>
+
                                     <div v-if="isMyTurn">
                                         <p class="opacity-80">
                                             ^ that's you!
@@ -75,9 +92,6 @@
                                         <button class="bg-green-500 px-10 py-5 rounded-xl mt-5"
                                             v-on:click="finishedTurn">all done!</button>
                                     </div>
-                                </div>
-                                <div v-if="isUpNext" class="animate-pulse">
-                                    you're up next!!
                                 </div>
 
                                 <div class="flex flex-col items-center mt-5">
@@ -102,6 +116,8 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- standup finished -->
                             <div class="flex flex-col h-full items-center justify-center"
                                 v-else-if="roomState.state == 'finished'">
                                 <h1 class="text-4xl">that's everyone!</h1>
