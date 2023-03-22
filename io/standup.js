@@ -85,11 +85,19 @@ function createRoom(name) {
         stop: function () {
             this.state = 'finished';
             this.order = [];
+
+            for (let player of this.people) {
+                player.comeBack = false;
+            }
         },
 
         reset: function () {
             this.state = 'waiting';
             this.order = [];
+
+            for (let player of this.people) {
+                player.comeBack = false;
+            }
         },
 
         broadcastOrder: function (ns) {
@@ -101,7 +109,6 @@ function createRoom(name) {
             if (this.order.length > 1) {
                 nextId = this.people[this.order[1]].id;
             }
-            console.log('broadcasting order to namespace');
             ns.to(this.id).emit('updateOrder', {
                 now: nowId,
                 next: nextId,
@@ -119,19 +126,13 @@ function createRoom(name) {
         },
 
         comeBack: function (client) {
-            console.log('comeBack: ' + client.id);
             let index = this.people.indexOf(client);
             let orderIndex = this.order.indexOf(index);
 
-            console.log('orderIndex: ' + orderIndex);
-            console.log('index: ' + index);
-
-            console.log('before', this.order);
             if (orderIndex > -1) {
                 this.order.splice(orderIndex, 1);
                 this.order.push(index);
             }
-            console.log('after', this.order);
 
             return orderIndex <= 1;
         }
@@ -169,8 +170,6 @@ let standup = {
 
                 let room = rooms[data.roomId];
                 socket.client.name = data.name;
-                console.log(data);
-                console.log(socket.client.name);
                 room.join(socket);
 
                 room.sendRoomState(socket);
