@@ -4,6 +4,7 @@
             <Header title="standup">
             </Header>
             <ContentContainer class="overflow-clip" :class="{ ['flex-grow']: roomState != null }">
+                <StandupEmojiSpam ref="spam" />
                 <!-- Connecting -->
                 <div v-if="connectedState == 'connecting'">
                     connecting to server...
@@ -14,7 +15,7 @@
                     disconnected!! trying to reconnect..
                 </div>
 
-                <div v-else class="w-full h-full">
+                <div v-else class="w-full h-full z-50">
                     <!-- join/create -->
                     <div v-if="roomState == null" class="flex justify-center items-center">
                         <div class="flex flex-row w-full justify-center">
@@ -66,7 +67,7 @@
                             </div>
 
                             <!-- standup running! -->
-                            <div class="flex flex-col h-full" v-else-if="roomState.state == 'running'">
+                            <div class="flex flex-col items-center h-full" v-else-if="roomState.state == 'running'">
                                 <div class="flex-grow flex flex-col justify-center items-center">
                                     <p class="-mb-1">
                                         let's hear from...
@@ -92,6 +93,12 @@
                                         <button class="bg-green-500 px-10 py-5 rounded-xl mt-5"
                                             v-on:click="finishedTurn">all done!</button>
                                     </div>
+                                </div>
+
+                                <div class="flex flex-row gap-2" v-if="!isMyTurn">
+                                    <StandupEmojiPicker v-for="(emoji, index) in reactEmojis" :key="index" v-on:click="() => emojiClicked(index)">
+                                        {{ emoji }}
+                                    </StandupEmojiPicker>
                                 </div>
 
                                 <div class="flex flex-col items-center mt-5">
@@ -152,7 +159,8 @@ export default {
             tempName: '',
             playerId: '',
             hasHadTurn: false,
-            order: {}
+            order: {},
+            reactEmojis: ['😆', '😮', '😢', '🤯', '🥳', '👏', '🙌', '🏆', '🎷', '❤️']
         }
     },
     created() {
@@ -196,6 +204,10 @@ export default {
             if (state != 'running') {
                 this.hasHadTurn = false;
             }
+        });
+
+        this.socket.on('react', (emojiIndex) => {
+            this.$refs.spam.addEmoji(this.reactEmojis[emojiIndex]);
         });
     },
     computed: {
@@ -305,6 +317,14 @@ export default {
                 if (res.status) {
                     this.roomState.state = 'waiting';
                     this.hasHadTurn = false;
+                }
+            });
+        },
+
+        emojiClicked(index) {
+            this.socket.emit('react', {emoji: index}, (res) => {
+                if (res.status) {
+                    this.$refs.spam.addEmoji(this.reactEmojis[index]);
                 }
             });
         }
