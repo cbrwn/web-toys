@@ -8,6 +8,7 @@
             <span v-for="(person, index) in people" :key="index">
                 <span v-if="person.id == hostid">👑</span>
                 {{ person.name }}
+                <span v-if="person.owner == myId" class="cursor-pointer" v-on:click="() => removePerson(person.id)">❌</span>
             </span>
         </div>
     </div>
@@ -15,6 +16,6 @@
 
 <script>
 export default {
-    props: ['people', 'hostid']
+    props: ['people', 'hostid', 'myId', 'removePerson']
 }
 </script>

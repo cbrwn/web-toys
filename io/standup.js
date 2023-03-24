@@ -22,6 +22,48 @@ function createRoom(name) {
             }
         },
 
+        addPlayer: function (owner, name) {
+            this.people.push({
+                owner: owner.client.id,
+                name: name,
+                comeBack: false,
+                id: Math.random().toString(36).substring(2, 15)
+            });
+
+            if (this.state == 'running') {
+                this.order.push(this.people.length - 1);
+            }
+        },
+
+        removePlayer: function (owner, id) {
+            for (let i = 0; i < this.people.length; i++) {
+                if (this.people[i].owner === owner.client.id && this.people[i].id === id) {
+                    // update order of indices if running
+                    if (this.order.length > 0) {
+                        let orderIndex = this.order.indexOf(i);
+
+                        if (orderIndex > -1) {
+                            this.order.splice(orderIndex, 1);
+                        }
+
+                        for (let j = 0; j < this.order.length; j++) {
+                            if (this.order[j] > i) {
+                                this.order[j]--;
+                            }
+                        }
+
+                        if (this.order.length === 0) {
+                            this.state = 'finished';
+                        }
+                    }
+
+                    this.people.splice(i, 1);
+                    return true;
+                }
+            }
+            return false;
+        },
+
         leave: function (socket) {
             socket.leave(this.id);
             let index = this.people.indexOf(socket.client);
@@ -30,6 +72,15 @@ function createRoom(name) {
 
             if (this.host === socket.client.id) {
                 this.host = (this.people.length > 0) ? this.people[0].id : '';
+            }
+
+            for(let i = 0; i < this.people.length; i++) {
+                if(this.people[i].owner === socket.client.id) {
+                    if(this.removePlayer(socket.client, this.people[i].id))
+                    {
+                        i--;
+                    }
+                }
             }
 
             // update order of indices if running
@@ -45,6 +96,10 @@ function createRoom(name) {
                         this.order[i]--;
                     }
                 }
+
+                if (this.order.length === 0) {
+                    this.state = 'finished';
+                }
             }
 
             if (this.people.length === 0) {
@@ -59,6 +114,7 @@ function createRoom(name) {
                     id: player.id,
                     name: player.name,
                     comeBack: player.comeBack,
+                    owner: player.owner
                 });
             }
 
@@ -176,7 +232,7 @@ let standup = {
                 socket.client.name = data.name;
                 room.join(socket);
 
-                if(data.claimHost) {
+                if (data.claimHost) {
                     room.claimHost(socket.client);
                 }
 
@@ -332,7 +388,7 @@ let standup = {
                 }
 
                 let nowTime = Date.now();
-                if(socket.client.lastReactTime != null && nowTime - socket.client.lastReactTime < 1000) {
+                if (socket.client.lastReactTime != null && nowTime - socket.client.lastReactTime < 1000) {
                     return callback({ status: false, message: "react cooldown" });
                 }
 
@@ -340,6 +396,40 @@ let standup = {
                 socket.client.lastReactTime = nowTime;
 
                 return callback({ status: true, emoji: data.emoji });
+            });
+
+            socket.on('addPerson', (data, callback) => {
+                if (socket.client.room == null) {
+                    return callback({ status: false, message: "you are not in a room!" });
+                }
+
+                if (rooms[socket.client.room].host !== socket.client.id) {
+                    return callback({ status: false, message: "you are not the host of this room!" });
+                }
+
+                let room = rooms[socket.client.room];
+                room.addPlayer(socket, '👻' + data.name);
+
+                room.sendRoomState(socket);
+                room.sendRoomState(socket.to(room.id));
+
+                return callback({ status: true });
+            });
+
+            socket.on('removePerson', (data, callback) => {
+                if (socket.client.room == null) {
+                    return callback({ status: false, message: "you are not in a room!" });
+                }
+
+                let room = rooms[socket.client.room];
+                let removed = room.removePlayer(socket, data.id);
+
+                if (removed) {
+                    room.sendRoomState(socket);
+                    room.sendRoomState(socket.to(room.id));
+                }
+
+                return callback({ status: removed });
             });
         });
     }

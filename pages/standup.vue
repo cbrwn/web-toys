@@ -64,6 +64,8 @@
 
                                 <p class="mt-5 opacity-50">pro tip: bookmark this url to come back to this room every
                                     morning!</p>
+
+                                <StandupHostControls v-if="isHost" :state="roomState.state" :playerName="getCurrentPlayer.name" :addFn="(name) => addPerson(name)" :skipFn="skipOtherPlayer" />
                             </div>
 
                             <!-- standup running! -->
@@ -93,15 +95,9 @@
                                         <button class="bg-green-500 px-10 py-5 rounded-xl mt-5"
                                             v-on:click="finishedTurn">all done!</button>
                                     </div>
-                                    <div v-else-if="isHost" class="flex flex-col mt-5">
-                                        <p class="opacity-50">
-                                            special host controls
-                                        </p>
-                                        <div>
-                                            <button class="bg-blue-500 p-2 rounded-xl" v-on:click="skipOtherPlayer">skip {{
-                                                getCurrentPlayer.name }}</button>
-                                        </div>
-                                    </div>
+
+                                    <StandupHostControls v-if="isHost" :state="roomState.state" :playerName="getCurrentPlayer.name" :addFn="(name) => addPerson(name)" :skipFn="skipOtherPlayer" />
+
                                 </div>
 
                                 <div class="flex flex-row gap-2" v-if="!isMyTurn">
@@ -147,7 +143,8 @@
                             </div>
                         </div>
 
-                        <StandupPeople :people="roomState.players" :hostid="roomState.host" />
+                        <StandupPeople :people="roomState.players" :hostid="roomState.host" :myId="playerId"
+                            :removePerson="(id) => removePerson(id)" />
                     </div>
 
                 </div>
@@ -341,6 +338,14 @@ export default {
                     this.$refs.spam.addEmoji(this.reactEmojis[index]);
                 }
             });
+        },
+
+        addPerson(name) {
+            this.socket.emit('addPerson', { name: name }, (res) => { });
+        },
+
+        removePerson(id) {
+            this.socket.emit('removePerson', { id: id }, (res) => { });
         }
     }
 }
