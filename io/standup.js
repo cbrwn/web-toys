@@ -323,7 +323,13 @@ let standup = {
                     return callback({ status: false, message: "you are not in a room!" });
                 }
 
+                let nowTime = Date.now();
+                if(socket.client.lastReactTime != null && nowTime - socket.client.lastReactTime < 1000) {
+                    return callback({ status: false, message: "react cooldown" });
+                }
+
                 socket.to(socket.client.room).emit('react', data.emoji);
+                socket.client.lastReactTime = nowTime;
 
                 return callback({ status: true, emoji: data.emoji });
             });
