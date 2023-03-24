@@ -79,8 +79,8 @@
                                     <div v-if="isUpNext" class="flex flex-row mt-3">
                                         <StandupJingle i="1" />
                                         <div>
-                                        <p class="text-xl">get ready {{ myPlayer.name }}!!</p>
-                                        <p class="-mt-2">you're up next!</p>
+                                            <p class="text-xl">get ready {{ myPlayer.name }}!!</p>
+                                            <p class="-mt-2">you're up next!</p>
                                         </div>
                                         <StandupJingle i="0" />
                                     </div>
@@ -93,10 +93,20 @@
                                         <button class="bg-green-500 px-10 py-5 rounded-xl mt-5"
                                             v-on:click="finishedTurn">all done!</button>
                                     </div>
+                                    <div v-else-if="isHost" class="flex flex-col mt-5">
+                                        <p class="opacity-50">
+                                            special host controls
+                                        </p>
+                                        <div>
+                                            <button class="bg-blue-500 p-2 rounded-xl" v-on:click="skipOtherPlayer">skip {{
+                                                getCurrentPlayer.name }}</button>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="flex flex-row gap-2" v-if="!isMyTurn">
-                                    <StandupEmojiPicker v-for="(emoji, index) in reactEmojis" :key="index" v-on:click="() => emojiClicked(index)">
+                                    <StandupEmojiPicker v-for="(emoji, index) in reactEmojis" :key="index"
+                                        v-on:click="() => emojiClicked(index)">
                                         {{ emoji }}
                                     </StandupEmojiPicker>
                                 </div>
@@ -312,6 +322,10 @@ export default {
             });
         },
 
+        skipOtherPlayer() {
+            this.socket.emit('next', {}, (res) => { });
+        },
+
         resetRoom() {
             this.socket.emit('reset', {}, (res) => {
                 if (res.status) {
@@ -322,7 +336,7 @@ export default {
         },
 
         emojiClicked(index) {
-            this.socket.emit('react', {emoji: index}, (res) => {
+            this.socket.emit('react', { emoji: index }, (res) => {
                 if (res.status) {
                     this.$refs.spam.addEmoji(this.reactEmojis[index]);
                 }
