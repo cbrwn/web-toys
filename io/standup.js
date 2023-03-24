@@ -135,6 +135,10 @@ function createRoom(name) {
             }
 
             return orderIndex <= 1;
+        },
+
+        claimHost: function (client) {
+            this.host = client.id;
         }
     };
 }
@@ -171,6 +175,10 @@ let standup = {
                 let room = rooms[data.roomId];
                 socket.client.name = data.name;
                 room.join(socket);
+
+                if(data.claimHost) {
+                    room.claimHost(socket.client);
+                }
 
                 room.sendRoomState(socket);
                 room.sendRoomState(socket.to(room.id));

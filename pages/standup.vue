@@ -185,7 +185,7 @@ export default {
 
             if (this.$route.query.room) {
                 let roomString = this.$route.query.room;
-                this.joinOrCreateRoom(roomString);
+                this.joinOrCreateRoom(roomString, this.$route.query.host);
             }
         });
 
@@ -240,17 +240,17 @@ export default {
         }
     },
     methods: {
-        joinOrCreateRoom(roomId) {
-            this.joinRoom(roomId, (failId) => {
+        joinOrCreateRoom(roomId, claimHost) {
+            this.joinRoom(roomId, claimHost, (failId) => {
                 this.createRoom(failId);
             });
         },
-        joinRoom(roomId, onFail) {
+        joinRoom(roomId, claimHost, onFail) {
             let playerName = 'standupper';
             if (localStorage.getItem('name') != null) {
                 playerName = localStorage.getItem('name');
             }
-            this.socket.emit('join', { roomId: roomId, name: playerName }, (res) => {
+            this.socket.emit('join', { roomId: roomId, claimHost: claimHost, name: playerName }, (res) => {
                 if (!res.status) {
                     console.log(res.message);
                     if (onFail) {
