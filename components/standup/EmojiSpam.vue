@@ -34,10 +34,15 @@ export default {
 
 			const rotateMax = Math.PI/8;
 
+			let nowTime = Date.now();
+			const yHeight = height*1.2;
 			for(let i = 0; i < this.emojis.length; i++) {
 				ctx.save();
+
+				let t = nowTime - this.emojis[i].time;
+
 				let x = this.emojis[i].x * width;
-				let y = this.emojis[i].y * height;
+				let y = yHeight - ((t/2000) * yHeight);
 				let r = this.emojis[i].r;
 				let emoji = this.emojis[i].emoji;
 				ctx.translate(x, y);
@@ -46,9 +51,7 @@ export default {
 
 				ctx.restore();
 
-				this.emojis[i].y -= 0.01;
-
-				if(this.emojis[i].y < -0.1) {
+				if(y < -100) {
 					this.emojis.splice(i, 1);
 					i--;
 				}
@@ -58,7 +61,7 @@ export default {
 			window.requestAnimationFrame(this.draw);
 		},
 		addEmoji(emoji) {
-			this.emojis.push({emoji: emoji, x: Math.random() * 0.8, y: 1.2, r: Math.random()});
+			this.emojis.push({emoji: emoji, x: Math.random() * 0.8, r: Math.random(), time: Date.now()});
 		}
 	}
 }
