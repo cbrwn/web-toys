@@ -104,7 +104,7 @@
 
                                 </div>
 
-                                <div class="flex flex-row gap-2" v-if="!isMyTurn">
+                                <div class="flex flex-row gap-2 transition-opacity" :class="{['opacity-50']: !canReact}" v-if="!isMyTurn">
                                     <StandupEmojiPicker v-for="(emoji, index) in reactEmojis" :key="index"
                                         v-on:click="() => emojiClicked(index)">
                                         {{ emoji }}
@@ -196,6 +196,7 @@ export default {
             hasHadTurn: false,
             order: {},
             reactEmojis: ['😆', '😮', '😢', '🤯', '🥳', '👏', '🙌', '🏆', '🎷', '❤️'],
+            canReact: true,
             nameSetted: false
         }
     },
@@ -370,6 +371,9 @@ export default {
             this.socket.emit('react', { emoji: index }, (res) => {
                 if (res.status) {
                     this.$refs.spam.addEmoji(this.reactEmojis[index]);
+
+                    this.canReact = false;
+                    setTimeout(() => this.canReact = true, 950);
                 }
             });
         },
