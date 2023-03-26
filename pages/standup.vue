@@ -65,7 +65,9 @@
                                 <p class="mt-5 opacity-50">pro tip: bookmark this url to come back to this room every
                                     morning!</p>
 
-                                <StandupHostControls v-if="isHost" :state="roomState.state" :playerName="getCurrentPlayer.name" :addFn="(name) => addPerson(name)" :skipFn="skipOtherPlayer" />
+                                <StandupHostControls v-if="isHost" :state="roomState.state"
+                                    :playerName="getCurrentPlayer.name" :addFn="(name) => addPerson(name)"
+                                    :skipFn="skipOtherPlayer" />
                             </div>
 
                             <!-- standup running! -->
@@ -96,7 +98,9 @@
                                             v-on:click="finishedTurn">all done!</button>
                                     </div>
 
-                                    <StandupHostControls v-if="isHost" :state="roomState.state" :playerName="getCurrentPlayer.name" :addFn="(name) => addPerson(name)" :skipFn="skipOtherPlayer" />
+                                    <StandupHostControls v-if="isHost" :state="roomState.state"
+                                        :playerName="getCurrentPlayer.name" :addFn="(name) => addPerson(name)"
+                                        :skipFn="skipOtherPlayer" />
 
                                 </div>
 
@@ -148,6 +152,30 @@
                     </div>
 
                 </div>
+
+                <div v-if="roomState != null && !hasSetName"
+                    class="flex justify-center items-center fixed left-0 top-0 w-full h-full bg-black/50 z-50">
+                    <div class="flex flex-col bg-slate-600 w-1/3 h-min rounded-3xl pt-5">
+                        <h2 class="text-2xl">
+                            welcome to standup :)
+                        </h2>
+
+                        <div class="flex-grow flex flex-col justify-center items-center pb-5">
+                            <p class="mb-2">please set your name!</p>
+
+                            <div class="rounded-xl overflow-clip border-solid border-black border-2">
+                                <div class="bg-red-600 w-full">
+                                    <p class="text-2xl -mb-3">hello</p>
+                                    <p>my name is</p>
+                                </div>
+                                <input type="text" class="text-black text-center py-3 text-xl outline-none w-full" v-model="tempName"
+                                    v-on:keypress="event => { if (event.key == 'Enter') setName(); }" />
+                                <div class="bg-red-600 w-full h-4"></div>
+                            </div>
+                            <button class="bg-green-500 rounded-lg mt-3 py-2 px-4 disabled:opacity-50 transition-all" v-on:click="setName" :disabled="tempName == 'standupper'">set name</button>
+                        </div>
+                    </div>
+                </div>
             </ContentContainer>
         </div>
     </div>
@@ -167,7 +195,8 @@ export default {
             playerId: '',
             hasHadTurn: false,
             order: {},
-            reactEmojis: ['😆', '😮', '😢', '🤯', '🥳', '👏', '🙌', '🏆', '🎷', '❤️']
+            reactEmojis: ['😆', '😮', '😢', '🤯', '🥳', '👏', '🙌', '🏆', '🎷', '❤️'],
+            nameSetted: false
         }
     },
     created() {
@@ -234,6 +263,9 @@ export default {
         },
         isUpNext() {
             return this.order.next == this.playerId;
+        },
+        hasSetName() {
+            return localStorage.getItem('hasSetName') || this.nameSetted;
         }
     },
     methods: {
@@ -283,6 +315,8 @@ export default {
                     this.myPlayer.name = res.name;
 
                     localStorage.setItem('name', res.name);
+                    localStorage.setItem('hasSetName', true);
+                    this.nameSetted = true;
                 }
             });
         },
