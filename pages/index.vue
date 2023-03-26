@@ -12,21 +12,29 @@ export default {
 	data() {
 		return {
 			pages: [
-				{
+/* 				{
 					name: 'life checklist',
 					url: '/life-checklist'
-				},
+				}, */
 				{
 					name: 'the wheel',
-					url: '/the-wheel'
+					url: '/the-wheel',
+					desc: 'let the wheel decide'
 				},
 				{
 					name: 'quizzifier',
-					url: '/quizzifier'
+					url: '/quizzifier',
+					desc: 'test your knowledge'
 				},
 				{
 					name: 'planning poker',
-					url: '/planning-poker'
+					url: '/planning-poker',
+					desc: "let's get agile"
+				},
+				{
+					name: 'standup',
+					url: '/standup',
+					desc: 'virtual real life huddle'
 				},
 			]
 		};
