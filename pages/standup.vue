@@ -155,7 +155,7 @@
 
                 <div v-if="roomState != null && !hasSetName"
                     class="flex justify-center items-center fixed left-0 top-0 w-full h-full bg-black/50 z-50">
-                    <div class="flex flex-col bg-slate-600 w-1/3 h-min rounded-3xl pt-5">
+                    <div class="flex flex-col bg-slate-300 dark:bg-slate-600 w-1/3 h-min rounded-3xl pt-5">
                         <h2 class="text-2xl">
                             welcome to standup :)
                         </h2>
@@ -164,7 +164,7 @@
                             <p class="mb-2">please set your name!</p>
 
                             <div class="rounded-xl overflow-clip border-solid border-black border-2">
-                                <div class="bg-red-600 w-full">
+                                <div class="bg-red-600 w-full text-white">
                                     <p class="text-2xl -mb-3">hello</p>
                                     <p>my name is</p>
                                 </div>
