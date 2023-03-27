@@ -539,7 +539,7 @@ let standup = {
                 }
 
                 socket.to(socket.client.room).emit('react', { emoji: data.emoji, who: socket.client.id });
-                //socket.client.lastReactTime = nowTime;
+                socket.client.lastReactTime = nowTime;
 
                 let room = rooms[socket.client.room];
                 room.onEmojiSend(socket.client.id, room.people[room.order[0]].id, data.emoji);
