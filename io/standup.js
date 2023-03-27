@@ -392,7 +392,7 @@ let standup = {
                     return callback({ status: false, message: "react cooldown" });
                 }
 
-                socket.to(socket.client.room).emit('react', data.emoji);
+                socket.to(socket.client.room).emit('react', { emoji: data.emoji, who: socket.client.id });
                 socket.client.lastReactTime = nowTime;
 
                 return callback({ status: true, emoji: data.emoji });
