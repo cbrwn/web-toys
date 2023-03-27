@@ -281,21 +281,16 @@ function createRoom(name) {
             ];
 
             let createAward = (award, emojiStats) => {
-                console.log(`creating award ${award.title} - ${award.type}`);
                 let statKeys = Object.keys(emojiStats[award.type]);
                 let highestKey = null;
                 let highestValue = 0;
                 for (let i = 0; i < statKeys.length; i++) {
                     let value = emojiStats[award.type][statKeys[i]][award.emojiIndex];
-                    console.log(value);
                     if(value > highestValue) {
                         highestKey = statKeys[i];
                         highestValue = value;
                     }
                 }
-
-                console.log(`highest key: ${highestKey}`);
-                console.log(`highest value: ${highestValue}`);
 
                 if(highestKey === null) {
                     return null;
@@ -311,11 +306,9 @@ function createRoom(name) {
 
             let result = [];
 
-            console.log(this.emojiStats);
             for (let i = 0; i < awards.length; i++) {
                 let award = createAward(awards[i], this.emojiStats);
                 if(award !== null) {
-                    console.log(award);
                     result.push(award);
                 }
             }
