@@ -1,6 +1,6 @@
 <template>
     <div class="bg-black/5 p-3">
-        <div class="flex flex-row items-center">
+        <div class="flex flex-row justify-center items-center">
             <h2 class="text-2xl font-bold">friends</h2>
             <p class="h-min ml-2">({{ people.length }})</p>
         </div>
