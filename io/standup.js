@@ -7,6 +7,10 @@ function createRoom(name) {
         host: '',
         state: 'waiting',
         id: name,
+        emojiStats: {
+            receiver: {},
+            sender: {}
+        },
 
         join: function (socket) {
             socket.join(this.id);
@@ -195,6 +199,145 @@ function createRoom(name) {
 
         claimHost: function (client) {
             this.host = client.id;
+        },
+
+        onEmojiSend: function(from, to, emojiIndex) {
+            if(!this.emojiStats.receiver.hasOwnProperty(to)) 
+                this.emojiStats.receiver[to] = [];
+            if(!this.emojiStats.sender.hasOwnProperty(from)) 
+                this.emojiStats.sender[from] = [];
+            
+            if(this.emojiStats.receiver[to][emojiIndex] == null)
+                this.emojiStats.receiver[to][emojiIndex] = 0;
+            this.emojiStats.receiver[to][emojiIndex]++;
+            if(this.emojiStats.sender[from][emojiIndex] == null)
+                this.emojiStats.sender[from][emojiIndex] = 0;
+            this.emojiStats.sender[from][emojiIndex]++;
+        },
+
+        generateStats: function() {
+            const reactEmojis = ['😆', '😮', '😢', '🤯', '🥳', '👏', '🙌', '🏆', '🎷', '❤️'];
+            const awards = [
+                {
+                    title: 'most loved',
+                    type: 'receiver',
+                    emojiIndex: 9
+                },
+                {
+                    title: 'comedian',
+                    type: 'receiver',
+                    emojiIndex: 0
+                },
+                {
+                    title: 'the surpriser',
+                    type: 'receiver',
+                    emojiIndex: 1
+                },
+                {
+                    title: 'sad storyteller',
+                    type: 'receiver',
+                    emojiIndex: 2
+                },
+                {
+                    title: 'the mind-blower',
+                    type: 'receiver',
+                    emojiIndex: 3
+                },
+                {
+                    title: 'the party host',
+                    type: 'receiver',
+                    emojiIndex: 4
+                },
+                {
+                    title: 'standing ovation',
+                    type: 'receiver',
+                    emojiIndex: 5
+                },
+                {
+                    title: 'jazziest',
+                    type: 'receiver',
+                    emojiIndex: 8
+                },
+                {
+                    title: 'roflcopter',
+                    type: 'sender',
+                    emojiIndex: 0
+                },
+                {
+                    title: 'so sad rn',
+                    type: 'sender',
+                    emojiIndex: 2
+                },
+                {
+                    title: 'my hands hurt',
+                    type: 'sender',
+                    emojiIndex: 5
+                },
+                {
+                    title: 'biggest heart',
+                    type: 'sender',
+                    emojiIndex: 9
+                },
+            ];
+
+            let createAward = (award, emojiStats) => {
+                console.log(`creating award ${award.title} - ${award.type}`);
+                let statKeys = Object.keys(emojiStats[award.type]);
+                let highestKey = null;
+                let highestValue = 0;
+                for (let i = 0; i < statKeys.length; i++) {
+                    let value = emojiStats[award.type][statKeys[i]][award.emojiIndex];
+                    console.log(value);
+                    if(value > highestValue) {
+                        highestKey = statKeys[i];
+                        highestValue = value;
+                    }
+                }
+
+                console.log(`highest key: ${highestKey}`);
+                console.log(`highest value: ${highestValue}`);
+
+                if(highestKey === null) {
+                    return null;
+                }
+
+                return {
+                    who: highestKey,
+                    value: highestValue,
+                    title: award.title,
+                    desc: `${(award.type == 'receiver' ? 'received' : 'sent')} ${highestValue}x ${reactEmojis[award.emojiIndex]}`
+                }
+            };
+
+            let result = [];
+
+            console.log(this.emojiStats);
+            for (let i = 0; i < awards.length; i++) {
+                let award = createAward(awards[i], this.emojiStats);
+                if(award !== null) {
+                    console.log(award);
+                    result.push(award);
+                }
+            }
+
+            // sort result by value
+            result.sort((a, b) => b.value - a.value);
+
+            // make sure only 1 award per person
+            let awardedPeople = [];
+            for(let i = 0; i < result.length; i++) {
+                if(awardedPeople.indexOf(result[i].who) == -1) {
+                    awardedPeople.push(result[i].who);
+                } else {
+                    result.splice(i, 1);
+                    i--;
+                }
+            }
+
+            // limit result to maximum of 5
+            result = result.slice(0, 3);
+
+            return result;
         }
     };
 }
@@ -297,6 +440,8 @@ let standup = {
                 }
 
                 let room = rooms[socket.client.room];
+                room.emojiStats.receiver = {};
+                room.emojiStats.sender = {};
                 room.start();
                 socket.to(socket.client.room).emit('setRunningStatus', room.state);
                 room.broadcastOrder(ns);
@@ -352,6 +497,7 @@ let standup = {
 
                     if (room.state == 'finished') {
                         ns.to(socket.client.room).emit('setRunningStatus', room.state);
+                        ns.to(socket.client.room).emit('sendStats', room.generateStats());
                     } else {
                         room.broadcastOrder(ns);
                     }
@@ -393,7 +539,10 @@ let standup = {
                 }
 
                 socket.to(socket.client.room).emit('react', { emoji: data.emoji, who: socket.client.id });
-                socket.client.lastReactTime = nowTime;
+                //socket.client.lastReactTime = nowTime;
+
+                let room = rooms[socket.client.room];
+                room.onEmojiSend(socket.client.id, room.people[room.order[0]].id, data.emoji);
 
                 return callback({ status: true, emoji: data.emoji });
             });

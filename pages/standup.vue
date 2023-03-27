@@ -104,7 +104,8 @@
 
                                 </div>
 
-                                <div class="flex flex-row gap-2 transition-opacity" :class="{['opacity-50']: !canReact}" v-if="!isMyTurn">
+                                <div class="flex flex-row gap-2 transition-opacity" :class="{ ['opacity-50']: !canReact }"
+                                    v-if="!isMyTurn">
                                     <StandupEmojiPicker v-for="(emoji, index) in reactEmojis" :key="index"
                                         v-on:click="() => emojiClicked(index)">
                                         {{ emoji }}
@@ -139,10 +140,21 @@
                                 v-else-if="roomState.state == 'finished'">
                                 <h1 class="text-4xl">that's everyone!</h1>
                                 <p>thanks for using the standup-o-matic 5000</p>
-                                <p>have a good day everyone!!</p>
+                                <p>have a great {{ dayOfWeekString  }}!!</p>
 
                                 <div v-if="isHost" class="mt-5">
                                     <button class="bg-amber-500 p-4 rounded-lg" v-on:click="resetRoom">reset room</button>
+                                </div>
+
+                                <div v-if="emojiStats != null" class="mt-4">
+                                    <h2 class="text-3xl">🎗️ the standup awards 🎗️</h2>
+                                    <div class="flex flex-wrap gap-4 justify-center mt-4">
+                                        <div v-for="(stat, index) in emojiStats" :key="index" class="bg-gray-300 dark:bg-slate-500 dark:shadow-white rounded-xl p-4 pt-2 hover:scale-110 hover:shadow-lg hover:-translate-y-4 cursor-default transition-all">
+                                            <p class="text-4xl">{{ getPlayer(stat.who).name }}</p>
+                                            <p class="text-lg -mt-2">{{ stat.title }}</p>
+                                            <p class="opacity-80 mt-1">{{ stat.desc }}</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -168,11 +180,12 @@
                                     <p class="text-2xl -mb-3">hello</p>
                                     <p>my name is</p>
                                 </div>
-                                <input type="text" class="text-black text-center py-3 text-xl outline-none w-full" v-model="tempName"
-                                    v-on:keypress="event => { if (event.key == 'Enter') setName(); }" />
+                                <input type="text" class="text-black text-center py-3 text-xl outline-none w-full"
+                                    v-model="tempName" v-on:keypress="event => { if (event.key == 'Enter') setName(); }" />
                                 <div class="bg-red-600 w-full h-4"></div>
                             </div>
-                            <button class="bg-green-500 rounded-lg mt-3 py-2 px-4 disabled:opacity-50 transition-all" v-on:click="setName" :disabled="tempName == 'standupper'">set name</button>
+                            <button class="bg-green-500 rounded-lg mt-3 py-2 px-4 disabled:opacity-50 transition-all"
+                                v-on:click="setName" :disabled="tempName == 'standupper'">set name</button>
                         </div>
                     </div>
                 </div>
@@ -197,7 +210,8 @@ export default {
             order: {},
             reactEmojis: ['😆', '😮', '😢', '🤯', '🥳', '👏', '🙌', '🏆', '🎷', '❤️'],
             canReact: true,
-            nameSetted: false
+            nameSetted: false,
+            emojiStats: null,
         }
     },
     created() {
@@ -227,6 +241,10 @@ export default {
             if (roomState.state != 'running') {
                 this.hasHadTurn = false;
             }
+
+            if (roomState.state != 'finished') {
+                this.emojiStats = null;
+            }
         });
 
         this.socket.on('updateOrder', (order) => {
@@ -250,6 +268,10 @@ export default {
             this.$refs.spam.addEmoji(emoji);
             this.$refs.friends.personReacted(personId, emoji);
         });
+
+        this.socket.on('sendStats', (stats) => {
+            this.emojiStats = stats;
+        });
     },
     computed: {
         myPlayer() {
@@ -271,6 +293,10 @@ export default {
         },
         hasSetName() {
             return localStorage.getItem('hasSetName') || this.nameSetted;
+        },
+        dayOfWeekString() {
+            const dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+            return dayNames[new Date().getDay()];
         }
     },
     methods: {
@@ -390,6 +416,10 @@ export default {
 
         removePerson(id) {
             this.socket.emit('removePerson', { id: id }, (res) => { });
+        },
+
+        getPlayer(id) {
+            return this.roomState.players.find(p => p.id == id);
         }
     }
 }
