@@ -148,7 +148,7 @@
                         </div>
 
                         <StandupPeople :people="roomState.players" :hostid="roomState.host" :myId="playerId"
-                            :removePerson="(id) => removePerson(id)" />
+                            :removePerson="(id) => removePerson(id)" ref="friends" />
                     </div>
 
                 </div>
@@ -243,8 +243,12 @@ export default {
             }
         });
 
-        this.socket.on('react', (emojiIndex) => {
-            this.$refs.spam.addEmoji(this.reactEmojis[emojiIndex]);
+        this.socket.on('react', (data) => {
+            let emojiIndex = data.emoji;
+            let personId = data.who;
+            let emoji = this.reactEmojis[emojiIndex];
+            this.$refs.spam.addEmoji(emoji);
+            this.$refs.friends.personReacted(personId, emoji);
         });
     },
     computed: {
@@ -370,7 +374,9 @@ export default {
         emojiClicked(index) {
             this.socket.emit('react', { emoji: index }, (res) => {
                 if (res.status) {
-                    this.$refs.spam.addEmoji(this.reactEmojis[index]);
+                    let emoji = this.reactEmojis[index];
+                    this.$refs.spam.addEmoji(emoji);
+                    this.$refs.friends.personReacted(this.playerId, emoji);
 
                     this.canReact = false;
                     setTimeout(() => this.canReact = true, 950);
