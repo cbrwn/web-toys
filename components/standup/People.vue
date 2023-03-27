@@ -6,7 +6,7 @@
         </div>
         <div class="flex flex-col items-end pl-2">
             <div v-for="(person, index) in people" :key="index" class="flex flex-row">
-                <div class="transition-all ease-bounce" :class="{['scale-150 -translate-x-2']: shouldShow(person.id), ['scale-0 rotate-90 translate-x-6']: !shouldShow(person.id) }">
+                <div class="transition-all ease-bounce" :class="{['scale-150 -translate-x-2']: shouldShow(person.id), ['scale-0 rotate-180 translate-x-6']: !shouldShow(person.id) }">
                     {{ reacts.hasOwnProperty(person.id) ? reacts[person.id].emoji : ' ' }}
                 </div>
                 <div v-if="person.id == hostid">👑</div>
