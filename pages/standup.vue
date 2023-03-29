@@ -5,20 +5,21 @@
             </Header>
             <ContentContainer class="overflow-clip" :class="{ ['flex-grow']: roomState != null }">
                 <StandupEmojiSpam ref="spam" />
-                <!-- Connecting -->
+                <!-- connecting -->
                 <div v-if="connectedState == 'connecting'">
                     connecting to server...
                 </div>
 
-                <!-- Disconnected?????  -->
+                <!-- disconnected :(  -->
                 <div v-else-if="connectedState == 'disconnected'">
                     disconnected!! trying to reconnect..
                 </div>
 
+                <!-- we are connected! -->
                 <div v-else class="w-full h-full z-50">
                     <!-- join/create -->
                     <JoinRoom v-if="roomState == null" :roomId="joinId" @update:roomId="val => joinId = val"
-                        :onConfirm="joinClicked">
+                        :onConfirm="() => joinOrCreateRoom(joinId)">
                         <h2 class="text-4xl -mt-5">welcome!</h2>
                         <p class="w-max opacity-50">enter your team's room name here to get started!</p>
                     </JoinRoom>
@@ -31,13 +32,15 @@
                                 <button class="bg-red-500 p-1 px-2 rounded-lg" v-on:click="leaveRoom">leave</button>
 
                                 <input type="text" class="outline-none text-black px-2 rounded-l-lg ml-2" size="8"
-                                    v-model="tempName" v-on:keypress="event => { if (event.key == 'Enter') setName(tempName); }" />
+                                    v-model="tempName"
+                                    v-on:keypress="event => { if (event.key == 'Enter') setName(tempName); }" />
                                 <button class="bg-green-500 px-1 rounded-r-lg"
                                     :class="{ ['opacity-50 cursor-default']: tempName == myPlayer.name }"
                                     v-on:click="() => setName(tempName)">set name</button>
                             </div>
                         </div>
 
+                        <!-- main content -->
                         <div class="flex-grow">
                             <!-- waiting for host -->
                             <div class="flex flex-col flex-grow pt-4" v-if="roomState.state == 'waiting'">
@@ -92,7 +95,6 @@
                                     <StandupHostControls v-if="isHost" :state="roomState.state"
                                         :playerName="getCurrentPlayer.name" :addFn="(name) => addPerson(name)"
                                         :skipFn="skipOtherPlayer" />
-
                                 </div>
 
                                 <div class="flex flex-row gap-2 transition-opacity" :class="{ ['opacity-50']: !canReact }"
@@ -131,13 +133,18 @@
                                 :isHost="isHost" :emojiStats="emojiStats" :getPlayerFn="getPlayer" />
                         </div>
 
+                        <!-- people list! -->
                         <StandupPeople :people="roomState.players" :hostid="roomState.host" :myId="playerId"
                             :removePerson="(id) => removePerson(id)" ref="friends" />
                     </div>
 
                 </div>
 
-                <StandupNameModal v-if="roomState != null && !hasSetName" :setNameFn="(name) => setName(name)" />
+                <StandupNameModal v-if="roomState != null && !hasSetName" :setNameFn="(name) => setName(name)">
+                    <h2 class="text-2xl">
+                        welcome to standup :)
+                    </h2>
+                </StandupNameModal>
             </ContentContainer>
         </div>
     </div>
@@ -169,6 +176,7 @@ export default {
     beforeMount() {
         this.joinId = localStorage.getItem('lastRoomId');
         this.socket = io(document.location.origin + '/standup');
+
         this.socket.on('connect', () => {
             console.log('connected');
             this.connectedState = 'connected';
@@ -184,6 +192,7 @@ export default {
             this.connectedState = 'disconnected';
         });
 
+        // updates the entire roomstate object
         this.socket.on('updateRoomState', (roomState) => {
             this.roomState = roomState;
 
@@ -191,65 +200,83 @@ export default {
                 this.hasHadTurn = false;
             }
 
+            // make sure old emoji stats don't show if running multiple standups in a row
             if (roomState.state != 'finished') {
                 this.emojiStats = null;
             }
         });
 
+        // sent when the order changes (e.g. a player finishes their turn)
         this.socket.on('updateOrder', (order) => {
-            console.log('updateOrder', order);
             this.order = order;
         });
 
+        // used to simply update the room's state without sending the whole roomState object
         this.socket.on('setRunningStatus', (state) => {
-            console.log('setRunningStatus', state);
             this.roomState.state = state;
 
+            // clear flags used while running once we're finished
             if (state != 'running') {
                 this.hasHadTurn = false;
             }
         });
 
+        // called when someone sends an emoji
         this.socket.on('react', (data) => {
             let emojiIndex = data.emoji;
             let personId = data.who;
+
+            // grab emoji string based on the index
             let emoji = this.reactEmojis[emojiIndex];
+            // pass emoji to the canvas for floating up
             this.$refs.spam.addEmoji(emoji);
+            // pass emoji to player list to pop up their emoji
             this.$refs.friends.personReacted(personId, emoji);
         });
 
+        // receiving emoji stats at the end of standup
         this.socket.on('sendStats', (stats) => {
             this.emojiStats = stats;
         });
     },
     computed: {
+        // grabbin some player objects
         myPlayer() {
-            let plr = this.roomState.players.find(p => p.id == this.playerId);
-            return plr ? plr : { name: 'oh no something went wrong', comeBack: false };
+            return this.getPlayer(this.playerId);
         },
+        getCurrentPlayer() {
+            return this.getPlayer(this.order.now);
+        },
+
         isHost() {
             return this.roomState.host == this.playerId;
         },
-        getCurrentPlayer() {
-            let plr = this.roomState.players.find(p => p.id == this.order.now);
-            return plr ? plr : { name: 'no one', comeBack: false };
-        },
+
+        // helpers for understanding the order object
         isMyTurn() {
             return this.order.now == this.playerId;
         },
         isUpNext() {
             return this.order.next == this.playerId;
         },
+
+        // just using localstorage doesn't update this when we edit the storage,
+        // so use an ugly local variable as well :()
         hasSetName() {
             return localStorage.getItem('hasSetName') || this.nameSetted;
         },
     },
     methods: {
+        // lazily join/create a room
+        // this could probably be done on the server instead but I'm also lazy
         joinOrCreateRoom(roomId, claimHost) {
             this.joinRoom(roomId, claimHost, (failId) => {
                 this.createRoom(failId);
             });
         },
+
+        // join a room + ability to force claim the host and do something on fail
+        // onFail is used to create the room in joinOrCreateRoom
         joinRoom(roomId, claimHost, onFail) {
             let playerName = 'standupper';
             if (localStorage.getItem('name') != null) {
@@ -257,7 +284,6 @@ export default {
             }
             this.socket.emit('join', { roomId: roomId, claimHost: claimHost, name: playerName }, (res) => {
                 if (!res.status) {
-                    console.log(res.message);
                     if (onFail) {
                         onFail(roomId);
                     }
@@ -270,9 +296,13 @@ export default {
                 localStorage.setItem('lastRoomId', roomId);
                 localStorage.setItem('name', res.name);
 
+                // make the current URL a copyable link
+                // also serves to remove the claim host param from the URL
                 window.history.replaceState(null, document.title, location.pathname + '?room=' + roomId);
             });
         },
+
+        // makes a room and then joins it
         createRoom(roomId) {
             this.socket.emit('create', { roomName: roomId }, (response) => {
                 if (response.status) {
@@ -281,12 +311,18 @@ export default {
             });
         },
 
-        joinClicked() { this.joinOrCreateRoom(this.joinId); },
+        // helper to grab a player object by ID from the players list
+        getPlayer(id) {
+            let plr = this.roomState.players.find(p => p.id == id);
+            return plr ? plr : { name: 'no one', comeBack: false };
+        },
 
+        // sets the player's name & stores it for future sessions
         setName(name) {
             this.tempName = name;
             this.socket.emit('setName', { name: name }, (res) => {
                 if (res.status) {
+                    // ensure the name in the textbox is updated
                     this.tempName = res.name;
 
                     this.myPlayer.name = res.name;
@@ -298,6 +334,7 @@ export default {
             });
         },
 
+        // leaves the current room & makes sure the URL isn't pointing at the room anymore
         leaveRoom() {
             this.socket.emit('leave', {}, (res) => {
                 if (res.status) {
@@ -307,42 +344,22 @@ export default {
             });
         },
 
-        startStandup() {
-            this.socket.emit('start', {}, (res) => {
-                if (res.status) {
-                    this.roomState.state = 'running';
-                }
-            });
-        },
-
-        comeBack() {
-            console.log('come back');
-            this.socket.emit('comeback', {}, (res) => {
-                console.log(res);
-                this.myPlayer.comeBack = true;
-            });
-        },
-
+        // player finishes their turn!
+        // set a local flag to show a "you're done!" message
         finishedTurn() {
-            console.log('finished turn');
             this.socket.emit('next', {}, (res) => {
                 this.hasHadTurn = true;
             });
         },
 
-        skipOtherPlayer() {
-            this.socket.emit('next', {}, (res) => { });
-        },
-
-        resetRoom() {
-            this.socket.emit('reset', {}, (res) => {
-                if (res.status) {
-                    this.roomState.state = 'waiting';
-                    this.hasHadTurn = false;
-                }
+        // come back to this player! sends em to the end of the queue
+        comeBack() {
+            this.socket.emit('comeback', {}, (res) => {
+                this.myPlayer.comeBack = true;
             });
         },
 
+        // clicking on a reaction emoji!
         emojiClicked(index) {
             this.socket.emit('react', { emoji: index }, (res) => {
                 if (res.status) {
@@ -356,16 +373,36 @@ export default {
             });
         },
 
+        // host-only commands:
+
+        // HOST: begin the standup!
+        startStandup() {
+            this.socket.emit('start', {}, (res) => {
+                if (res.status) {
+                    this.roomState.state = 'running';
+                }
+            });
+        },
+        // HOST: skip the current person
+        skipOtherPlayer() {
+            this.socket.emit('next', {}, (res) => { });
+        },
+        // HOST: reset the room after it finishes :D
+        resetRoom() {
+            this.socket.emit('reset', {}, (res) => {
+                if (res.status) {
+                    this.roomState.state = 'waiting';
+                    this.hasHadTurn = false;
+                }
+            });
+        },
+        // HOST: add a ghost person
         addPerson(name) {
             this.socket.emit('addPerson', { name: name }, (res) => { });
         },
-
+        // HOST: remove a ghost person
         removePerson(id) {
             this.socket.emit('removePerson', { id: id }, (res) => { });
-        },
-
-        getPlayer(id) {
-            return this.roomState.players.find(p => p.id == id);
         }
     }
 }

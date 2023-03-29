@@ -1,9 +1,14 @@
+<!--
+    NameModal
+
+    draws a centered popup with a darkened background for the user to enter their name
+    has a cute "hello, my name is" style to it :)
+-->
+
 <template>
     <div class="flex justify-center items-center fixed left-0 top-0 w-full h-full bg-black/50 z-50">
         <div class="flex flex-col bg-slate-300 dark:bg-slate-600 w-1/3 h-min rounded-3xl pt-5">
-            <h2 class="text-2xl">
-                welcome to standup :)
-            </h2>
+            <slot />
 
             <div class="flex-grow flex flex-col justify-center items-center pb-5">
                 <p class="mb-2">please set your name!</p>
