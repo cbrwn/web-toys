@@ -97,10 +97,10 @@
                                         :skipFn="skipOtherPlayer" />
                                 </div>
 
-                                <div class="flex flex-row gap-2 transition-opacity" :class="{ ['opacity-50']: !canReact }"
+                                <div class="flex flex-wrap gap-2 transition-opacity justify-center" :class="{ ['opacity-50']: !canReact }"
                                     v-if="!isMyTurn">
                                     <StandupEmojiPicker v-for="(emoji, index) in reactEmojis" :key="index"
-                                        v-on:click="() => emojiClicked(index)">
+                                        v-on:click="() => emojiClicked(index)" :style="`width: calc(9%)`">
                                         {{ emoji }}
                                     </StandupEmojiPicker>
                                 </div>
@@ -292,6 +292,7 @@ export default {
 
                 this.playerId = res.id;
                 this.tempName = res.name;
+                this.reactEmojis = res.reacts;
 
                 localStorage.setItem('lastRoomId', roomId);
                 localStorage.setItem('name', res.name);

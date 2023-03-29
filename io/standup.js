@@ -1,3 +1,17 @@
+const reactEmojis = require('./standupReacts.json');
+const awards = require('./standupAwards.json');
+
+// print emojis and their awards
+console.log('emojis:', reactEmojis);
+// print awards
+for(let award of awards) {
+    let typeVerb = award.type.substring(0, award.type.length-2) + 'ing';
+    while(typeVerb.length < 9) {
+        typeVerb = ' ' + typeVerb;
+    }
+    console.log(`${typeVerb} ${award.emoji}: ${award.title}`);
+}
+
 let rooms = {};
 
 function createRoom(name) {
@@ -78,10 +92,9 @@ function createRoom(name) {
                 this.host = (this.people.length > 0) ? this.people[0].id : '';
             }
 
-            for(let i = 0; i < this.people.length; i++) {
-                if(this.people[i].owner === socket.client.id) {
-                    if(this.removePlayer(socket.client, this.people[i].id))
-                    {
+            for (let i = 0; i < this.people.length; i++) {
+                if (this.people[i].owner === socket.client.id) {
+                    if (this.removePlayer(socket.client, this.people[i].id)) {
                         i--;
                     }
                 }
@@ -201,98 +214,39 @@ function createRoom(name) {
             this.host = client.id;
         },
 
-        onEmojiSend: function(from, to, emojiIndex) {
-            if(!this.emojiStats.receiver.hasOwnProperty(to)) 
+        onEmojiSend: function (from, to, emojiIndex) {
+            if (!this.emojiStats.receiver.hasOwnProperty(to))
                 this.emojiStats.receiver[to] = [];
-            if(!this.emojiStats.sender.hasOwnProperty(from)) 
+            if (!this.emojiStats.sender.hasOwnProperty(from))
                 this.emojiStats.sender[from] = [];
-            
-            if(this.emojiStats.receiver[to][emojiIndex] == null)
+
+            if (this.emojiStats.receiver[to][emojiIndex] == null)
                 this.emojiStats.receiver[to][emojiIndex] = 0;
             this.emojiStats.receiver[to][emojiIndex]++;
-            if(this.emojiStats.sender[from][emojiIndex] == null)
+            if (this.emojiStats.sender[from][emojiIndex] == null)
                 this.emojiStats.sender[from][emojiIndex] = 0;
             this.emojiStats.sender[from][emojiIndex]++;
         },
 
-        generateStats: function() {
-            const reactEmojis = ['😆', '😮', '😢', '🤯', '🥳', '👏', '🙌', '🏆', '🎷', '❤️'];
-            const awards = [
-                {
-                    title: 'most loved',
-                    type: 'receiver',
-                    emojiIndex: 9
-                },
-                {
-                    title: 'comedian',
-                    type: 'receiver',
-                    emojiIndex: 0
-                },
-                {
-                    title: 'the surpriser',
-                    type: 'receiver',
-                    emojiIndex: 1
-                },
-                {
-                    title: 'sad storyteller',
-                    type: 'receiver',
-                    emojiIndex: 2
-                },
-                {
-                    title: 'the mind-blower',
-                    type: 'receiver',
-                    emojiIndex: 3
-                },
-                {
-                    title: 'the party host',
-                    type: 'receiver',
-                    emojiIndex: 4
-                },
-                {
-                    title: 'standing ovation',
-                    type: 'receiver',
-                    emojiIndex: 5
-                },
-                {
-                    title: 'jazziest',
-                    type: 'receiver',
-                    emojiIndex: 8
-                },
-                {
-                    title: 'roflcopter',
-                    type: 'sender',
-                    emojiIndex: 0
-                },
-                {
-                    title: 'so sad rn',
-                    type: 'sender',
-                    emojiIndex: 2
-                },
-                {
-                    title: 'my hands hurt',
-                    type: 'sender',
-                    emojiIndex: 5
-                },
-                {
-                    title: 'biggest heart',
-                    type: 'sender',
-                    emojiIndex: 9
-                },
-            ];
-
+        generateStats: function () {
             let createAward = (award, emojiStats) => {
+                let emojiIndex = reactEmojis.indexOf(award.emoji);
+                if (emojiIndex === -1) {
+                    return null;
+                }
+
                 let statKeys = Object.keys(emojiStats[award.type]);
                 let highestKey = null;
                 let highestValue = 0;
                 for (let i = 0; i < statKeys.length; i++) {
-                    let value = emojiStats[award.type][statKeys[i]][award.emojiIndex];
-                    if(value > highestValue) {
+                    let value = emojiStats[award.type][statKeys[i]][emojiIndex];
+                    if (value > highestValue) {
                         highestKey = statKeys[i];
                         highestValue = value;
                     }
                 }
 
-                if(highestKey === null) {
+                if (highestKey === null) {
                     return null;
                 }
 
@@ -300,7 +254,7 @@ function createRoom(name) {
                     who: highestKey,
                     value: highestValue,
                     title: award.title,
-                    desc: `${(award.type == 'receiver' ? 'received' : 'sent')} ${highestValue}x ${reactEmojis[award.emojiIndex]}`
+                    desc: `${(award.type == 'receiver' ? 'received' : 'sent')} ${highestValue}x ${award.emoji}`
                 }
             };
 
@@ -308,7 +262,7 @@ function createRoom(name) {
 
             for (let i = 0; i < awards.length; i++) {
                 let award = createAward(awards[i], this.emojiStats);
-                if(award !== null) {
+                if (award !== null) {
                     result.push(award);
                 }
             }
@@ -318,8 +272,8 @@ function createRoom(name) {
 
             // make sure only 1 award per person
             let awardedPeople = [];
-            for(let i = 0; i < result.length; i++) {
-                if(awardedPeople.indexOf(result[i].who) == -1) {
+            for (let i = 0; i < result.length; i++) {
+                if (awardedPeople.indexOf(result[i].who) == -1) {
                     awardedPeople.push(result[i].who);
                 } else {
                     result.splice(i, 1);
@@ -388,7 +342,13 @@ let standup = {
                     }
                 });
 
-                return callback({ status: true, roomId: data.roomId, name: socket.client.name, id: socket.client.id });
+                return callback({ 
+                    status: true, 
+                    roomId: data.roomId, 
+                    name: socket.client.name, 
+                    id: socket.client.id,
+                    reacts: reactEmojis
+                });
             });
 
             socket.on('setName', (data, callback) => {
