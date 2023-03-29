@@ -31,10 +31,10 @@
                                 <button class="bg-red-500 p-1 px-2 rounded-lg" v-on:click="leaveRoom">leave</button>
 
                                 <input type="text" class="outline-none text-black px-2 rounded-l-lg ml-2" size="8"
-                                    v-model="tempName" v-on:keypress="event => { if (event.key == 'Enter') setName(); }" />
+                                    v-model="tempName" v-on:keypress="event => { if (event.key == 'Enter') setName(tempName); }" />
                                 <button class="bg-green-500 px-1 rounded-r-lg"
                                     :class="{ ['opacity-50 cursor-default']: tempName == myPlayer.name }"
-                                    v-on:click="setName">set name</button>
+                                    v-on:click="() => setName(tempName)">set name</button>
                             </div>
                         </div>
 
@@ -127,7 +127,8 @@
                             </div>
 
                             <!-- standup finished -->
-                            <StandupFinished v-else-if="roomState.state == 'finished'" :onResetClicked="resetRoom" :isHost="isHost" :emojiStats="emojiStats" :getPlayerFn="getPlayer" />
+                            <StandupFinished v-else-if="roomState.state == 'finished'" :onResetClicked="resetRoom"
+                                :isHost="isHost" :emojiStats="emojiStats" :getPlayerFn="getPlayer" />
                         </div>
 
                         <StandupPeople :people="roomState.players" :hostid="roomState.host" :myId="playerId"
@@ -136,30 +137,7 @@
 
                 </div>
 
-                <div v-if="roomState != null && !hasSetName"
-                    class="flex justify-center items-center fixed left-0 top-0 w-full h-full bg-black/50 z-50">
-                    <div class="flex flex-col bg-slate-300 dark:bg-slate-600 w-1/3 h-min rounded-3xl pt-5">
-                        <h2 class="text-2xl">
-                            welcome to standup :)
-                        </h2>
-
-                        <div class="flex-grow flex flex-col justify-center items-center pb-5">
-                            <p class="mb-2">please set your name!</p>
-
-                            <div class="rounded-xl overflow-clip border-solid border-black border-2">
-                                <div class="bg-red-600 w-full text-white">
-                                    <p class="text-2xl -mb-3">hello</p>
-                                    <p>my name is</p>
-                                </div>
-                                <input type="text" class="text-black text-center py-3 text-xl outline-none w-full"
-                                    v-model="tempName" v-on:keypress="event => { if (event.key == 'Enter') setName(); }" />
-                                <div class="bg-red-600 w-full h-4"></div>
-                            </div>
-                            <button class="bg-green-500 rounded-lg mt-3 py-2 px-4 disabled:opacity-50 transition-all"
-                                v-on:click="setName" :disabled="tempName == 'standupper'">set name</button>
-                        </div>
-                    </div>
-                </div>
+                <StandupNameModal v-if="roomState != null && !hasSetName" :setNameFn="(name) => setName(name)" />
             </ContentContainer>
         </div>
     </div>
@@ -305,8 +283,9 @@ export default {
 
         joinClicked() { this.joinOrCreateRoom(this.joinId); },
 
-        setName() {
-            this.socket.emit('setName', { name: this.tempName }, (res) => {
+        setName(name) {
+            this.tempName = name;
+            this.socket.emit('setName', { name: name }, (res) => {
                 if (res.status) {
                     this.tempName = res.name;
 
