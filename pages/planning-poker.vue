@@ -1,15 +1,12 @@
 <template>
   <div class="container mx-auto flex justify-center">
     <div class="flex flex-col w-full justify-center py-8 gap-y-3">
-      <Header title="planning poker">
-      </Header>
+      <Header title="planning poker"> </Header>
       <ContentContainer class="overflow-clip gap-4">
         <!--
           Connecting...
         -->
-        <div v-if="connectedState == 'connecting'">
-          connecting to server...
-        </div>
+        <div v-if="connectedState == 'connecting'">connecting to server...</div>
         <!--
           Disconnected?????
         -->
@@ -23,28 +20,46 @@
         <div v-else>
           <!-- room selection/creation -->
           <div v-if="roomState == null" class="flex flex-col gap-4">
-            <button class="bg-green-400 text-black text-2xl py-3 rounded-lg cursor-pointer transition-all hover:scale-105"
-              v-on:click="createClicked">create room</button>
+            <button
+              class="bg-green-400 text-black text-2xl py-3 rounded-lg cursor-pointer transition-all hover:scale-105"
+              v-on:click="createClicked"
+            >
+              create room
+            </button>
             <div class="flex flex-row items-center">
-              <input type="text" size="10" class="px-4 h-12 dark:text-black text-4xl rounded-l-lg" ref="roomId"
-                placeholder="room code" />
-              <button class="bg-blue-400 text-black h-12 px-4 rounded-r-lg cursor-pointer transition-all hover:scale-105"
-                v-on:click="joinClicked">join room</button>
+              <input
+                type="text"
+                size="10"
+                class="px-4 h-12 dark:text-black text-4xl rounded-l-lg"
+                ref="roomId"
+                placeholder="room code"
+              />
+              <button
+                class="bg-blue-400 text-black h-12 px-4 rounded-r-lg cursor-pointer transition-all hover:scale-105"
+                v-on:click="joinClicked"
+              >
+                join room
+              </button>
             </div>
           </div>
 
           <div v-else class="flex flex-col items-center">
             <!-- room code -->
             <div class="flex flex-col items-center -mt-5 mb-3">
-              <h2 class="flex flex-row items-center justify-center text-3xl cursor-pointer -mt-2 w-min"
-                v-on:click="roomCodeClicked">
-                {{ roomId }} <span class="text-2xl select-none">
-                  <span v-if="showCopySuccess">
-                    ✅
-                  </span>
+              <h2
+                class="flex flex-row items-center justify-center text-3xl cursor-pointer -mt-2 w-min"
+                v-on:click="roomCodeClicked"
+              >
+                {{ roomId }}
+                <span class="text-2xl select-none">
+                  <span v-if="showCopySuccess"> ✅ </span>
                   <span v-else>📋</span>
-                  <span class="text-lg absolute transition-transform select-none"
-                    :style="`transform: translate(${this.showCopySuccess ? '0%' : '-50%'}, 0%) scale(${this.showCopySuccess ? '1.0' : '0.0'});`">
+                  <span
+                    class="text-lg absolute transition-transform select-none"
+                    :style="`transform: translate(${
+                      this.showCopySuccess ? '0%' : '-50%'
+                    }, 0%) scale(${this.showCopySuccess ? '1.0' : '0.0'});`"
+                  >
                     copied url!
                   </span>
                 </span>
@@ -56,11 +71,26 @@
             <div class="flex flex-col mb-3">
               name
               <div>
-                <input type="text" class="text-black text-lg h-full px-2 py-1 rounded-l-lg outline-none"
-                  v-model="playerName" placeholder="player name" size="10"
-                  v-on:keypress="event => { if (event.key == 'Enter') setName(); }">
-                <button class="px-3 h-full rounded-r-lg bg-green-500 transition-all" v-on:click="setName"
-                  :class="{ ['cursor-pointer']: nameEdited, ['cursor-default opacity-50']: !nameEdited }">
+                <input
+                  type="text"
+                  class="text-black text-lg h-full px-2 py-1 rounded-l-lg outline-none"
+                  v-model="playerName"
+                  placeholder="player name"
+                  size="10"
+                  v-on:keypress="
+                    (event) => {
+                      if (event.key == 'Enter') setName();
+                    }
+                  "
+                />
+                <button
+                  class="px-3 h-full rounded-r-lg bg-green-500 transition-all"
+                  v-on:click="setName"
+                  :class="{
+                    ['cursor-pointer']: nameEdited,
+                    ['cursor-default opacity-50']: !nameEdited,
+                  }"
+                >
                   set
                 </button>
               </div>
@@ -74,39 +104,72 @@
                 <div class="flex-grow h-0.5 bg-black/30 dark:bg-white/30"></div>
               </div>
               <div class="flex flex-row -mt-2">
-                <PokerHostButton class="rounded-l-lg 105"
-                  :class="{ ['bg-yellow-500']: !editChoicesMode, ['bg-green-500']: editChoicesMode }"
-                  v-on:click="toggleChoiceEditing" :disable="roomState.revealed">
+                <PokerHostButton
+                  class="rounded-l-lg 105"
+                  :class="{
+                    ['bg-yellow-500']: !editChoicesMode,
+                    ['bg-green-500']: editChoicesMode,
+                  }"
+                  v-on:click="toggleChoiceEditing"
+                  :disable="roomState.revealed"
+                >
                   {{ editChoicesMode ? "apply" : "choices" }}
                 </PokerHostButton>
-                <PokerHostButton class="bg-blue-400" v-on:click="revealClicked" :disable="editChoicesMode || roomState.revealed">reveal
+                <PokerHostButton
+                  class="bg-blue-400"
+                  v-on:click="revealClicked"
+                  :disable="editChoicesMode || roomState.revealed"
+                  >reveal
                 </PokerHostButton>
-                <PokerHostButton class="bg-red-500 rounded-r-lg" v-on:click="resetClicked">reset</PokerHostButton>
+                <PokerHostButton
+                  class="bg-red-500 rounded-r-lg"
+                  v-on:click="resetClicked"
+                  >reset</PokerHostButton
+                >
               </div>
             </div>
 
             <!-- choices -->
             <div class="mt-5">
-              <div class="flex flex-wrap justify-center items-center gap-3 mt-1 transition-opacity"
-                :class="{ ['opacity-50']: roomState.revealed && playerChoice == -1 }">
-                <PokerChoice v-for="(choice, index) in roomState.choices" :item="choice" :key="index"
-                  :selected="playerChoice == index" :cardClicked="() => choiceClicked(index)"
-                  :onRemove="() => removeChoice(index)" :onEdited="(val) => editChoice(index, val)"
+              <div
+                class="flex flex-wrap justify-center items-center gap-3 mt-1 transition-opacity"
+                :class="{
+                  ['opacity-50']: roomState.revealed && playerChoice == -1,
+                }"
+              >
+                <PokerChoice
+                  v-for="(choice, index) in roomState.choices"
+                  :item="choice"
+                  :key="index"
+                  :selected="playerChoice == index"
+                  :cardClicked="() => choiceClicked(index)"
+                  :onRemove="() => removeChoice(index)"
+                  :onEdited="(val) => editChoice(index, val)"
                   :onMove="(d) => moveChoice(index, d)"
-                  :editMode="editChoicesMode && isRoomHost" />
+                  :editMode="editChoicesMode && isRoomHost"
+                />
 
-                <PokerChoice v-if="editChoicesMode" :cardClicked="addChoice" item="+" />
+                <PokerChoice
+                  v-if="editChoicesMode"
+                  :cardClicked="addChoice"
+                  item="+"
+                />
               </div>
             </div>
 
             <div class="mt-2 rounded-xl px-3 text-gray-400 dark:text-gray-500">
-              <div class="opacity-50 mb-1">
-                vibes
-              </div>
-              <div class="flex flex-row gap-4 transition-opacity" :class="{['opacity-30']: playerChoice==-1}">
-                <PokerVibe v-for="(vibe, index) in confidenceValues" :key="index"
-                  :selected="roomState.players[playerId].confidence == index" :desc="vibe.desc"
-                  v-on:click="vibeClicked(index)">
+              <div class="opacity-50 mb-1">vibes</div>
+              <div
+                class="flex flex-row gap-4 transition-opacity"
+                :class="{ ['opacity-30']: playerChoice == -1 }"
+              >
+                <PokerVibe
+                  v-for="(vibe, index) in confidenceValues"
+                  :key="index"
+                  :selected="roomState.players[playerId].confidence == index"
+                  :desc="vibe.desc"
+                  v-on:click="vibeClicked(index)"
+                >
                   {{ vibe.icon }}
                 </PokerVibe>
               </div>
@@ -115,52 +178,59 @@
             <div class="mt-5">
               players:
               <div class="flex flex-row justify-center gap-5 mt-1">
-                <PokerPlayer v-for="(player, key) in roomState.players" :key="key" :player="player"
-                  :revealed="roomState.revealed" :choices="roomState.choices" :vibes="confidenceValues" />
+                <PokerPlayer
+                  v-for="(player, key) in roomState.players"
+                  :key="key"
+                  :player="player"
+                  :revealed="roomState.revealed"
+                  :choices="roomState.choices"
+                  :vibes="confidenceValues"
+                />
               </div>
             </div>
           </div>
         </div>
-
       </ContentContainer>
     </div>
   </div>
 </template>
 
 <script>
-import io from 'socket.io-client'
+import io from "socket.io-client";
 
 export default {
-  layout: 'default',
+  layout: "default",
   data() {
     return {
-      connectedState: 'connecting',
-      roomId: '',
-      playerId: '',
-      playerName: '???',
+      connectedState: "connecting",
+      roomId: "",
+      playerId: "",
+      playerName: "???",
       playerChoice: -1,
       isRoomHost: false,
       roomState: null,
       showCopySuccess: false,
       editChoicesMode: false,
       confidenceValues: [
-        { icon: '🤔', desc: 'not sure' },
-        { icon: '😎', desc: 'nailed it' },
-        { icon: '🤠', desc: 'haha yes' },
-      ]
-    }
+        { icon: "🤔", desc: "not sure" },
+        { icon: "😎", desc: "nailed it" },
+        { icon: "🤠", desc: "haha yes" },
+      ],
+    };
   },
-  created() { document.title = 'planning poker'; },
+  created() {
+    document.title = "planning poker";
+  },
   watch: {
     emitErrors: function (n, o) {
       console.log(n, o);
-    }
+    },
   },
   beforeMount() {
-    this.socket = io(document.location.origin + '/poker');
-    this.socket.on('connect', () => {
-      console.log('connected');
-      this.connectedState = 'connected';
+    this.socket = io(document.location.origin + "/poker");
+    this.socket.on("connect", () => {
+      console.log("connected");
+      this.connectedState = "connected";
 
       if (this.$route.query.room) {
         let roomString = this.$route.query.room;
@@ -171,29 +241,29 @@ export default {
       }
     });
 
-    this.socket.on('disconnect', (res) => {
-      console.log('disconnected');
-      this.connectedState = 'disconnected';
+    this.socket.on("disconnect", (res) => {
+      console.log("disconnected");
+      this.connectedState = "disconnected";
       this.roomState = null;
     });
 
-    this.socket.on('updateRoomState', (res) => {
+    this.socket.on("updateRoomState", (res) => {
       console.log(res);
       this.roomState = res;
     });
 
-    this.socket.on('revealGuesses', () => {
-      console.log('revelaing from host');
+    this.socket.on("revealGuesses", () => {
+      console.log("revelaing from host");
       this.roomState.revealed = true;
     });
 
-    this.socket.on('resetState', () => {
-      console.log('resetting from host');
+    this.socket.on("resetState", () => {
+      console.log("resetting from host");
       this.resetState();
     });
 
-    this.socket.on('newHost', (hostId) => {
-      console.log('newHost');
+    this.socket.on("newHost", (hostId) => {
+      console.log("newHost");
       console.log(hostId);
       if (hostId == this.playerId) {
         this.isRoomHost = true;
@@ -202,7 +272,7 @@ export default {
   },
   methods: {
     createClicked() {
-      this.socket.emit('createRoom', {}, (response) => {
+      this.socket.emit("createRoom", {}, (response) => {
         this.joinRoom(response.roomId);
       });
     },
@@ -212,7 +282,7 @@ export default {
     },
 
     joinRoom(roomId) {
-      this.socket.emit('joinRoom', { roomId: roomId }, (response) => {
+      this.socket.emit("joinRoom", { roomId: roomId }, (response) => {
         if (!response.status) {
           return;
         }
@@ -221,28 +291,28 @@ export default {
         this.playerName = response.name;
         this.playerId = response.playerId;
 
-        this.socket.emit('getRoomState', {}, (response) => {
+        this.socket.emit("getRoomState", {}, (response) => {
           if (response.status) {
             this.roomState = response.roomState;
           }
         });
-      })
+      });
     },
 
     choiceClicked(idx) {
       if (this.editChoicesMode) return;
 
-      this.socket.emit('makeChoice', { choice: idx }, (response) => {
-        if (response.status)
-          this.playerChoice = response.choice;
+      this.socket.emit("makeChoice", { choice: idx }, (response) => {
+        if (response.status) this.playerChoice = response.choice;
 
         this.roomState.players[this.playerId].choice = this.playerChoice;
-        this.roomState.players[this.playerId].originalChoice = response.originalChoice;
-      })
+        this.roomState.players[this.playerId].originalChoice =
+          response.originalChoice;
+      });
     },
 
     setName() {
-      this.socket.emit('changeName', this.playerName, (response) => {
+      this.socket.emit("changeName", this.playerName, (response) => {
         if (response.status) {
           this.playerName = response.newName;
           this.roomState.players[this.playerId].name = this.playerName;
@@ -253,7 +323,7 @@ export default {
     revealClicked() {
       if (this.editChoicesMode) return;
 
-      this.socket.emit('reveal', null, (response) => {
+      this.socket.emit("reveal", null, (response) => {
         if (response.status) {
           this.roomState.revealed = true;
         }
@@ -271,7 +341,7 @@ export default {
     },
 
     resetClicked() {
-      this.socket.emit('reset', null, (response) => {
+      this.socket.emit("reset", null, (response) => {
         if (response.status) {
           this.resetState();
         }
@@ -284,7 +354,7 @@ export default {
       this.editChoicesMode = !this.editChoicesMode;
 
       if (!this.editChoicesMode) {
-        this.socket.emit('newChoices', this.roomState.choices, (response) => {
+        this.socket.emit("newChoices", this.roomState.choices, (response) => {
           if (response.status) {
             this.roomState.choices = response.choices;
           }
@@ -295,7 +365,8 @@ export default {
     roomCodeClicked() {
       if (this.showCopySuccess) return;
 
-      let currentLocation = location.protocol + '//' + location.host + location.pathname;
+      let currentLocation =
+        location.protocol + "//" + location.host + location.pathname;
       let params = `?room=${this.roomId}`;
       navigator.clipboard.writeText(currentLocation + params);
 
@@ -307,15 +378,15 @@ export default {
     },
 
     vibeClicked(index) {
-      this.socket.emit('vibe', index, (response) => {
+      this.socket.emit("vibe", index, (response) => {
         if (response.status) {
           this.roomState.players[this.playerId].confidence = response.newVibe;
         }
-      })
+      });
     },
 
     addChoice() {
-      this.roomState.choices.push('?');
+      this.roomState.choices.push("?");
     },
 
     removeChoice(index) {
@@ -327,16 +398,20 @@ export default {
     },
 
     moveChoice(index, direction) {
-      if(index + direction < 0 || index + direction >= this.roomState.choices.length) return;
+      if (
+        index + direction < 0 ||
+        index + direction >= this.roomState.choices.length
+      )
+        return;
       let temp = this.roomState.choices[index];
       this.roomState.choices[index] = this.roomState.choices[index + direction];
       this.roomState.choices[index + direction] = temp;
-    }
+    },
   },
   computed: {
     nameEdited() {
       return this.playerName != this.roomState.players[this.playerId].name;
-    }
-  }
-}
+    },
+  },
+};
 </script>

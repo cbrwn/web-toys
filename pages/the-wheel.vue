@@ -1,25 +1,44 @@
 <template>
   <div class="container mx-auto flex justify-center">
     <div class="flex flex-col w-full justify-center py-8 gap-y-3">
-      <Header title="the wheel!">
-      </Header>
+      <Header title="the wheel!"> </Header>
       <ContentContainer>
         <div class="flex flex-col md:flex-row gap-8">
           <div class="">
-            <div class="transition-all duration-300 select-none" @transitionend="resultSubtextFinished"
-              style="margin-top: -20px; margin-bottom: 20px;"
-              :style="`transform: scale(${this.resultState >= 1 ? '1.0' : '0.0'})`">
+            <div
+              class="transition-all duration-300 select-none"
+              @transitionend="resultSubtextFinished"
+              style="margin-top: -20px; margin-bottom: 20px"
+              :style="`transform: scale(${
+                this.resultState >= 1 ? '1.0' : '0.0'
+              })`"
+            >
               the wheel has chosen...
-              <p class="text-4xl transition-all duration-500"
-                :style="`transform: scale(${this.resultState >= 2 ? '1.0' : '0.01'})`" @click="hideResult">
+              <p
+                class="text-4xl transition-all duration-500"
+                :style="`transform: scale(${
+                  this.resultState >= 2 ? '1.0' : '0.01'
+                })`"
+                @click="hideResult"
+              >
                 <span class="animate-spin inline-block">🌟</span>
                 {{ resultToShow }}!!
                 <span class="animate-spin inline-block">🌟</span>
               </p>
             </div>
-            <WheelSpinner :items="items" @spin-start="onSpinStart" @spin-end="onSpinFinish" style="margin-bottom: 40px" />
+            <WheelSpinner
+              :items="items"
+              @spin-start="onSpinStart"
+              @spin-end="onSpinFinish"
+              style="margin-bottom: 40px"
+            />
           </div>
-          <WheelItemEditor :items="items" :bench="benchItems" @items-changed="onItemsChanged" :enabled="allowEditing" />
+          <WheelItemEditor
+            :items="items"
+            :bench="benchItems"
+            @items-changed="onItemsChanged"
+            :enabled="allowEditing"
+          />
         </div>
       </ContentContainer>
     </div>
@@ -28,10 +47,12 @@
 
 <script>
 export default {
-  layout: 'default',
-  created() { document.title = 'the wheel.'; },
+  layout: "default",
+  created() {
+    document.title = "the wheel.";
+  },
   data() {
-    let initItems = ['item 1', 'item 2', 'item 3', 'item 4'];
+    let initItems = ["item 1", "item 2", "item 3", "item 4"];
     let initBench = [];
     if (process.client) {
       if (localStorage.wheelItems)
@@ -43,7 +64,7 @@ export default {
     if (this.$route.query.items) {
       let itemsString = this.$route.query.items;
 
-      if (itemsString.includes(',')) {
+      if (itemsString.includes(",")) {
         let decodedItems = this.$b64ToItems(itemsString);
         initItems = decodedItems.items;
         initBench = decodedItems.bench;
@@ -60,7 +81,7 @@ export default {
       benchItems: initBench,
       resultState: 0,
       resultToShow: null,
-      allowEditing: true
+      allowEditing: true,
     };
   },
   methods: {
@@ -92,7 +113,7 @@ export default {
     saveItems(w, b) {
       localStorage.wheelItems = JSON.stringify(w);
       localStorage.benchItems = JSON.stringify(b);
-    }
-  }
-}
+    },
+  },
+};
 </script>

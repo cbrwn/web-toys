@@ -4,18 +4,18 @@
 -->
 
 <template>
-	<ContentContainer>
-		<h1 class="text-4xl font-bold">
-			{{ title }}
-		</h1>
-		<div class="text-gray-400 dark:text-gray-300">
-			<slot />
-		</div>
-	</ContentContainer>
+  <ContentContainer>
+    <h1 class="text-4xl font-bold">
+      {{ title }}
+    </h1>
+    <div class="text-gray-400 dark:text-gray-300">
+      <slot />
+    </div>
+  </ContentContainer>
 </template>
 
 <script>
 export default {
-	props: ['title']
-}
+  props: ["title"],
+};
 </script>

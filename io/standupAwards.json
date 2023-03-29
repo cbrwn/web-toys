@@ -1,112 +1,112 @@
 [
-    {
-        "title": "most loved",
-        "type": "receiver",
-        "emoji": "❤️"
-    },
-    {
-        "title": "biggest heart",
-        "type": "sender",
-        "emoji": "❤️"
-    },
-    {
-        "title": "comedian",
-        "type": "receiver",
-        "emoji": "😆"
-    },
-    {
-        "title": "roflcopter",
-        "type": "sender",
-        "emoji": "😆"
-    },
-    {
-        "title": "the surpriser",
-        "type": "receiver",
-        "emoji": "😮"
-    },
-    {
-        "title": "sad storyteller",
-        "type": "receiver",
-        "emoji": "😢"
-    },
-    {
-        "title": "so sad rn",
-        "type": "sender",
-        "emoji": "😢"
-    },
-    {
-        "title": "the mind-blower",
-        "type": "receiver",
-        "emoji": "🤯"
-    },
-    {
-        "title": "life of the party",
-        "type": "receiver",
-        "emoji": "🥳"
-    },
-    {
-        "title": "standing ovation",
-        "type": "receiver",
-        "emoji": "👏"
-    },
-    {
-        "title": "my hands hurt",
-        "type": "sender",
-        "emoji": "👏"
-    },
-    {
-        "title": "jazziest",
-        "type": "receiver",
-        "emoji": "🎷"
-    },
-    {
-        "title": "thoughts n prayers",
-        "type": "sender",
-        "emoji": "🙏"
-    },
-    {
-        "title": "caffeinated",
-        "type": "receiver",
-        "emoji": "☕️"
-    },
-    {
-        "title": "barista",
-        "type": "sender",
-        "emoji": "☕️"
-    },
-    {
-        "title": "vroom vroom",
-        "type": "sender",
-        "emoji": "🏎️"
-    },
-    {
-        "title": "bug reporter",
-        "type": "sender",
-        "emoji": "🐛"
-    },
-    {
-        "title": "on the podium",
-        "type": "receiver",
-        "emoji": "🏁"
-    },
-    {
-        "title": "spittin flames",
-        "type": "sender",
-        "emoji": "🔥"
-    },
-    {
-        "title": "on fire",
-        "type": "receiver",
-        "emoji": "🔥"
-    },
-    {
-        "title": "star of the show",
-        "type": "receiver",
-        "emoji": "⭐️"
-    },
-    {
-        "title": "stargazer",
-        "type": "sender",
-        "emoji": "⭐️"
-    }
+  {
+    "title": "most loved",
+    "type": "receiver",
+    "emoji": "❤️"
+  },
+  {
+    "title": "biggest heart",
+    "type": "sender",
+    "emoji": "❤️"
+  },
+  {
+    "title": "comedian",
+    "type": "receiver",
+    "emoji": "😆"
+  },
+  {
+    "title": "roflcopter",
+    "type": "sender",
+    "emoji": "😆"
+  },
+  {
+    "title": "the surpriser",
+    "type": "receiver",
+    "emoji": "😮"
+  },
+  {
+    "title": "sad storyteller",
+    "type": "receiver",
+    "emoji": "😢"
+  },
+  {
+    "title": "so sad rn",
+    "type": "sender",
+    "emoji": "😢"
+  },
+  {
+    "title": "the mind-blower",
+    "type": "receiver",
+    "emoji": "🤯"
+  },
+  {
+    "title": "life of the party",
+    "type": "receiver",
+    "emoji": "🥳"
+  },
+  {
+    "title": "standing ovation",
+    "type": "receiver",
+    "emoji": "👏"
+  },
+  {
+    "title": "my hands hurt",
+    "type": "sender",
+    "emoji": "👏"
+  },
+  {
+    "title": "jazziest",
+    "type": "receiver",
+    "emoji": "🎷"
+  },
+  {
+    "title": "thoughts n prayers",
+    "type": "sender",
+    "emoji": "🙏"
+  },
+  {
+    "title": "caffeinated",
+    "type": "receiver",
+    "emoji": "☕️"
+  },
+  {
+    "title": "barista",
+    "type": "sender",
+    "emoji": "☕️"
+  },
+  {
+    "title": "vroom vroom",
+    "type": "sender",
+    "emoji": "🏎️"
+  },
+  {
+    "title": "bug reporter",
+    "type": "sender",
+    "emoji": "🐛"
+  },
+  {
+    "title": "on the podium",
+    "type": "receiver",
+    "emoji": "🏁"
+  },
+  {
+    "title": "spittin flames",
+    "type": "sender",
+    "emoji": "🔥"
+  },
+  {
+    "title": "on fire",
+    "type": "receiver",
+    "emoji": "🔥"
+  },
+  {
+    "title": "star of the show",
+    "type": "receiver",
+    "emoji": "⭐️"
+  },
+  {
+    "title": "stargazer",
+    "type": "sender",
+    "emoji": "⭐️"
+  }
 ]
