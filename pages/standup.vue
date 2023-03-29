@@ -17,20 +17,11 @@
 
                 <div v-else class="w-full h-full z-50">
                     <!-- join/create -->
-                    <div v-if="roomState == null" class="flex justify-center items-center">
-                        <div class="flex flex-row w-full justify-center">
-                            <div class="flex flex-col items-center">
-                                <div class="w-min flex flex-col">
-                                    <h2 class="text-4xl -mt-5">welcome!</h2>
-                                    <p class="w-max opacity-50">enter your team's room name here to get started!</p>
-                                    <input type="text" class="text-black text-2xl p-2 text-center rounded-t-lg outline-none"
-                                        placeholder="room name" v-model="joinId" />
-                                    <button class="bg-blue-500 text-lg rounded-b-lg py-2" v-on:click="joinClicked">join
-                                        room</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <JoinRoom v-if="roomState == null" :roomId="joinId" @update:roomId="val => joinId = val"
+                        :onConfirm="joinClicked">
+                        <h2 class="text-4xl -mt-5">welcome!</h2>
+                        <p class="w-max opacity-50">enter your team's room name here to get started!</p>
+                    </JoinRoom>
 
                     <!-- in room -->
                     <div class="flex flex-row justify-center w-full h-full" v-else>
@@ -140,7 +131,7 @@
                                 v-else-if="roomState.state == 'finished'">
                                 <h1 class="text-4xl">that's everyone!</h1>
                                 <p>thanks for using the standup-o-matic 5000</p>
-                                <p>have a great {{ dayOfWeekString  }}!!</p>
+                                <p>have a great {{ dayOfWeekString }}!!</p>
 
                                 <div v-if="isHost" class="mt-5">
                                     <button class="bg-amber-500 p-4 rounded-lg" v-on:click="resetRoom">reset room</button>
@@ -149,7 +140,8 @@
                                 <div v-if="emojiStats != null" class="mt-4">
                                     <h2 class="text-3xl">🎗️ the standup awards 🎗️</h2>
                                     <div class="flex flex-wrap gap-4 justify-center mt-4">
-                                        <div v-for="(stat, index) in emojiStats" :key="index" class="bg-gray-300 dark:bg-slate-500 dark:shadow-white rounded-xl p-4 pt-2 hover:scale-110 hover:shadow-lg hover:-translate-y-4 cursor-default transition-all">
+                                        <div v-for="(stat, index) in emojiStats" :key="index"
+                                            class="bg-gray-300 dark:bg-slate-500 dark:shadow-white rounded-xl p-4 pt-2 hover:scale-110 hover:shadow-lg hover:-translate-y-4 cursor-default transition-all">
                                             <p class="text-4xl">{{ getPlayer(stat.who).name }}</p>
                                             <p class="text-lg -mt-2">{{ stat.title }}</p>
                                             <p class="opacity-80 mt-1">{{ stat.desc }}</p>
