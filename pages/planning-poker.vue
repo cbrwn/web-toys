@@ -64,7 +64,8 @@
 
                 <button
                   class="bg-red-500 h-full px-3 rounded-xl text-black ml-2 transition-all hover:scale-105 hover:-translate-y-1"
-                  v-on:click="() => myPlayer.role = 'voter'">role</button>
+                  v-on:click="() => myPlayer.role = 'voter'"
+                  v-if="myPlayer.role != 'observer'">role</button>
               </div>
             </div>
 
