@@ -90,7 +90,7 @@
             </div>
 
             <!-- choices -->
-            <div class="mt-5" v-if="myPlayer.role != 'observer'">
+            <div class="mt-5" v-if="myPlayer.role != 'observer' || editChoicesMode">
               <div class="flex flex-wrap justify-center items-center gap-3 mt-1 transition-opacity" :class="{
                 ['opacity-50']: roomState.revealed && playerChoice == -1,
               }">
