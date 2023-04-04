@@ -174,7 +174,7 @@ export default {
         { icon: "🤠", desc: "haha yes" },
       ],
       availableRoles: ["engineer", "xd", "design", "production"],
-      roleColours: ['bg-yellow-500', 'bg-blue-500', 'bg-green-500', 'bg-red-500']
+      roleColours: ['bg-emerald-400', 'bg-pink-400', 'bg-blue-400', 'bg-amber-300']
     };
   },
   created() {
