@@ -2,9 +2,9 @@
   <div>
 
     <div class="flex flex-col items-center transition-opacity select-none" :class="{ ['opacity-30']: player.choice < 0 }">
-      <div class="flex items-center justify-center rounded-lg w-16 h-20 text-4xl font-bold relative" :class="{
+      <div class="flex items-center justify-center rounded-lg w-16 h-20 text-4xl text-black font-bold relative" :class="{
         ['bg-gray-300 dark:bg-slate-500']: !revealed,
-        ['bg-blue-400 dark:bg-blue-500']: revealed
+        [ roleBg ]: revealed
       }">
         <span v-if="observer">
           👀
@@ -40,7 +40,7 @@
 
 <script>
 export default {
-  props: ["player", "choices", "revealed", "vibes", "observer", "host", "observeFn"],
+  props: ["player", "choices", "revealed", "vibes", "observer", "host", "observeFn", "roleBg"],
   data() {
     return {
       observeHovered: false

@@ -123,7 +123,9 @@
 
                     <PokerPlayer v-for="(player, key) in getPlayersWithRole(role)" :key="key" :player="player"
                       :revealed="roomState.revealed" :choices="roomState.choices" :vibes="confidenceValues"
-                      :observer="role == 'observer'" :host="isRoomHost" :observeFn="(id) => toggleObserver(id)" />
+                      :observer="role == 'observer'" :host="isRoomHost" :observeFn="(id) => toggleObserver(id)"
+                      :roleBg="roleColours[player.role]"
+                       />
                   </div>
                 </div>
               </div>
@@ -142,7 +144,7 @@
 
             <div class="flex flex-col mt-4 gap-2 w-1/2">
               <button v-for="(role, index) in availableRoles" :key="index"
-                class="p-1 px-2 text-black rounded-xl transition-all hover:scale-110" :class="roleColours[index]"
+                class="p-1 px-2 text-black rounded-xl transition-all hover:scale-110" :class="roleColours[role]"
                 v-on:click="() => changeRole(index)">{{ role }}</button>
             </div>
           </div>
@@ -174,7 +176,14 @@ export default {
         { icon: "🤠", desc: "haha yes" },
       ],
       availableRoles: ["engineer", "xd", "design", "production"],
-      roleColours: ['bg-emerald-400', 'bg-pink-400', 'bg-blue-400', 'bg-amber-300']
+      roleColours: {
+        engineer: 'bg-emerald-400', 
+        xd: 'bg-pink-400', 
+        design: 'bg-blue-400', 
+        production: 'bg-amber-300',
+        voter: 'bg-blue-500',
+        observer: 'bg-gray-400'
+      }
     };
   },
   created() {
