@@ -140,7 +140,6 @@ export default {
       playerId: "",
       playerName: "???",
       playerChoice: -1,
-      isRoomHost: false,
       nameSetted: false,
       roomState: null,
       showCopySuccess: false,
@@ -173,7 +172,7 @@ export default {
 
       if (this.$route.query.room) {
         let roomString = this.$route.query.room;
-        this.joinRoom(roomString);
+        this.joinRoom(roomString, this.$route.query.host);
       }
     });
 
@@ -199,27 +198,23 @@ export default {
     });
 
     this.socket.on("newHost", (hostId) => {
-      console.log("newHost");
-      console.log(hostId);
-      if (hostId == this.playerId) {
-        this.isRoomHost = true;
-      }
+      console.log("newHost", hostId);
+      this.roomState.host = hostId;
     });
   },
   methods: {
-    joinRoom(roomId) {
+    joinRoom(roomId, claimHost) {
       let playerName = "pokerer";
       if (localStorage.getItem("name") != null) {
         playerName = localStorage.getItem("name");
       }
 
-      this.socket.emit("joinRoom", { roomId: roomId, name: playerName }, (response) => {
+      this.socket.emit("joinRoom", { roomId: roomId, name: playerName, claimHost: claimHost }, (response) => {
         if (!response.status) {
           return;
         }
 
         this.roomId = response.roomId;
-        this.isRoomHost = response.host;
         this.playerName = response.name;
         this.playerId = response.playerId;
 
@@ -361,6 +356,10 @@ export default {
     hasSetName() {
       return localStorage.getItem("hasSetName") || this.nameSetted;
     },
+
+    isRoomHost() {
+      return this.playerId == this.roomState.host;
+    }
   },
 };
 </script>

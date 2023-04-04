@@ -33,6 +33,7 @@ async function createRoom(roomId) {
         choices: this.choices,
         players: infos,
         revealed: this.revealed,
+        host: this.host
       };
     },
 
@@ -113,7 +114,7 @@ let poker = {
         rooms[roomId].players.push(socket.client);
 
         let isHost = false;
-        if (rooms[roomId].players.length === 1) {
+        if (rooms[roomId].players.length === 1 || req.claimHost) {
           rooms[roomId].host = socket.client.id;
           isHost = true;
         }
@@ -131,7 +132,6 @@ let poker = {
         return callback({
           status: true,
           roomId: roomId,
-          host: isHost,
           name: socket.client.name,
           playerId: socket.client.id,
         });
