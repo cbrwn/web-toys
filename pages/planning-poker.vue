@@ -92,10 +92,10 @@
             <!-- choices -->
             <div class="mt-5" v-if="myPlayer.role != 'observer' || editChoicesMode">
               <div class="flex flex-wrap justify-center items-center gap-3 mt-1 transition-opacity" :class="{
-                ['opacity-50']: roomState.revealed && playerChoice == -1,
+                ['opacity-50']: roomState.revealed && myPlayer.choice == -1,
               }">
                 <PokerChoice v-for="(choice, index) in roomState.choices" :item="choice" :key="index"
-                  :selected="playerChoice == index" :cardClicked="() => choiceClicked(index)"
+                  :selected="myPlayer.choice == index" :cardClicked="() => choiceClicked(index)"
                   :onRemove="() => removeChoice(index)" :onEdited="(val) => editChoice(index, val)"
                   :onMove="(d) => moveChoice(index, d)" :editMode="editChoicesMode && isRoomHost" />
 
@@ -105,7 +105,7 @@
 
             <div class="mt-2 rounded-xl px-3 text-gray-400 dark:text-gray-500" v-if="myPlayer.role != 'observer'">
               <div class="opacity-50 mb-1">vibes</div>
-              <div class="flex flex-row gap-4 transition-opacity" :class="{ ['opacity-30']: playerChoice == -1 }">
+              <div class="flex flex-row gap-4 transition-opacity" :class="{ ['opacity-30']: myPlayer.choice == -1 }">
                 <PokerVibe v-for="(vibe, index) in confidenceValues" :key="index"
                   :selected="roomState.players[playerId].confidence == index" :desc="vibe.desc"
                   v-on:click="vibeClicked(index)">
@@ -163,7 +163,6 @@ export default {
       roomId: "",
       playerId: "",
       playerName: "???",
-      playerChoice: -1,
       nameSetted: false,
       roomState: null,
       showCopySuccess: false,
@@ -279,11 +278,10 @@ export default {
       if (this.editChoicesMode) return;
 
       this.socket.emit("makeChoice", { choice: idx }, (response) => {
-        if (response.status) this.playerChoice = response.choice;
-
-        this.roomState.players[this.playerId].choice = this.playerChoice;
-        this.roomState.players[this.playerId].originalChoice =
-          response.originalChoice;
+        if (response.status) {
+        this.roomState.players[this.playerId].choice = response.choice;
+        this.roomState.players[this.playerId].originalChoice = response.originalChoice;
+        }
       });
     },
 
@@ -329,7 +327,6 @@ export default {
         player.originalChoice = null;
       }
       this.roomState.revealed = false;
-      this.playerChoice = -1;
     },
 
     resetClicked() {
