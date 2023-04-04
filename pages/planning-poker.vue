@@ -54,12 +54,17 @@
                       if (event.key == 'Enter') setName(playerName);
                     }
                   " />
-                <button class="px-3 h-full rounded-r-lg bg-green-500 transition-all" v-on:click="() => setName(playerName)" :class="{
-                  ['cursor-pointer']: nameEdited,
-                  ['cursor-default opacity-50']: !nameEdited,
-                }">
+                <button class="px-3 h-full rounded-r-lg bg-green-500 text-black transition-all"
+                  v-on:click="() => setName(playerName)" :class="{
+                    ['cursor-pointer']: nameEdited,
+                    ['cursor-default opacity-50']: !nameEdited,
+                  }">
                   set
                 </button>
+
+                <button
+                  class="bg-red-500 h-full px-3 rounded-xl text-black ml-2 transition-all hover:scale-105 hover:-translate-y-1"
+                  v-on:click="() => myPlayer.role = 'voter'">role</button>
               </div>
             </div>
 
@@ -85,7 +90,7 @@
             </div>
 
             <!-- choices -->
-            <div class="mt-5">
+            <div class="mt-5" v-if="myPlayer.role != 'observer'">
               <div class="flex flex-wrap justify-center items-center gap-3 mt-1 transition-opacity" :class="{
                 ['opacity-50']: roomState.revealed && playerChoice == -1,
               }">
@@ -98,7 +103,7 @@
               </div>
             </div>
 
-            <div class="mt-2 rounded-xl px-3 text-gray-400 dark:text-gray-500">
+            <div class="mt-2 rounded-xl px-3 text-gray-400 dark:text-gray-500" v-if="myPlayer.role != 'observer'">
               <div class="opacity-50 mb-1">vibes</div>
               <div class="flex flex-row gap-4 transition-opacity" :class="{ ['opacity-30']: playerChoice == -1 }">
                 <PokerVibe v-for="(vibe, index) in confidenceValues" :key="index"
@@ -109,11 +114,17 @@
               </div>
             </div>
 
-            <div class="mt-5">
-              players:
-              <div class="flex flex-row justify-center gap-5 mt-1">
-                <PokerPlayer v-for="(player, key) in roomState.players" :key="key" :player="player"
-                  :revealed="roomState.revealed" :choices="roomState.choices" :vibes="confidenceValues" />
+            <div class="flex flex-wrap justify-center gap-5 mt-5">
+              <div v-for="(role, index) in existingRoles" :key="index">
+                <div v-if="roleExists(role)" class="flex flex-col gap-2" :class="role == 'observer' ? 'self-end' : ''">
+                  {{ role }}
+                  <div class="flex flex-row gap-2">
+
+                    <PokerPlayer v-for="(player, key) in getPlayersWithRole(role)" :key="key" :player="player"
+                      :revealed="roomState.revealed" :choices="roomState.choices" :vibes="confidenceValues"
+                      :observer="role == 'observer'" :host="isRoomHost" :observeFn="(id) => toggleObserver(id)" />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -122,6 +133,19 @@
         <NameModal v-if="roomState != null && !hasSetName" :setNameFn="(name) => setName(name)" defaultName="pokerer">
           <h2 class="text-2xl">welcome to planning poker!</h2>
         </NameModal>
+
+        <div class="flex justify-center items-center fixed left-0 top-0 w-full h-full bg-black/50 z-50"
+          v-else-if="myPlayer.role == 'voter'">
+          <div class="flex flex-col items-center bg-slate-300 dark:bg-slate-600 w-1/3 h-min rounded-3xl py-5">
+            <h2 class="text-4xl">select your role!</h2>
+
+            <div class="flex flex-col mt-4 gap-2 w-1/2">
+              <button v-for="(role, index) in availableRoles" :key="index"
+                class="p-1 px-2 text-black rounded-xl transition-all hover:scale-110" :class="roleColours[index]"
+                v-on:click="() => changeRole(index)">{{ role }}</button>
+            </div>
+          </div>
+        </div>
       </ContentContainer>
     </div>
   </div>
@@ -149,6 +173,8 @@ export default {
         { icon: "😎", desc: "nailed it" },
         { icon: "🤠", desc: "haha yes" },
       ],
+      availableRoles: ["engineer", "xd", "design", "production"],
+      roleColours: ['bg-yellow-500', 'bg-blue-500', 'bg-green-500', 'bg-red-500']
     };
   },
   created() {
@@ -201,6 +227,16 @@ export default {
       console.log("newHost", hostId);
       this.roomState.host = hostId;
     });
+
+    this.socket.on("updatePlayerRole", (res) => {
+      this.roomState.players[res.playerId].role = res.role;
+
+      if (res.playerId == this.playerId && res.role == 'voter') {
+        if (localStorage.getItem("pokerRole") !== undefined) {
+          this.changeRole(localStorage.getItem("pokerRole"));
+        }
+      }
+    });
   },
   methods: {
     joinRoom(roomId, claimHost) {
@@ -220,6 +256,10 @@ export default {
 
         localStorage.setItem("lastPokerRoomId", roomId);
         localStorage.setItem("name", response.name);
+
+        if (localStorage.getItem("pokerRole") !== undefined) {
+          this.changeRole(localStorage.getItem("pokerRole"));
+        }
 
         window.history.replaceState(
           null,
@@ -257,6 +297,18 @@ export default {
           localStorage.setItem("hasSetName", true);
           this.nameSetted = true;
         }
+      });
+    },
+
+    changeRole(roleIndex) {
+      let roleString = this.availableRoles[roleIndex];
+      this.socket.emit("changeRole", { role: roleString, id: this.playerId }, (response) => {
+        if (!response.status) {
+          console.log(response.message);
+          return;
+        }
+
+        localStorage.setItem("pokerRole", roleIndex);
       });
     },
 
@@ -347,6 +399,32 @@ export default {
       this.roomState.choices[index] = this.roomState.choices[index + direction];
       this.roomState.choices[index + direction] = temp;
     },
+
+    getPlayersWithRole(role) {
+      return Object.values(this.roomState.players).filter(
+        (player) => player.role == role
+      );
+    },
+
+    roleExists(role) {
+      return this.getPlayersWithRole(role).length > 0;
+    },
+
+    getPlayer(id) {
+      let plr = this.roomState?.players[id];
+      return plr ? plr : { name: "no one", comeBack: false };
+    },
+
+    toggleObserver(id) {
+      console.log(id);
+      let role = this.roomState.players[id].role == 'observer' ? 'voter' : 'observer';
+      this.socket.emit("changeRole", { role: role, id: id }, (response) => {
+        if (!response.status) {
+          console.log(response.message);
+        }
+      });
+    }
+
   },
   computed: {
     nameEdited() {
@@ -359,6 +437,31 @@ export default {
 
     isRoomHost() {
       return this.playerId == this.roomState.host;
+    },
+
+    myPlayer() {
+      return this.getPlayer(this.playerId);
+    },
+
+    existingRoles() {
+      let result = [];
+
+      for (let player of Object.values(this.roomState.players)) {
+        if (player.role && !result.includes(player.role)) {
+          result.push(player.role);
+        }
+      }
+
+      // sort alphabetically
+      result.sort();
+
+      // make sure observer is last
+      if (result.includes('observer')) {
+        result.splice(result.indexOf('observer'), 1);
+        result.push('observer');
+      }
+
+      return result;
     }
   },
 };

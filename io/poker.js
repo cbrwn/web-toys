@@ -5,9 +5,11 @@ let rooms = {};
 function getPlayerInfo(plr) {
   return {
     name: plr.name || "???",
+    id: plr.id,
     choice: plr.choice,
     originalChoice: plr.originalChoice,
     confidence: plr.confidence,
+    role: plr.role,
   };
 }
 
@@ -33,7 +35,7 @@ async function createRoom(roomId) {
         choices: this.choices,
         players: infos,
         revealed: this.revealed,
-        host: this.host
+        host: this.host,
       };
     },
 
@@ -111,6 +113,7 @@ let poker = {
         socket.client.originalChoice = null;
         socket.client.confidence = null;
         socket.client.name = req.name;
+        socket.client.role = "voter";
         rooms[roomId].players.push(socket.client);
 
         let isHost = false;
@@ -232,6 +235,45 @@ let poker = {
           .emit("updateRoomState", rooms[socket.client.room].getRoomState());
 
         return callback({ status: true, newName: newName });
+      });
+
+      socket.on("changeRole", (req, callback) => {
+        if (socket.client.room == null) {
+          return callback({ status: false, message: "you are not in a room!" });
+        }
+
+        if (
+          req.id !== socket.client.id &&
+          rooms[socket.client.room].host !== socket.client.id
+        ) {
+          return callback({
+            status: false,
+            message: "only the host can change peoples' roles!",
+          });
+        }
+
+        const validRoles = ["engineer", "xd", "design", "production"];
+        if (rooms[socket.client.room].host == socket.client.id) {
+          validRoles.push("observer", "voter");
+        }
+
+        if (!validRoles.includes(req.role)) {
+          return callback({
+            status: false,
+            message: "invalid role!",
+          });
+        }
+
+        let playerId = req.id || socket.client.id;
+        rooms[socket.client.room].players.find(
+          (player) => player.id === playerId
+        ).role = req.role;
+        ns.to(socket.client.room).emit("updatePlayerRole", {
+          playerId: playerId,
+          role: req.role,
+        });
+
+        return callback({ status: true });
       });
 
       socket.on("vibe", (vibeIndex, callback) => {
