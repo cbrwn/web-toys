@@ -26,9 +26,13 @@
       {{ player.name }}
     </div>
     <div v-if="host">
-      <button class="text-4xl" v-on:click="observeFn(player.id)">
+      <button class="text-2xl" v-on:click="observeFn(player.id)" v-on:mouseenter="() => observeHovered = true"
+        v-on:mouseleave="() => observeHovered = false">
         {{ observer ? "🤔" : '👀' }}
       </button>
+      <p class="transition-all -mt-2 select-none pointer-events-none" :class="{ 'scale-100 -rotate-2': observeHovered, 'scale-0 -translate-y-2 rotate-12': !observeHovered }">
+        {{ observer ? "make voter" : 'make observer' }}
+      </p>
     </div>
   </div>
 </template>
@@ -36,5 +40,10 @@
 <script>
 export default {
   props: ["player", "choices", "revealed", "vibes", "observer", "host", "observeFn"],
+  data() {
+    return {
+      observeHovered: false
+    }
+  }
 };
 </script>
