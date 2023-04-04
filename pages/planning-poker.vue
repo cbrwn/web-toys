@@ -189,11 +189,6 @@ export default {
   created() {
     document.title = "planning poker";
   },
-  watch: {
-    emitErrors: function (n, o) {
-      console.log(n, o);
-    },
-  },
   beforeUnmount() {
     this.socket?.disconnect();
   },
@@ -218,7 +213,6 @@ export default {
     });
 
     this.socket.on("updateRoomState", (res) => {
-      console.log(res);
       this.roomState = res;
     });
 
@@ -427,7 +421,6 @@ export default {
     },
 
     toggleObserver(id) {
-      console.log(id);
       let role = this.roomState.players[id].role == 'observer' ? 'voter' : 'observer';
       this.socket.emit("changeRole", { role: role, id: id }, (response) => {
         if (!response.status) {
