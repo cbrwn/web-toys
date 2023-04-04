@@ -51,10 +51,10 @@
                 <input type="text" class="text-black text-lg h-full px-2 py-1 rounded-l-lg outline-none"
                   v-model="playerName" placeholder="player name" size="10" v-on:keypress="
                     (event) => {
-                      if (event.key == 'Enter') setName();
+                      if (event.key == 'Enter') setName(playerName);
                     }
                   " />
-                <button class="px-3 h-full rounded-r-lg bg-green-500 transition-all" v-on:click="setName" :class="{
+                <button class="px-3 h-full rounded-r-lg bg-green-500 transition-all" v-on:click="() => setName(playerName)" :class="{
                   ['cursor-pointer']: nameEdited,
                   ['cursor-default opacity-50']: !nameEdited,
                 }">
@@ -141,6 +141,7 @@ export default {
       playerName: "???",
       playerChoice: -1,
       isRoomHost: false,
+      nameSetted: false,
       roomState: null,
       showCopySuccess: false,
       editChoicesMode: false,
@@ -251,14 +252,15 @@ export default {
       });
     },
 
-    setName() {
-      this.socket.emit("changeName", this.playerName, (response) => {
+    setName(playerName) {
+      this.socket.emit("changeName", playerName, (response) => {
         if (response.status) {
           this.playerName = response.newName;
           this.roomState.players[this.playerId].name = this.playerName;
 
           localStorage.setItem("name", response.newName);
           localStorage.setItem("hasSetName", true);
+          this.nameSetted = true;
         }
       });
     },
@@ -354,6 +356,10 @@ export default {
   computed: {
     nameEdited() {
       return this.playerName != this.roomState.players[this.playerId].name;
+    },
+
+    hasSetName() {
+      return localStorage.getItem("hasSetName") || this.nameSetted;
     },
   },
 };
