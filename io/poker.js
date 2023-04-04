@@ -1,5 +1,3 @@
-const fakelish = require("fakelish");
-
 let rooms = {};
 
 function getPlayerInfo(plr) {
