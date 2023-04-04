@@ -279,8 +279,8 @@ export default {
 
       this.socket.emit("makeChoice", { choice: idx }, (response) => {
         if (response.status) {
-        this.roomState.players[this.playerId].choice = response.choice;
-        this.roomState.players[this.playerId].originalChoice = response.originalChoice;
+          this.roomState.players[this.playerId].choice = response.choice;
+          this.roomState.players[this.playerId].originalChoice = response.originalChoice;
         }
       });
     },
