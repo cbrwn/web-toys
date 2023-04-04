@@ -21,22 +21,32 @@
           <!-- room selection/creation -->
           <div v-if="roomState == null" class="flex flex-col gap-4">
             <!-- join/create -->
-            <JoinRoom v-if="roomState == null" :roomId="joinId" @update:roomId="(val) => (joinId = val)"
-              :onConfirm="() => joinRoom(joinId)">
+            <JoinRoom
+              v-if="roomState == null"
+              :roomId="joinId"
+              @update:roomId="(val) => (joinId = val)"
+              :onConfirm="() => joinRoom(joinId)"
+            >
             </JoinRoom>
           </div>
 
           <div v-else class="flex flex-col items-center">
             <!-- room code -->
             <div class="flex flex-col items-center -mt-5 mb-3">
-              <h2 class="flex flex-row items-center justify-center text-3xl cursor-pointer -mt-2"
-                v-on:click="roomCodeClicked">
+              <h2
+                class="flex flex-row items-center justify-center text-3xl cursor-pointer -mt-2"
+                v-on:click="roomCodeClicked"
+              >
                 {{ roomId }}
                 <span class="text-2xl select-none">
                   <span v-if="showCopySuccess"> ✅ </span>
                   <span v-else>📋</span>
-                  <span class="text-lg absolute transition-transform select-none" :style="`transform: translate(${this.showCopySuccess ? '0%' : '-50%'
-                    }, 0%) scale(${this.showCopySuccess ? '1.0' : '0.0'});`">
+                  <span
+                    class="text-lg absolute transition-transform select-none"
+                    :style="`transform: translate(${
+                      this.showCopySuccess ? '0%' : '-50%'
+                    }, 0%) scale(${this.showCopySuccess ? '1.0' : '0.0'});`"
+                  >
                     copied url!
                   </span>
                 </span>
@@ -48,24 +58,36 @@
             <div class="flex flex-col mb-3">
               name
               <div>
-                <input type="text" class="text-black text-lg h-full px-2 py-1 rounded-l-lg outline-none"
-                  v-model="playerName" placeholder="player name" size="10" v-on:keypress="
+                <input
+                  type="text"
+                  class="text-black text-lg h-full px-2 py-1 rounded-l-lg outline-none"
+                  v-model="playerName"
+                  placeholder="player name"
+                  size="10"
+                  v-on:keypress="
                     (event) => {
                       if (event.key == 'Enter') setName(playerName);
                     }
-                  " />
-                <button class="px-3 h-full rounded-r-lg bg-green-500 text-black transition-all"
-                  v-on:click="() => setName(playerName)" :class="{
+                  "
+                />
+                <button
+                  class="px-3 h-full rounded-r-lg bg-green-500 text-black transition-all"
+                  v-on:click="() => setName(playerName)"
+                  :class="{
                     ['cursor-pointer']: nameEdited,
                     ['cursor-default opacity-50']: !nameEdited,
-                  }">
+                  }"
+                >
                   set
                 </button>
 
                 <button
                   class="bg-red-500 h-full px-3 rounded-xl text-black ml-2 transition-all hover:scale-105 hover:-translate-y-1"
-                  v-on:click="() => myPlayer.role = 'voter'"
-                  v-if="myPlayer.role != 'observer'">role</button>
+                  v-on:click="() => (myPlayer.role = 'voter')"
+                  v-if="myPlayer.role != 'observer'"
+                >
+                  role
+                </button>
               </div>
             </div>
 
@@ -77,39 +99,78 @@
                 <div class="flex-grow h-0.5 bg-black/30 dark:bg-white/30"></div>
               </div>
               <div class="flex flex-row -mt-2">
-                <PokerHostButton class="rounded-l-lg 105" :class="{
-                  ['bg-yellow-500']: !editChoicesMode,
-                  ['bg-green-500']: editChoicesMode,
-                }" v-on:click="toggleChoiceEditing" :disable="roomState.revealed">
+                <PokerHostButton
+                  class="rounded-l-lg 105"
+                  :class="{
+                    ['bg-yellow-500']: !editChoicesMode,
+                    ['bg-green-500']: editChoicesMode,
+                  }"
+                  v-on:click="toggleChoiceEditing"
+                  :disable="roomState.revealed"
+                >
                   {{ editChoicesMode ? "apply" : "choices" }}
                 </PokerHostButton>
-                <PokerHostButton class="bg-blue-400" v-on:click="revealClicked"
-                  :disable="editChoicesMode || roomState.revealed">reveal
+                <PokerHostButton
+                  class="bg-blue-400"
+                  v-on:click="revealClicked"
+                  :disable="editChoicesMode || roomState.revealed"
+                  >reveal
                 </PokerHostButton>
-                <PokerHostButton class="bg-red-500 rounded-r-lg" v-on:click="resetClicked">reset</PokerHostButton>
+                <PokerHostButton
+                  class="bg-red-500 rounded-r-lg"
+                  v-on:click="resetClicked"
+                  >reset</PokerHostButton
+                >
               </div>
             </div>
 
             <!-- choices -->
-            <div class="mt-5" v-if="myPlayer.role != 'observer' || editChoicesMode">
-              <div class="flex flex-wrap justify-center items-center gap-3 mt-1 transition-opacity" :class="{
-                ['opacity-50']: roomState.revealed && myPlayer.choice == -1,
-              }">
-                <PokerChoice v-for="(choice, index) in roomState.choices" :item="choice" :key="index"
-                  :selected="myPlayer.choice == index" :cardClicked="() => choiceClicked(index)"
-                  :onRemove="() => removeChoice(index)" :onEdited="(val) => editChoice(index, val)"
-                  :onMove="(d) => moveChoice(index, d)" :editMode="editChoicesMode && isRoomHost" />
+            <div
+              class="mt-5"
+              v-if="myPlayer.role != 'observer' || editChoicesMode"
+            >
+              <div
+                class="flex flex-wrap justify-center items-center gap-3 mt-1 transition-opacity"
+                :class="{
+                  ['opacity-50']: roomState.revealed && myPlayer.choice == -1,
+                }"
+              >
+                <PokerChoice
+                  v-for="(choice, index) in roomState.choices"
+                  :item="choice"
+                  :key="index"
+                  :selected="myPlayer.choice == index"
+                  :cardClicked="() => choiceClicked(index)"
+                  :onRemove="() => removeChoice(index)"
+                  :onEdited="(val) => editChoice(index, val)"
+                  :onMove="(d) => moveChoice(index, d)"
+                  :editMode="editChoicesMode && isRoomHost"
+                />
 
-                <PokerChoice v-if="editChoicesMode" :cardClicked="addChoice" item="+" />
+                <PokerChoice
+                  v-if="editChoicesMode"
+                  :cardClicked="addChoice"
+                  item="+"
+                />
               </div>
             </div>
 
-            <div class="mt-2 rounded-xl px-3 text-gray-400 dark:text-gray-500" v-if="myPlayer.role != 'observer'">
+            <div
+              class="mt-2 rounded-xl px-3 text-gray-400 dark:text-gray-500"
+              v-if="myPlayer.role != 'observer'"
+            >
               <div class="opacity-50 mb-1">vibes</div>
-              <div class="flex flex-row gap-4 transition-opacity" :class="{ ['opacity-30']: myPlayer.choice == -1 }">
-                <PokerVibe v-for="(vibe, index) in confidenceValues" :key="index"
-                  :selected="roomState.players[playerId].confidence == index" :desc="vibe.desc"
-                  v-on:click="vibeClicked(index)">
+              <div
+                class="flex flex-row gap-4 transition-opacity"
+                :class="{ ['opacity-30']: myPlayer.choice == -1 }"
+              >
+                <PokerVibe
+                  v-for="(vibe, index) in confidenceValues"
+                  :key="index"
+                  :selected="roomState.players[playerId].confidence == index"
+                  :desc="vibe.desc"
+                  v-on:click="vibeClicked(index)"
+                >
                   {{ vibe.icon }}
                 </PokerVibe>
               </div>
@@ -117,15 +178,25 @@
 
             <div class="flex flex-wrap justify-center gap-5 mt-5">
               <div v-for="(role, index) in existingRoles" :key="index">
-                <div v-if="roleExists(role)" class="flex flex-col gap-2" :class="role == 'observer' ? 'self-end' : ''">
+                <div
+                  v-if="roleExists(role)"
+                  class="flex flex-col gap-2"
+                  :class="role == 'observer' ? 'self-end' : ''"
+                >
                   {{ role }}
                   <div class="flex flex-row gap-2">
-
-                    <PokerPlayer v-for="(player, key) in getPlayersWithRole(role)" :key="key" :player="player"
-                      :revealed="roomState.revealed" :choices="roomState.choices" :vibes="confidenceValues"
-                      :observer="role == 'observer'" :host="isRoomHost" :observeFn="(id) => toggleObserver(id)"
+                    <PokerPlayer
+                      v-for="(player, key) in getPlayersWithRole(role)"
+                      :key="key"
+                      :player="player"
+                      :revealed="roomState.revealed"
+                      :choices="roomState.choices"
+                      :vibes="confidenceValues"
+                      :observer="role == 'observer'"
+                      :host="isRoomHost"
+                      :observeFn="(id) => toggleObserver(id)"
                       :roleBg="roleColours[player.role]"
-                       />
+                    />
                   </div>
                 </div>
               </div>
@@ -133,22 +204,43 @@
           </div>
         </div>
 
-        <NameModal v-if="roomState != null && !hasSetName" :setNameFn="(name) => setName(name)" defaultName="pokerer">
+        <NameModal
+          v-if="roomState != null && !hasSetName"
+          :setNameFn="(name) => setName(name)"
+          defaultName="pokerer"
+        >
           <h2 class="text-2xl">welcome to planning poker!</h2>
         </NameModal>
 
-        <div class="flex justify-center items-center fixed left-0 top-0 w-full h-full bg-black/50 z-50"
-          v-else-if="roomState != null && myPlayer.role == 'voter'">
-          <div class="flex flex-col items-center bg-slate-300 dark:bg-slate-600 w-1/3 h-min rounded-3xl py-5">
+        <div
+          class="flex justify-center items-center fixed left-0 top-0 w-full h-full bg-black/50 z-50"
+          v-else-if="roomState != null && myPlayer.role == 'voter'"
+        >
+          <div
+            class="flex flex-col items-center bg-slate-300 dark:bg-slate-600 w-1/3 h-min rounded-3xl py-5"
+          >
             <h2 class="text-4xl">select your role!</h2>
 
             <div class="flex flex-col mt-4 gap-2 w-1/2">
-              <button v-for="(role, index) in availableRoles" :key="index"
-                class="p-1 px-2 text-black rounded-xl transition-all hover:scale-110" :class="roleColours[role]"
-                v-on:click="() => changeRole(index)">{{ role }}</button>
+              <button
+                v-for="(role, index) in availableRoles"
+                :key="index"
+                class="p-1 px-2 text-black rounded-xl transition-all hover:scale-110"
+                :class="roleColours[role]"
+                v-on:click="() => changeRole(index)"
+              >
+                {{ role }}
+              </button>
             </div>
           </div>
         </div>
+
+        <PokerConsensusDisplay
+          :isConsensus="isConsensus"
+          :isMegaConsensus="isMegaConsensus"
+          :voteCount="voteCount"
+          :consensusValue="roomState?.choices[myPlayer?.choice]"
+        />
       </ContentContainer>
     </div>
   </div>
@@ -170,6 +262,7 @@ export default {
       roomState: null,
       showCopySuccess: false,
       editChoicesMode: false,
+      voteCount: 0,
       confidenceValues: [
         { icon: "🤔", desc: "not sure" },
         { icon: "😎", desc: "nailed it" },
@@ -177,13 +270,13 @@ export default {
       ],
       availableRoles: ["engineer", "xd", "design", "production"],
       roleColours: {
-        engineer: 'bg-emerald-400', 
-        xd: 'bg-pink-400', 
-        design: 'bg-blue-400', 
-        production: 'bg-amber-300',
-        voter: 'bg-blue-500',
-        observer: 'bg-gray-400'
-      }
+        engineer: "bg-emerald-400",
+        xd: "bg-pink-400",
+        design: "bg-blue-400",
+        production: "bg-amber-300",
+        voter: "bg-blue-500",
+        observer: "bg-gray-400",
+      },
     };
   },
   created() {
@@ -224,6 +317,7 @@ export default {
     this.socket.on("resetState", () => {
       console.log("resetting from host");
       this.resetState();
+      this.voteCount++;
     });
 
     this.socket.on("newHost", (hostId) => {
@@ -238,7 +332,7 @@ export default {
 
       this.roomState.players[res.playerId].role = res.role;
 
-      if (res.playerId == this.playerId && res.role == 'voter') {
+      if (res.playerId == this.playerId && res.role == "voter") {
         if (localStorage.getItem("pokerRole") !== undefined) {
           this.changeRole(localStorage.getItem("pokerRole"));
         }
@@ -252,34 +346,38 @@ export default {
         playerName = localStorage.getItem("name");
       }
 
-      this.socket.emit("joinRoom", { roomId: roomId, name: playerName, claimHost: claimHost }, (response) => {
-        if (!response.status) {
-          return;
-        }
-
-        this.roomId = response.roomId;
-        this.playerName = response.name;
-        this.playerId = response.playerId;
-
-        localStorage.setItem("lastPokerRoomId", roomId);
-        localStorage.setItem("name", response.name);
-
-        if (localStorage.getItem("pokerRole") !== undefined) {
-          this.changeRole(localStorage.getItem("pokerRole"));
-        }
-
-        window.history.replaceState(
-          null,
-          document.title,
-          location.pathname + "?room=" + roomId
-        );
-
-        this.socket.emit("getRoomState", {}, (response) => {
-          if (response.status) {
-            this.roomState = response.roomState;
+      this.socket.emit(
+        "joinRoom",
+        { roomId: roomId, name: playerName, claimHost: claimHost },
+        (response) => {
+          if (!response.status) {
+            return;
           }
-        });
-      });
+
+          this.roomId = response.roomId;
+          this.playerName = response.name;
+          this.playerId = response.playerId;
+
+          localStorage.setItem("lastPokerRoomId", roomId);
+          localStorage.setItem("name", response.name);
+
+          if (localStorage.getItem("pokerRole") !== undefined) {
+            this.changeRole(localStorage.getItem("pokerRole"));
+          }
+
+          window.history.replaceState(
+            null,
+            document.title,
+            location.pathname + "?room=" + roomId
+          );
+
+          this.socket.emit("getRoomState", {}, (response) => {
+            if (response.status) {
+              this.roomState = response.roomState;
+            }
+          });
+        }
+      );
     },
 
     choiceClicked(idx) {
@@ -288,7 +386,8 @@ export default {
       this.socket.emit("makeChoice", { choice: idx }, (response) => {
         if (response.status) {
           this.roomState.players[this.playerId].choice = response.choice;
-          this.roomState.players[this.playerId].originalChoice = response.originalChoice;
+          this.roomState.players[this.playerId].originalChoice =
+            response.originalChoice;
         }
       });
     },
@@ -308,14 +407,18 @@ export default {
 
     changeRole(roleIndex) {
       let roleString = this.availableRoles[roleIndex];
-      this.socket.emit("changeRole", { role: roleString, id: this.playerId }, (response) => {
-        if (!response.status) {
-          console.log(response.message);
-          return;
-        }
+      this.socket.emit(
+        "changeRole",
+        { role: roleString, id: this.playerId },
+        (response) => {
+          if (!response.status) {
+            console.log(response.message);
+            return;
+          }
 
-        localStorage.setItem("pokerRole", roleIndex);
-      });
+          localStorage.setItem("pokerRole", roleIndex);
+        }
+      );
     },
 
     revealClicked() {
@@ -340,6 +443,7 @@ export default {
     resetClicked() {
       this.socket.emit("reset", null, (response) => {
         if (response.status) {
+          this.voteCount++;
           this.resetState();
         }
       });
@@ -421,14 +525,14 @@ export default {
     },
 
     toggleObserver(id) {
-      let role = this.roomState.players[id].role == 'observer' ? 'voter' : 'observer';
+      let role =
+        this.roomState.players[id].role == "observer" ? "voter" : "observer";
       this.socket.emit("changeRole", { role: role, id: id }, (response) => {
         if (!response.status) {
           console.log(response.message);
         }
       });
-    }
-
+    },
   },
   computed: {
     nameEdited() {
@@ -460,13 +564,43 @@ export default {
       result.sort();
 
       // make sure observer is last
-      if (result.includes('observer')) {
-        result.splice(result.indexOf('observer'), 1);
-        result.push('observer');
+      if (result.includes("observer")) {
+        result.splice(result.indexOf("observer"), 1);
+        result.push("observer");
       }
 
       return result;
-    }
+    },
+
+    isConsensus() {
+      if (!this.roomState?.revealed) return false;
+
+      let choice = this.myPlayer.choice;
+      for (let player of Object.values(this.roomState?.players)) {
+        if (player.choice != choice) {
+          return false;
+        }
+      }
+
+      return true;
+    },
+
+    isMegaConsensus() {
+      if (!this.roomState?.revealed) return false;
+
+      let choice = this.myPlayer.choice;
+      for (let player of Object.values(this.roomState?.players)) {
+        let hasOriginalChoice = player.originalChoice != null;
+        if (
+          player.choice != choice ||
+          (hasOriginalChoice && player.originalChoice != choice)
+        ) {
+          return false;
+        }
+      }
+
+      return true;
+    },
   },
 };
 </script>
