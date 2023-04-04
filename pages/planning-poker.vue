@@ -135,7 +135,7 @@
         </NameModal>
 
         <div class="flex justify-center items-center fixed left-0 top-0 w-full h-full bg-black/50 z-50"
-          v-else-if="myPlayer.role == 'voter'">
+          v-else-if="roomState != null && myPlayer.role == 'voter'">
           <div class="flex flex-col items-center bg-slate-300 dark:bg-slate-600 w-1/3 h-min rounded-3xl py-5">
             <h2 class="text-4xl">select your role!</h2>
 
@@ -224,10 +224,14 @@ export default {
 
     this.socket.on("newHost", (hostId) => {
       console.log("newHost", hostId);
-      this.roomState.host = hostId;
+      if (this.roomState) {
+        this.roomState.host = hostId;
+      }
     });
 
     this.socket.on("updatePlayerRole", (res) => {
+      if (this.roomState == null) return;
+
       this.roomState.players[res.playerId].role = res.role;
 
       if (res.playerId == this.playerId && res.role == 'voter') {
@@ -443,7 +447,7 @@ export default {
     existingRoles() {
       let result = [];
 
-      for (let player of Object.values(this.roomState.players)) {
+      for (let player of Object.values(this.roomState?.players)) {
         if (player.role && !result.includes(player.role)) {
           result.push(player.role);
         }
