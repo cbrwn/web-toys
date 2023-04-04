@@ -50,10 +50,10 @@
 
 <script>
 export default {
-  props: ["setNameFn"],
+  props: ["setNameFn", "defaultName"],
   data() {
     return {
-      tempName: "standupper",
+      tempName: this.defaultName,
     };
   },
 };

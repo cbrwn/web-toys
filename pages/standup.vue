@@ -205,12 +205,13 @@
           </div>
         </div>
 
-        <StandupNameModal
+        <NameModal
           v-if="roomState != null && !hasSetName"
           :setNameFn="(name) => setName(name)"
+          defaultName="standupper"
         >
           <h2 class="text-2xl">welcome to standup :)</h2>
-        </StandupNameModal>
+        </NameModal>
       </ContentContainer>
     </div>
   </div>

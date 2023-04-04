@@ -118,6 +118,10 @@
             </div>
           </div>
         </div>
+
+        <NameModal v-if="roomState != null && !hasSetName" :setNameFn="(name) => setName(name)" defaultName="pokerer">
+          <h2 class="text-2xl">welcome to planning poker!</h2>
+        </NameModal>
       </ContentContainer>
     </div>
   </div>
