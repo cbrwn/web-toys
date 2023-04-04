@@ -11,11 +11,7 @@ function getPlayerInfo(plr) {
   };
 }
 
-async function createRoom() {
-  let roomId = "";
-  do {
-    roomId = await fakelish.generateFakeWord(4, 8);
-  } while (rooms.hasOwnProperty(roomId));
+async function createRoom(roomId) {
   rooms[roomId] = {
     players: [],
     choices: ["0", "1", "2", "3", "5", "8", "13", "21", "34"],
@@ -64,8 +60,6 @@ async function createRoom() {
   };
 
   console.log(`Created room ${roomId}`);
-
-  return roomId;
 }
 
 // routine reporting on rooms and players
@@ -96,11 +90,6 @@ let poker = {
     ns.on("connection", (socket) => {
       console.log("poker connection!");
 
-      socket.on("createRoom", async (s, callback) => {
-        let roomId = await createRoom();
-        callback({ roomId });
-      });
-
       socket.on("joinRoom", async (req, callback) => {
         if (socket.client.room != null) {
           return callback({
@@ -109,17 +98,18 @@ let poker = {
           });
         }
 
+        let roomId = req.roomId;
+
         if (rooms[req.roomId] == null) {
-          return callback({ status: false, message: "room doesn't exist!" });
+          await createRoom(roomId);
         }
 
-        let roomId = req.roomId;
         socket.join(roomId);
         socket.client.room = roomId;
         socket.client.choice = -1;
         socket.client.originalChoice = null;
         socket.client.confidence = null;
-        socket.client.name = await fakelish.generateFakeWord(4, 7);
+        socket.client.name = req.name;
         rooms[roomId].players.push(socket.client);
 
         let isHost = false;
