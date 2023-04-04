@@ -63,27 +63,6 @@ async function createRoom(roomId) {
   console.log(`Created room ${roomId}`);
 }
 
-// routine reporting on rooms and players
-setInterval(() => {
-  // get time in hh:mm format
-  let time = new Date().toLocaleTimeString();
-  console.log(`poker status - @ ${time}`);
-
-  let roomCount = Object.keys(rooms).length;
-  let emptyRoomCount = 0;
-  let playerCount = 0;
-  for (let roomId in rooms) {
-    playerCount += rooms[roomId].players.length;
-
-    if (rooms[roomId].players.length === 0) {
-      emptyRoomCount++;
-    }
-  }
-
-  console.log(`  => ${roomCount} rooms (${emptyRoomCount} empty)`);
-  console.log(`  => ${playerCount} players`);
-}, 5 * 60 * 1000);
-
 let poker = {
   setup: function (io) {
     console.log("setting up poker :D");
