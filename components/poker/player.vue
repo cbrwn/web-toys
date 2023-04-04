@@ -4,7 +4,7 @@
     <div class="flex flex-col items-center transition-opacity select-none" :class="{ ['opacity-30']: player.choice < 0 }">
       <div class="flex items-center justify-center rounded-lg w-16 h-20 text-4xl font-bold relative" :class="{
         ['bg-gray-300 dark:bg-slate-500']: !revealed,
-        ['bg-blue-400 dark:bg-blue-500']: revealed,
+        ['bg-blue-400 dark:bg-blue-500']: revealed
       }">
         <span v-if="observer">
           👀
@@ -25,12 +25,13 @@
       </div>
       {{ player.name }}
     </div>
-    <div v-if="host">
+    <div v-if="host" class="relative">
       <button class="text-2xl" v-on:click="observeFn(player.id)" v-on:mouseenter="() => observeHovered = true"
         v-on:mouseleave="() => observeHovered = false">
         {{ observer ? "🤔" : '👀' }}
       </button>
-      <p class="transition-all -mt-2 select-none pointer-events-none" :class="{ 'scale-100 -rotate-2': observeHovered, 'scale-0 -translate-y-2 rotate-12': !observeHovered }">
+      <p class="transition-all -mt-2 select-none pointer-events-none absolute whitespace-nowrap"
+        :class="{ 'scale-100 -rotate-2': observeHovered, 'scale-0 -translate-y-2 rotate-12': !observeHovered, '-translate-x-4': !observer, '-translate-x-1': observer }">
         {{ observer ? "make voter" : 'make observer' }}
       </p>
     </div>
