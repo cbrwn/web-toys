@@ -239,6 +239,9 @@ export default {
   created() {
     document.title = "standup";
   },
+  beforeUnmount() {
+    this.socket?.disconnect();
+  },
   beforeMount() {
     this.joinId = localStorage.getItem("lastRoomId");
     this.socket = io(document.location.origin + "/standup");
