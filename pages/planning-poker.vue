@@ -239,7 +239,7 @@
           :isConsensus="isConsensus"
           :isMegaConsensus="isMegaConsensus"
           :voteCount="voteCount"
-          :consensusValue="roomState?.choices[myPlayer?.choice]"
+          :consensusValue="roomState?.choices[consensusValue]"
         />
       </ContentContainer>
     </div>
@@ -575,9 +575,10 @@ export default {
     isConsensus() {
       if (!this.roomState?.revealed) return false;
 
-      let choice = this.myPlayer.choice;
+      let choice = this.consensusValue;
+      console.log('consensus', choice);
       for (let player of Object.values(this.roomState?.players)) {
-        if (player.choice != choice) {
+        if (player.role != 'observer' && player.choice != choice) {
           return false;
         }
       }
@@ -588,8 +589,10 @@ export default {
     isMegaConsensus() {
       if (!this.roomState?.revealed) return false;
 
-      let choice = this.myPlayer.choice;
+      let choice = this.consensusValue;
+      console.log('mega', choice);
       for (let player of Object.values(this.roomState?.players)) {
+        if(player.role == 'observer') continue;
         let hasOriginalChoice = player.originalChoice != null;
         if (
           player.choice != choice ||
@@ -600,6 +603,15 @@ export default {
       }
 
       return true;
+    },
+
+    consensusValue() {
+      if(this.roomState == null) return -1;
+      for (let player of Object.values(this.roomState?.players)) {
+        if (player.role != 'observer') {
+          return player.choice;
+        }
+      }
     },
   },
 };
