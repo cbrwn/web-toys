@@ -191,7 +191,7 @@ export default {
       }
 
       if (currentAnimationState == 1 && firstAnimFrame) {
-        this.megaConsensusAudio.play();
+        //this.megaConsensusAudio.play();
       }
 
       if (currentAnimationState >= 1 && currentAnimationState <= 3) {
@@ -373,7 +373,7 @@ export default {
       }
 
       if (this.isMegaConsensus) {
-        this.airhornAudio.play();
+        //this.airhornAudio.play();
       }
 
       this.drawCanvas();
