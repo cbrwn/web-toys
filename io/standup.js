@@ -1,17 +1,6 @@
 const reactEmojis = require("./standupReacts.json");
 const awards = require("./standupAwards.json");
 
-// print emojis and their awards
-console.log("emojis:", reactEmojis);
-// print awards
-for (let award of awards) {
-  let typeVerb = award.type.substring(0, award.type.length - 2) + "ing";
-  while (typeVerb.length < 9) {
-    typeVerb = " " + typeVerb;
-  }
-  console.log(`${typeVerb} ${award.emoji}: ${award.title}`);
-}
-
 let rooms = {};
 
 function createRoom(name) {
