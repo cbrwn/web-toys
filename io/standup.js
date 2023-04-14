@@ -45,7 +45,7 @@ function createRoom(name) {
     removePlayer: function (owner, id) {
       for (let i = 0; i < this.people.length; i++) {
         if (
-          this.people[i].owner === owner.client.id &&
+          this.people[i].owner === owner.id &&
           this.people[i].id === id
         ) {
           // update order of indices if running
