@@ -204,6 +204,11 @@ export default {
 
     // sent when the order changes (e.g. a player finishes their turn)
     this.socket.on("updateOrder", (order) => {
+      if (this.order.now != order.now) {
+        this.canReact = false;
+        setTimeout(() => (this.canReact = true), 950);
+      }
+
       this.order = order;
     });
 
