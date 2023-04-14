@@ -47,7 +47,6 @@ export default {
         this.emojiHistory[thisEmoji] = 0;
 
       this.emojiHistory[thisEmoji]++;
-      console.log(this.emojiHistory);
       localStorage.setItem("standupEmojiHistory", JSON.stringify(this.emojiHistory));
     }
   },

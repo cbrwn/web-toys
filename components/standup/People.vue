@@ -54,7 +54,6 @@ export default {
   },
   methods: {
     personReacted(id, emoji) {
-      console.log(`react from ${id}`);
       this.reacts[id] = { emoji: emoji, show: true };
 
       setTimeout(() => {
