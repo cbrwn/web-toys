@@ -2,10 +2,7 @@
   <div class="container mx-auto flex justify-center flex-grow">
     <div class="flex flex-col w-full items-center py-8 gap-y-3">
       <Header title="standup"> </Header>
-      <ContentContainer
-        class="overflow-clip"
-        :class="{ ['flex-grow']: roomState != null }"
-      >
+      <ContentContainer class="overflow-clip" :class="{ ['flex-grow']: roomState != null }">
         <StandupEmojiSpam ref="spam" />
         <!-- connecting -->
         <div v-if="connectedState == 'connecting'">connecting to server...</div>
@@ -18,12 +15,8 @@
         <!-- we are connected! -->
         <div v-else class="w-full h-full z-50">
           <!-- join/create -->
-          <JoinRoom
-            v-if="roomState == null"
-            :roomId="joinId"
-            @update:roomId="(val) => (joinId = val)"
-            :onConfirm="() => joinOrCreateRoom(joinId)"
-          >
+          <JoinRoom v-if="roomState == null" :roomId="joinId" @update:roomId="(val) => (joinId = val)"
+            :onConfirm="() => joinOrCreateRoom(joinId)">
             <h2 class="text-4xl -mt-5">welcome!</h2>
             <p class="w-max opacity-50">
               enter your team's room name here to get started!
@@ -35,31 +28,19 @@
             <!-- top-left leave/name -->
             <div class="absolute top-0 left-0">
               <div class="m-2 flex flex-row">
-                <button
-                  class="bg-red-500 p-1 px-2 rounded-lg"
-                  v-on:click="leaveRoom"
-                >
+                <button class="bg-red-500 p-1 px-2 rounded-lg" v-on:click="leaveRoom">
                   leave
                 </button>
 
-                <input
-                  type="text"
-                  class="outline-none text-black px-2 rounded-l-lg ml-2"
-                  size="8"
-                  v-model="tempName"
+                <input type="text" class="outline-none text-black px-2 rounded-l-lg ml-2" size="8" v-model="tempName"
                   v-on:keypress="
                     (event) => {
                       if (event.key == 'Enter') setName(tempName);
                     }
-                  "
-                />
-                <button
-                  class="bg-green-500 px-1 rounded-r-lg"
-                  :class="{
-                    ['opacity-50 cursor-default']: tempName == myPlayer.name,
-                  }"
-                  v-on:click="() => setName(tempName)"
-                >
+                  " />
+                <button class="bg-green-500 px-1 rounded-r-lg" :class="{
+                  ['opacity-50 cursor-default']: tempName == myPlayer.name,
+                }" v-on:click="() => setName(tempName)">
                   set name
                 </button>
               </div>
@@ -68,10 +49,7 @@
             <!-- main content -->
             <div class="flex-grow">
               <!-- waiting for host -->
-              <div
-                class="flex flex-col flex-grow pt-4"
-                v-if="roomState.state == 'waiting'"
-              >
+              <div class="flex flex-col flex-grow pt-4" v-if="roomState.state == 'waiting'">
                 <h1 class="text-4xl">good morning!</h1>
                 <p class="opacity-40">waiting for host to start...</p>
 
@@ -79,10 +57,7 @@
                   <h2 class="text-2xl">^ that's you!!</h2>
 
                   <div>
-                    <button
-                      class="bg-green-500 rounded-xl py-4 px-6"
-                      v-on:click="startStandup"
-                    >
+                    <button class="bg-green-500 rounded-xl py-4 px-6" v-on:click="startStandup">
                       start standup!
                     </button>
                   </div>
@@ -93,28 +68,15 @@
                   morning!
                 </p>
 
-                <StandupHostControls
-                  v-if="isHost"
-                  :state="roomState.state"
-                  :playerName="getCurrentPlayer.name"
-                  :addFn="(name) => addPerson(name)"
-                  :skipFn="skipOtherPlayer"
-                />
+                <StandupHostControls v-if="isHost" :state="roomState.state" :playerName="getCurrentPlayer.name"
+                  :addFn="(name) => addPerson(name)" :skipFn="skipOtherPlayer" />
               </div>
 
               <!-- standup running! -->
-              <div
-                class="flex flex-col items-center h-full"
-                v-else-if="roomState.state == 'running'"
-              >
-                <div
-                  class="flex-grow flex flex-col justify-center items-center"
-                >
+              <div class="flex flex-col items-center h-full" v-else-if="roomState.state == 'running'">
+                <div class="flex-grow flex flex-col justify-center items-center">
                   <p class="-mb-1">let's hear from...</p>
-                  <h1
-                    class="text-4xl"
-                    :class="{ ['animate-bounce text-amber-500']: isMyTurn }"
-                  >
+                  <h1 class="text-4xl" :class="{ ['animate-bounce text-amber-500']: isMyTurn }">
                     {{ getCurrentPlayer.name }}
                   </h1>
 
@@ -130,45 +92,23 @@
                   <div v-if="isMyTurn">
                     <p class="opacity-80">^ that's you!</p>
 
-                    <button
-                      class="bg-green-500 px-10 py-5 rounded-xl mt-5"
-                      v-on:click="finishedTurn"
-                    >
+                    <button class="bg-green-500 px-10 py-5 rounded-xl mt-5" v-on:click="finishedTurn">
                       all done!
                     </button>
                   </div>
 
-                  <StandupHostControls
-                    v-if="isHost"
-                    :state="roomState.state"
-                    :playerName="getCurrentPlayer.name"
-                    :addFn="(name) => addPerson(name)"
-                    :skipFn="skipOtherPlayer"
-                  />
+                  <StandupHostControls v-if="isHost" :state="roomState.state" :playerName="getCurrentPlayer.name"
+                    :addFn="(name) => addPerson(name)" :skipFn="skipOtherPlayer" />
                 </div>
 
-                <div
-                  class="flex flex-wrap gap-2 transition-opacity justify-center"
-                  :class="{ ['opacity-50']: !canReact }"
-                  v-if="!isMyTurn"
-                >
-                  <StandupEmojiPicker
-                    v-for="(emoji, index) in reactEmojis"
-                    :key="index"
-                    v-on:click="() => emojiClicked(index)"
-                    :style="`width: calc(9%)`"
-                  >
-                    {{ emoji }}
-                  </StandupEmojiPicker>
+                <div class="transition-opacity" :class="{ ['opacity-50']: !canReact }" v-if="!isMyTurn">
+                  <StandupEmojiPicker :onClicked="(idx) => emojiClicked(idx)" :emojis="reactEmojis" :clickEnabled="canReact" />
                 </div>
 
                 <div class="flex flex-col items-center mt-5">
                   <div v-if="!myPlayer.comeBack && !hasHadTurn">
                     <p class="opacity-60">need a minute to step away?</p>
-                    <button
-                      class="bg-amber-600 w-fit text-white py-2 px-5 rounded-lg"
-                      v-on:click="comeBack"
-                    >
+                    <button class="bg-amber-600 w-fit text-white py-2 px-5 rounded-lg" v-on:click="comeBack">
                       come back to me
                     </button>
                   </div>
@@ -185,31 +125,17 @@
               </div>
 
               <!-- standup finished -->
-              <StandupFinished
-                v-else-if="roomState.state == 'finished'"
-                :onResetClicked="resetRoom"
-                :isHost="isHost"
-                :emojiStats="emojiStats"
-                :getPlayerFn="getPlayer"
-              />
+              <StandupFinished v-else-if="roomState.state == 'finished'" :onResetClicked="resetRoom" :isHost="isHost"
+                :emojiStats="emojiStats" :getPlayerFn="getPlayer" />
             </div>
 
             <!-- people list! -->
-            <StandupPeople
-              :people="roomState.players"
-              :hostid="roomState.host"
-              :myId="playerId"
-              :removePerson="(id) => removePerson(id)"
-              ref="friends"
-            />
+            <StandupPeople :people="roomState.players" :hostid="roomState.host" :myId="playerId"
+              :removePerson="(id) => removePerson(id)" ref="friends" />
           </div>
         </div>
 
-        <NameModal
-          v-if="roomState != null && !hasSetName"
-          :setNameFn="(name) => setName(name)"
-          defaultName="standupper"
-        >
+        <NameModal v-if="roomState != null && !hasSetName" :setNameFn="(name) => setName(name)" defaultName="standupper">
           <h2 class="text-2xl">welcome to standup :)</h2>
         </NameModal>
       </ContentContainer>
@@ -464,7 +390,7 @@ export default {
     },
     // HOST: skip the current person
     skipOtherPlayer() {
-      this.socket.emit("next", {}, (res) => {});
+      this.socket.emit("next", {}, (res) => { });
     },
     // HOST: reset the room after it finishes :D
     resetRoom() {
@@ -477,11 +403,11 @@ export default {
     },
     // HOST: add a ghost person
     addPerson(name) {
-      this.socket.emit("addPerson", { name: name }, (res) => {});
+      this.socket.emit("addPerson", { name: name }, (res) => { });
     },
     // HOST: remove a ghost person
     removePerson(id) {
-      this.socket.emit("removePerson", { id: id }, (res) => {});
+      this.socket.emit("removePerson", { id: id }, (res) => { });
     },
   },
 };

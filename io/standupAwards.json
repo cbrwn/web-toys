@@ -45,6 +45,21 @@
     "emoji": "🥳"
   },
   {
+    "title": "yeehaw",
+    "type": "sender",
+    "emoji": "🤠"
+  },
+  {
+    "title": "snoozer",
+    "type": "sender",
+    "emoji": "😴"
+  },
+  {
+    "title": "beep boop",
+    "type": "receiver",
+    "emoji": "🤖"
+  },
+  {
     "title": "standing ovation",
     "type": "receiver",
     "emoji": "👏"
@@ -65,6 +80,26 @@
     "emoji": "🙏"
   },
   {
+    "title": "big brain",
+    "type": "receiver",
+    "emoji": "🧠"
+  },
+  {
+    "title": "the monarch",
+    "type": "receiver",
+    "emoji": "👑"
+  },
+  {
+    "title": "first place",
+    "type": "receiver",
+    "emoji": "🏅"
+  },
+  {
+    "title": "got the bag",
+    "type": "receiver",
+    "emoji": "💰"
+  },
+  {
     "title": "caffeinated",
     "type": "receiver",
     "emoji": "☕️"
@@ -73,6 +108,21 @@
     "title": "barista",
     "type": "sender",
     "emoji": "☕️"
+  },
+  {
+    "title": "cheers!",
+    "type": "receiver",
+    "emoji": "🍺"
+  },
+  {
+    "title": "bartender",
+    "type": "sender",
+    "emoji": "🍺"
+  },
+  {
+    "title": "lost the unmute button",
+    "type": "receiver",
+    "emoji": "🔇"
   },
   {
     "title": "vroom vroom",
