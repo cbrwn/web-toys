@@ -188,6 +188,7 @@
                     <PokerPlayer
                       v-for="(player, key) in getPlayersWithRole(role)"
                       :key="key"
+                      :idx="getPlayerDisplayIndex(player)"
                       :player="player"
                       :revealed="roomState.revealed"
                       :choices="roomState.choices"
@@ -533,6 +534,21 @@ export default {
         }
       });
     },
+
+    // lil function to get the DISPLAYED index of a player
+    // used for animations :)
+    getPlayerDisplayIndex(player) {
+      let playerCount = 0;
+      for(let i = 0; i < this.existingRoles.length; i++) {
+        for(let p of this.getPlayersWithRole(this.existingRoles[i])) {
+          if(p.id == player.id) {
+            return playerCount;
+          }
+          playerCount++;
+        }
+      }
+      return 0;
+    }
   },
   computed: {
     nameEdited() {
