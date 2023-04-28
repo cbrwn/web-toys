@@ -22,7 +22,8 @@
 				</div>
 				<div class="w-0.5 bg-black dark:bg-white opacity-50 mx-5 h-2/3"><!-- separator --></div>
 				<div class="h-min flex-grow flex flex-row gap-5">
-					<p v-for="(item, index) in project.tech" :key="index" :class="techStyles[item]" class="px-2 py-1 rounded-lg text-black">
+					<p v-for="(item, index) in project.tech" :key="index" :class="techStyles[item]"
+						class="px-2 py-1 rounded-lg text-black cursor-default transition-shadow duration-700 hover:shadow-[0_0px_30px_-0px_var(--tw-shadow-color)]">
 						{{ item }}
 					</p>
 				</div>
@@ -38,18 +39,17 @@ export default {
 	data() {
 		return {
 			hovered: false,
-
 			techStyles: {
-				'C++': 'bg-blue-500',
-				'JavaScript': 'bg-yellow-500',
-				'C#': 'bg-green-500',
-				'Go': 'bg-red-500',
-				'Unity': 'bg-purple-500',
-				'Node.js': 'bg-orange-500',
-				'Vue': 'bg-pink-500',
-				'Nuxt': 'bg-indigo-500',
-				'Assembly': 'bg-gray-400',
-				'NES': 'bg-gray-300',
+				'C++': 'bg-blue-500 shadow-blue-500',
+				'JavaScript': 'bg-yellow-500 shadow-yellow-500',
+				'C#': 'bg-green-500 shadow-green-500',
+				'Go': 'bg-red-500 shadow-red-500',
+				'Unity': 'bg-purple-500 shadow-purple-500',
+				'Node.js': 'bg-orange-500 shadow-orange-500',
+				'Vue': 'bg-pink-500 shadow-pink-500',
+				'Nuxt': 'bg-indigo-500 shadow-indigo-500',
+				'Assembly': 'bg-gray-400 shadow-gray-400',
+				'NES': 'bg-gray-300 shadow-gray-300',
 			}
 		};
 	},
