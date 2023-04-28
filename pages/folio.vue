@@ -50,7 +50,7 @@ export default {
 					image: "/folio/rrn.png",
 					tech: ['C++', 'C#', 'Go'],
 					time: "2022 - 2023",
-					desc: "the next generation of the Real Racing franchise\nI joined the team after some time in development, helping build features from the ground up to create a genre-defining mobile racing game"
+					desc: "the next generation of the Real Racing franchise!\nI joined the team after some time in development, helping build it into a shippable product\nI developed some of our metagame systems (e.g. player progression) and collaborated with artists to implement the UI & flows for these features"
 				},
 				{
 					name: "Real Racing 3",
@@ -60,7 +60,7 @@ export default {
 					gif: "/folio/rr3.gif",
 					time: "2020 - 2022",
 					tech: ['C++', 'C#'],
-					desc: "the definitive mobile racing game, with a ton of road cars and numerous motorsports franchises to experience\nI joined the RR3 team in 2020 and helped ship some of its biggest updates, supporting the 10-year-old game as a successful live service"
+					desc: "the definitive mobile racing game, with a ton of road cars and numerous motorsports franchises to experience\nI joined the RR3 team in 2020 and helped ship some of its biggest updates, including a new season-based content system & 'battle pass', new monetisation systems, and tools to make development easier and more efficient for the team"
 				},
 				{
 					name: "Unfamiliar",
@@ -70,7 +70,7 @@ export default {
 					gif: "/folio/unfamiliar.gif",
 					time: "2019",
 					tech: ['C#', 'Unity'],
-					desc: "a cute and relaxing cat-based adventure game\nI joined the team towards the end of development, quickly picking up the project and carrying it through to shipping"
+					desc: "a cute and relaxing cat-based adventure game\nI joined the team towards the end of development, quickly picking up the project\n as the sole programmer, I was tasked with fixing bugs and polishing features up until we successfully shipped"
 				},
 				{
 					name: "Sprilo",
